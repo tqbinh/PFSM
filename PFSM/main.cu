@@ -43,8 +43,6 @@
 using namespace std;
 
 
-
-
 //
 //#define CHECK(call) \
 //{ \
@@ -90,7 +88,7 @@ int main(int argc, char * const  argv[]){
 
 	FUNCHECK(pms.computeSupport()); //Tính độ hộ trợ của cả cạnh trong UniEdge và loại bỏ những mở rộng không thoả minsup
 
-	FUNCHECK(pms.Mining()); //kiểm tra DFS_CODE có phải là min hay không, nếu là min thì ghi kết quả vào file result.txt
+	FUNCHECK(pms.Mining()); //kiểm tra DFS_CODE có phải là min hay không, nếu là min thì ghi kết quả vào file result.txt, và xây dựng Embedding Columns
 
 
 	system("pause");

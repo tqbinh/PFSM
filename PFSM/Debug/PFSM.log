@@ -1,153 +1,137 @@
-﻿Build started 8/5/2017 7:52:21 AM.
-     1>Project "D:\BinhLuanVan\PMSv2\PFSM\PFSM\PFSM.vcxproj" on node 2 (Build target(s)).
+﻿Build started 8/6/2017 7:52:19 PM.
+     1>Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\PFSM\PFSM\main.cu 
-       AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\PFSM\PFSM\pms.cu 
-       CudaBuild:
-         Compiling CUDA source file main.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmpd0d3730d40cf4dcaa08eb40eebec7ec4.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\main.cu.obj "D:\BinhLuanVan\PMSv2\PFSM\PFSM\main.cu"
-         
-         D:\BinhLuanVan\PMSv2\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\main.cu.obj "D:\BinhLuanVan\PMSv2\PFSM\PFSM\main.cu" 
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\gspan.cuh(142): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\gspan.cuh(143): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu 
        CudaBuild:
          Compiling CUDA source file pms.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp2a97a4d4d51a461eb9c418cef42173ab.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\PFSM\PFSM\pms.cu"
+         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp57bef328a2b04d8295f3c37b574aab63.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu"
          
-         D:\BinhLuanVan\PMSv2\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\PFSM\PFSM\pms.cu" 
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(269): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(296): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(473): warning : variable "status" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(622): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(633): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(760): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(771): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(780): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(790): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(872): warning : unrecognized character escape sequence
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(939): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(949): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1035): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1102): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1133): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1144): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1169): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1262): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1275): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1282): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1342): warning : variable "li" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1342): warning : variable "lij" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1342): warning : variable "lj" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1348): warning : variable "minLabel" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1349): warning : variable "maxid" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\scanV.h(10): warning : extern inline function "scanV(int *, unsigned int, int *)" was referenced but not defined
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\reduction.h(15): warning : extern inline function "reduction(int *, int, int &)" was referenced but not defined
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(269): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(296): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(473): warning : variable "status" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(622): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(633): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(760): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(771): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(780): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(790): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(872): warning : unrecognized character escape sequence
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(939): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(949): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1035): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1102): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1133): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1144): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1169): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1262): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1275): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1282): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1342): warning : variable "li" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1342): warning : variable "lij" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1342): warning : variable "lj" was set but never used
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1348): warning : variable "minLabel" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1349): warning : variable "maxid" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\scanV.h(10): warning : extern inline function "scanV(int *, unsigned int, int *)" was referenced but not defined
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\reduction.h(15): warning : extern inline function "reduction(int *, int, int &)" was referenced but not defined
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\gspan.cuh(142): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\pfsm\pfsm\gspan.cuh(143): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(24): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(34): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(42): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(50): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(192): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(211): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(254): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(302): warning C4533: initialization of 'grid' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(278) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(302) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(302): warning C4533: initialization of 'block' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(277) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(302) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(846): warning C4533: initialization of 'strUniEdge' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(800) : see declaration of 'strUniEdge'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(846) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(800) : see declaration of 'strUniEdge'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(846) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(800) : see declaration of 'strUniEdge'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(846) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(800) : see declaration of 'strUniEdge'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(846) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(982): warning C4533: initialization of 'grida' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(964) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(982) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(982): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(963) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(982) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(964) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(982) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(963) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(982) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1087): warning C4533: initialization of 'grida' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1062) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1087) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1087): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1061) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1087) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322): warning C4533: initialization of 'grida' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1302) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1301) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1302) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1301) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1302) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1301) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/PFSM/PFSM/pms.cu(1322) : see declaration of 'Error'
+         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu" 
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(303): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(330): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(507): warning : variable "status" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(656): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(667): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(794): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(805): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(814): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(824): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(906): warning : unrecognized character escape sequence
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(973): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(983): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1069): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1136): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1167): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1178): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1203): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1306): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1319): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1326): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1386): warning : variable "li" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1386): warning : variable "lij" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1386): warning : variable "lj" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1392): warning : variable "minLabel" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1393): warning : variable "maxid" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1512): warning : transfer of control bypasses initialization of:
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\scanV.h(10): warning : extern inline function "scanV(int *, unsigned int, int *)" was referenced but not defined
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(15): warning : extern inline function "reduction(int *, int, int &)" was referenced but not defined
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(303): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(330): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(507): warning : variable "status" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(656): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(667): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(794): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(805): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(814): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(824): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(906): warning : unrecognized character escape sequence
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(973): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(983): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1069): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1136): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1167): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1178): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1203): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1306): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1319): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1326): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1386): warning : variable "li" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1386): warning : variable "lij" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1386): warning : variable "lj" was set but never used
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1392): warning : variable "minLabel" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1393): warning : variable "maxid" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1512): warning : transfer of control bypasses initialization of:
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\scanV.h(10): warning : extern inline function "scanV(int *, unsigned int, int *)" was referenced but not defined
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(15): warning : extern inline function "reduction(int *, int, int &)" was referenced but not defined
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(142): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(143): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(24): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(34): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(42): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(50): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(192): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(211): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(288): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(336): warning C4533: initialization of 'grid' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(312) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(336) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(336): warning C4533: initialization of 'block' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(311) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(336) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(880): warning C4533: initialization of 'strUniEdge' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(834) : see declaration of 'strUniEdge'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(880) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(834) : see declaration of 'strUniEdge'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(880) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(834) : see declaration of 'strUniEdge'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(880) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(834) : see declaration of 'strUniEdge'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(880) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1016): warning C4533: initialization of 'grida' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(998) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1016) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1016): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(997) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1016) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(998) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1016) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(997) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1016) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1121): warning C4533: initialization of 'grida' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1096) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1121) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1121): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1095) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1121) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366): warning C4533: initialization of 'grida' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1346) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1345) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1346) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1345) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1346) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1345) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1366) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1434): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1544): warning C4018: '<' : signed/unsigned mismatch
        Link:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\BinhLuanVan\PMSv2\PFSM\Debug\PFSM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\BinhLuanVan\PMSv2\PFSM\Debug\PFSM.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\BinhLuanVan\PMSv2\PFSM\Debug\PFSM.lib" /MACHINE:X86 Debug\dfs.cu.obj
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.lib" /MACHINE:X86 Debug\dfs.cu.obj
          Debug\graph.cu.obj
          Debug\gspan.cu.obj
          Debug\ismin.cu.obj
@@ -158,16 +142,16 @@
          Debug\reduction.cu.obj
          Debug\scanV.cu.obj
          Debug\scan_largearray_kernel.cu.obj
-         PFSM.vcxproj -> D:\BinhLuanVan\PMSv2\PFSM\Debug\PFSM.exe
+         PFSM.vcxproj -> D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.exe
        PostBuildEvent:
-         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\PFSM\Debug\"
-         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\PFSM\Debug\"
+         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\"
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\"
          :VCEnd
-         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\PFSM\Debug\"
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\"
          C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart32_55.dll
                  1 file(s) copied.
-     1>Done Building Project "D:\BinhLuanVan\PMSv2\PFSM\PFSM\PFSM.vcxproj" (Build target(s)).
+     1>Done Building Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:30.09
+Time Elapsed 00:00:15.88

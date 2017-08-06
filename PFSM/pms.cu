@@ -241,6 +241,40 @@ void PMS::printdb(){
 	}
 }
 
+
+__global__ void kernelMyScanV(int *dArrInput,int noElem,int *dResult){
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	if(i<noElem){
+		if(i==0){
+			dResult[i]=0;
+		}else
+		{
+			int temp=0;
+			for (int j = 0; j <= (i-1); j++)
+			{
+				temp=temp + dArrInput[j];
+			}
+			dResult[i]=temp;
+		}
+	}
+}
+
+
+void  myScanV(int *dArrInput,int noElem,int *&dResult){
+	cudaError_t cudaStatus;
+	dim3 block(blocksize);
+	dim3 grid((noElem + block.x -1)/block.x);
+
+	CHECK(cudaMalloc((void**)&dResult,noElem * sizeof(int)));
+
+	kernelMyScanV<<<grid,block>>>(dArrInput,noElem,dResult);
+	cudaDeviceSynchronize();
+	cudaStatus = cudaGetLastError();
+	CHECK(cudaStatus);
+	return;
+}
+
+
 __global__ void kernelCountNumberOfLabelVertex(int *d_LO,int *d_Lv,unsigned int sizeOfArrayLO){
 	int i= blockDim.x*blockIdx.x + threadIdx.x;
 	if(i<sizeOfArrayLO){
@@ -669,7 +703,7 @@ int PMS::getValidExtension(){
 		hValidExtension.resize(1);
 		getSizeBaseOnScanResult(dV,dVScanResult,numberElementd_Extension,hValidExtension.at(0).noElem);
 		printf("\n arrValidExtension.noElem:%d",hValidExtension.at(0).noElem);
-		CHECK(cudaMalloc((void**)&hValidExtension.at(0).dExtension,sizeof(Extension)*hValidExtension.at(0).noElem));
+		CHECK(cudaMalloc((void**)&(hValidExtension.at(0).dExtension),sizeof(Extension)*hValidExtension.at(0).noElem));
 		CHECK(extractValidExtension(hExtension.at(0).dExtension,dV,dVScanResult,numberElementd_Extension,hValidExtension.at(0).dExtension));
 		//displayArrExtension(arrValidExtension.dExtension,arrValidExtension.noElem);
 
@@ -1205,7 +1239,7 @@ __global__ void kernelGetGraphIdContainEmbedding(int li,int lij,int lj,Extension
 }
 
 __global__ void kernelGetLastElementExtension(Extension *inputArray,unsigned int noEleInputArray,int *value,unsigned int maxOfVer){
-	*value = (inputArray[noEleInputArray-1].vgi/maxOfVer); /*Lấy global vertex id chia cho tổng số đỉnh của đồ thị (maxOfVer). Ở đây các đồ thị luôn có số lượng đỉnh bằng nhau (maxOfVer) */
+	value[0] = inputArray[noEleInputArray-1].vgi/maxOfVer; /*Lấy global vertex id chia cho tổng số đỉnh của đồ thị (maxOfVer). Ở đây các đồ thị luôn có số lượng đỉnh bằng nhau (maxOfVer) */
 }
 
 cudaError_t getLastElementExtension(Extension* inputArray,unsigned int numberElementOfInputArray,int &outputValue,unsigned int maxOfVer){
@@ -1213,6 +1247,14 @@ cudaError_t getLastElementExtension(Extension* inputArray,unsigned int numberEle
 
 	int *temp=nullptr;
 	CHECK(cudaMalloc((int**)&temp,sizeof(int)));
+	//kernelPrintExtention<<<1,512>>>(inputArray,numberElementOfInputArray);
+	//cudaDeviceSynchronize();
+	//cudaStatus= cudaGetLastError();
+	//if(cudaStatus != cudaSuccess){
+	//	fprintf(stderr,"cudaDeviceSynchronize failed",cudaStatus);
+	//	goto Error;
+	//}
+
 	/* Lấy graphId chứa embedding cuối cùng */
 	kernelGetLastElementExtension<<<1,1>>>(inputArray,numberElementOfInputArray,temp,maxOfVer);
 	cudaDeviceSynchronize();
@@ -1252,6 +1294,8 @@ int PMS::getGraphIdContainEmbedding(UniEdge edge,int *&hArrGraphId,int &noElemhA
 
 	int *dV=nullptr;
 	int noElemdV=0;
+
+	//displayArrExtension(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem);
 
 	CHECK(getLastElementExtension(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem,noElemdV,maxOfVer));
 	noElemdV++;
@@ -1378,9 +1422,23 @@ int PMS::Mining(){
 				
 				report(hArrGraphId,noElemhArrGraphId,hUniEdgeSatisfyMinsup.at(0).hArrSup[i]);
 
-				//Giải phóng bộ nhớ hArrGraphId
-				free(hArrGraphId);	
+				//Xây dựng Embedding cho DFS_Code rồi gọi hàm GraphMining để khai thác
+				//Trong GraphMining sẽ gọi GraphMining khác để thực hiện khai thác đệ quy
+
+				FUNCHECK(buildFirstEmbedding(temp[i])); //Xây dựng 2 cột embedding ban đầu.
+
+				//FSMining(DFS_CODE,EmbeddingColumn,hValidExtension(EXTk),hUniEdge,RMP,FwEXt,BwEXt)
+
+				//Giải phóng bộ nhớ 
+				free(hArrGraphId);
 				DFS_CODE.pop();
+				if(hEmbedding.size()!=0){
+					for (int j = 0; j < hEmbedding.size(); j++)
+					{
+						cudaFree(hEmbedding.at(j).dArrEmbedding);
+					}
+					hEmbedding.clear();
+				}
 			}
 	}
 	
@@ -1390,4 +1448,139 @@ Error:
 }
 
 
+__global__ void kernelMarkExtension(const Extension *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int li,int lij,int lj){
+	int i= blockIdx.x*blockDim.x + threadIdx.x;
+	if(i<noElem_d_ValidExtension){
+		if(d_ValidExtension[i].li==li && d_ValidExtension[i].lij==lij && d_ValidExtension[i].lj==lj){
+			dV[i]=1;
+		}		
+	}
+}
+
+__global__ void kernelSetValueForFirstTwoEmbeddingColumn(const Extension *d_ValidExtension,int noElem_d_ValidExtension,Embedding *dQ1,Embedding *dQ2,int *d_scanResult,int li,int lij,int lj){
+	int i = blockDim.x *blockIdx.x +threadIdx.x;
+	if(i<noElem_d_ValidExtension){
+		if(d_ValidExtension[i].li==li && d_ValidExtension[i].lij == lij && d_ValidExtension[i].lj==lj){
+			dQ1[d_scanResult[i]].idx=-1;
+			dQ1[d_scanResult[i]].vid=d_ValidExtension[i].vgi;
+			
+
+			dQ2[d_scanResult[i]].idx=d_scanResult[i];
+			dQ2[d_scanResult[i]].vid=d_ValidExtension[i].vgj;
+		}
+	}
+}
+
+__global__ void	kernelPrintEmbedding(Embedding *dArrEmbedding,int noElem){
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	if(i<noElem){
+		printf("\n Thread:%d (idx vid):(%d %d)",i,dArrEmbedding[i].idx,dArrEmbedding[i].vid);
+	}
+}
+
+
+int PMS::buildFirstEmbedding(UniEdge ue){
+	int li,lij,lj;
+	li=ue.li;
+	lij=ue.lij;
+	lj=ue.lj;
+	int status =0;
+	cudaError_t cudaStatus;
+	hEmbedding.resize(2);
+	hEmbedding.at(0).noElem;
+
+	int *dV=nullptr;
+	int noElemdV = hValidExtension.at(0).noElem;
+	CHECK(cudaMalloc((void**)&dV, sizeof(int)*noElemdV));
+	CHECK(cudaMemset(dV,0,sizeof(int)*noElemdV));
+	dim3 block(blocksize);
+	dim3 grid((noElemdV+block.x-1)/block.x);
+
+	//kernelPrintExtention<<<1,512>>>(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem);
+	//cudaDeviceSynchronize();
+	//CHECK(cudaGetLastError());
+	//if(cudaGetLastError() !=cudaSuccess){
+	//	printf("Error here");
+	//	goto Error;
+	//}
+
+	kernelMarkExtension<<<grid,block>>>(hValidExtension.at(0).dExtension,noElemdV,dV,li,lij,lj);
+	cudaDeviceSynchronize();
+	cudaStatus = cudaGetLastError();
+	CHECK(cudaStatus);
+	if(cudaStatus!=cudaSuccess){
+		status = -1;
+		fprintf(stderr,"\n kernelMarkExtension failed",cudaStatus);
+		goto Error;
+	}
+
+	int* dVScanResult;
+	CHECK(cudaMalloc((int**)&dVScanResult,noElemdV*sizeof(int)));
+	CHECK(cudaMemset(dVScanResult,0,noElemdV*sizeof(int)));
+
+	CHECK(scanV(dV,noElemdV,dVScanResult));
+	//myScanV(dV,noElemdV,dVScanResult);
+
+
+	int noElemOfdArEmbedding=0;
+	CHECK(getSizeBaseOnScanResult(dV,dVScanResult,noElemdV,noElemOfdArEmbedding));
+	hEmbedding.at(0).noElem=hEmbedding.at(1).noElem=noElemOfdArEmbedding;
+
+	CHECK(cudaMalloc((void**)&hEmbedding.at(0).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding)));
+	CHECK(cudaMalloc((void**)&hEmbedding.at(1).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding)));
+
+	
+	kernelSetValueForFirstTwoEmbeddingColumn<<<grid,block>>>(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem,hEmbedding.at(0).dArrEmbedding,hEmbedding.at(1).dArrEmbedding,dVScanResult,li,lij,lj);
+	cudaDeviceSynchronize();
+	cudaStatus = cudaGetLastError();
+	CHECK(cudaStatus);
+	if(cudaStatus !=cudaSuccess){
+		fprintf(stderr,"\n kernelSetValueForFirstTwoEmbeddingColumn in failed",cudaStatus);
+		status = -1;
+		goto Error;
+	}
+	
+	hEmbedding.at(0).prevCol=-1;
+	hEmbedding.at(1).prevCol=0;
+
+	for (int i = 0; i < hEmbedding.size(); i++)
+	{
+		printf("\n\n Q[%d] prevCol:%d ",i,hEmbedding.at(i).prevCol);		
+		kernelPrintEmbedding<<<1,512>>>(hEmbedding.at(i).dArrEmbedding,hEmbedding.at(i).noElem);
+		cudaDeviceSynchronize();
+		cudaStatus = cudaGetLastError();
+		CHECK(cudaStatus);
+		if(cudaStatus!=cudaSuccess){
+			status =-1;
+			printf("kernelPrintEmbedding failed");
+			goto Error;
+		}
+	}
+
+
+Error:
+	return status;
+}
+
+
+
+//Why do this snippet face the error: Invalid device pointer
+
+//void PMS::displayEmbeddingColumn(EmbeddingColumn ec){
+//	printf("\n noElem:%d prevCol:%d",ec.noElem,ec.prevCol);
+//	
+//	Embedding *hArrEmbeddingt = (Embedding*)malloc(sizeof(Embedding)*ec.noElem);
+//	if(hArrEmbeddingt==NULL){
+//		printf("\n malloc hArrEmbeddingt in displayEmbeddingColumn() failed");
+//		exit(1);
+//	}
+//
+//	CHECK(cudaMemcpy(hArrEmbeddingt,ec.dArrEmbedding,sizeof(Embedding)*ec.noElem,cudaMemcpyDeviceToHost));
+//	for (int i = 0; i < ec.noElem; i++)
+//	{
+//		printf("\n A[%d]: (idx, vid):(%d, %d)",i,hArrEmbeddingt[i].idx,hArrEmbeddingt[i].vid);
+//	}
+//
+//	cudaFree(hArrEmbeddingt);
+//}
 

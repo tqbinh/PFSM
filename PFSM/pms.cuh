@@ -32,7 +32,7 @@ if (error != cudaSuccess) \
 { \
 printf("Error: %s:%d, ", __FILE__, __LINE__); \
 printf("code:%d, reason: %s\n", error, cudaGetErrorString(error)); \
-exit(1); \
+printf("go to next line"); \
 } \
 }
 
@@ -89,13 +89,37 @@ struct arrUniEdgeSatisfyMinSup
 	int *hArrSup;
 };
 
+struct Embedding
+{
+	int idx;
+	int vid;
+	Embedding():idx(0),vid(0){};
+};
+
+struct EmbeddingColumn
+{
+	int noElem; //Số lượng phần tử mảng dArrEmbedding
+	int prevCol; //prevCol, dùng để xây dựng RMPath
+	Embedding *dArrEmbedding;
+	EmbeddingColumn():noElem(0),prevCol(0),dArrEmbedding(0){};
+};
+
+struct RMP
+{
+	int noElem;
+	int *hArrRMP;
+	int minLabel;
+	int maxId;
+	RMP():noElem(0),hArrRMP(0),minLabel(0),maxId(0){};
+};
+
 
 extern __global__ void kernelPrintdArr(int *deviceArray,unsigned int noElem);
 extern __global__ void kernelPrintdArr(int *dArr,int noElem);
 extern __global__ void kernelPrintdArr(float *dArr,int noElem);
 extern __global__ void kernelCountNumberOfLabelVertex(int *d_LO,int *d_Lv,unsigned int sizeOfArrayLO);
 extern __global__ void kernelGetAndStoreExtension(int *d_O,int *d_LO,unsigned int numberOfElementd_O,int *d_N,int *d_LN,unsigned int numberOfElementd_N,Extension *d_Extension);
-extern __global__ void kernelPrintExtention(Extension *d_Extension,unsigned int n);
+extern __global__ void kernelPrintExtention(Extension *d_Extension, int n);
 extern __global__ void	kernelValidEdge(Extension *d_Extension,int *dV,int numberElementd_Extension);
 extern __global__ void kernelGetSize(int *dV,int *dVScanResult,int noElem,int *size);
 extern __global__ void kernelExtractValidExtension(Extension *d_Extension,int *dV,int *dVScanResult,int numberElementd_Extension,Extension *d_ValidExtension);
@@ -109,6 +133,10 @@ extern __global__ void	kernelMarkUniEdgeSatisfyMinsup(int *dResultSup,int noElem
 extern __global__ void	kernelExtractUniEdgeSatifyMinsup(UniEdge *dUniEdge,int *dV,int *dVScanResult,int noElemUniEdge,UniEdge *dUniEdgeSatisfyMinsup,int *dSup,int *dResultSup);
 extern __global__ void kernelGetGraphIdContainEmbedding(int li,int lij,int lj,Extension *d_ValidExtension,int noElem_d_ValidExtension,int *d_arr_graphIdContainEmbedding,unsigned int maxOfVer);
 extern __global__ void kernelGetGraph(int *dV,int noElemdV,int *d_kq,int *dVScanResult);
+extern __global__ void kernelMarkExtension(const Extension *d_ValidExtension, int noElem_d_ValidExtension,int *dV,int li,int lij,int lj);
+extern __global__ void kernelSetValueForFirstTwoEmbeddingColumn(const Extension *d_ValidExtension,int noElem_d_ValidExtension,Embedding *dQ1,Embedding *dQ2,int *d_scanResult,int li,int lij,int lj);
+extern __global__ void	kernelPrintEmbedding(Embedding *dArrEmbedding,int noElem);
+
 
 
 extern void sumUntilReachZero(int *h_Lv,unsigned int n,int &result);
@@ -121,6 +149,7 @@ extern cudaError_t calcBoundary(Extension *d_ValidExtension,unsigned int noElem_
 extern cudaError_t getLastElement(int *dScanResult,unsigned int noElem,int &output);
 extern cudaError_t calcSupport(UniEdge *dUniEdge,int noElemdUniEdge,Extension *dValidExtension,int noElemdValidExtension,int *dBScanResult,int *dF,int noElemF,int *&hResultSup);
 extern cudaError_t getLastElementExtension(Extension* inputArray,unsigned int numberElementOfInputArray,int &outputValue,unsigned int maxOfVer);
+extern void  myScanV(int *dArrInput,int noElem,int *&dResult);
 
 class PMS:public gSpan
 {
@@ -130,6 +159,9 @@ public:
 	vector<arrExtension> hValidExtension;
 	vector<arrUniEdge> hUniEdge;
 	vector<arrUniEdgeSatisfyMinSup> hUniEdgeSatisfyMinsup;
+
+	vector<EmbeddingColumn> hEmbedding; //Mỗi phần tử của vector là một Embedding column
+	
 
 	
 	PMS();
@@ -147,6 +179,7 @@ public:
 	void displayArray(int*, const unsigned int);
 	int displayDeviceArr(int *,int);
 	int displayDeviceArr(float*,int);
+	//void displayEmbeddingColumn(EmbeddingColumn);
 	void displayArrExtension(Extension*, int);
 	void displayArrUniEdge(UniEdge*,int);
 	bool checkArray(int*, int*, const int);
@@ -160,5 +193,6 @@ public:
 	int extractUniEdgeSatisfyMinsup(int*,int,unsigned int);
 	int Mining();
 	int getGraphIdContainEmbedding(UniEdge,int*&,int&);	
+	int buildFirstEmbedding(UniEdge);
 };
 
