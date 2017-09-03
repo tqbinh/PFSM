@@ -86,8 +86,8 @@ cudaError_t reduction(float *deviceInput,int len,float &support){
 	//printFloat(deviceOutput,numOutputElements);
 	cudaMemcpy(&support,deviceOutput,numOutputElements*sizeof(float),cudaMemcpyDeviceToHost);
 
-	cudaFree(deviceInput);
-	cudaFree(deviceOutput);
+//	cudaFree(deviceInput);
+//	cudaFree(deviceOutput);
 Error:
 	return cudaStatus;
 }
