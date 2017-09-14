@@ -2741,7 +2741,7 @@ Error:
 	return status;
 }
 
-
+//Tìm các mở rộng hợp lệ (forward & backward) từ EXT cuối cùng
 int PMS::findValidFBExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingAtALevel,int k,int fromColumEmbedding,int *dArrVidOnRMP,int *rmp){
 	int status =0;
 	cudaError_t cudaStatus;
@@ -2835,7 +2835,7 @@ int PMS::findValidFBExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingA
 	printf("\n****************dArrV_backward*******************\n");
 	displayDeviceArr(dArrV->backward,dArrV->noElem);
 	
-	////Chép kết quả từ dArrExtension sang dExt
+	////Chép kết quả từ dArrExtensionTemp sang dExt
 	//chúng ta cần có mảng dArrV để trích các mở rộng duy nhất
 	//Hàm này cũng gọi hàm trích các mở rộng duy nhất và tính độ hỗ trợ của chúng
 	FUNCHECK(status = displayDeviceEXT(dArrExtensionTemp,dArrV->noElem));
@@ -2845,12 +2845,24 @@ int PMS::findValidFBExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingA
 	}
 
 
-	cudaFree(dArrV->valid);
-	cudaFree(dArrV->backward);
+	CHECK(cudaStatus = cudaFree(dArrV->valid));
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
+
+	CHECK(cudaStatus = cudaFree(dArrV->backward));
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
+
+	CHECK(cudaStatus = cudaFree(dArrDegreeOfVid));
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
 	free(dArrV);
-	cudaFree(dArrDegreeOfVid);
-
-
 Error:
 	return status;
 }
@@ -3690,7 +3702,7 @@ Error:
 }
 
 
-int PMS::extractUniqueForwardEdge_LastExt(EXTk ext,UniEdgek& ue){
+int PMS::extractUniqueForwardBackwardEdge_LastExt(EXTk ext,UniEdgek& ue){
 	cudaError_t cudaStatus;
 	int status =0;
 
@@ -3724,11 +3736,6 @@ int PMS::extractUniqueForwardEdge_LastExt(EXTk ext,UniEdgek& ue){
 		goto Error;
 	}
 
-	//CHECK(cudaStatus = cudaFree(dFromLi));
-	//if(cudaStatus!=cudaSuccess){
-	//	status=-1;
-	//	goto Error;
-	//}
 
 	//Tính số lượng tất cả các cạnh có thể có dựa vào nhãn của chúng
 	int noElem_dallPossibleExtension=Le*Lv;
@@ -3920,16 +3927,55 @@ int PMS::extractUniqueForwardEdge_LastExt(EXTk ext,UniEdgek& ue){
 		goto Error;
 	}
 
+	ue.firstIndexForwardExtension = bwEdgeTemp.noElem;
+
 	printf("\n *********** ue.dArrUniEdge **********\n");
 	FUNCHECK(status=displayArrUniEdge(ue.dArrUniEdge,ue.noElem));
 	if(status!=0){
 		goto Error;
 	}
 
+	//Giai phong bo nho
+	CHECK(cudaStatus=cudaFree(fwEdgeTemp.dArrUniEdge));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
+	CHECK(cudaStatus=cudaFree(bwEdgeTemp.dArrUniEdge));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
 
-	//cudaFree(d_allPossibleExtension);
-	//cudaFree(d_allPossibleExtensionScanResult);
+	CHECK(cudaStatus=cudaFree(dFromLi));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
+
+
+	CHECK(cudaStatus=cudaFree(d_allPossibleExtensionFW));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
+
+	CHECK(cudaStatus=cudaFree(d_allPossibleExtensionScanResultFW));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
+	CHECK(cudaStatus=cudaFree(d_allPossibleExtensionBW));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
+	CHECK(cudaStatus=cudaFree(d_allPossibleExtensionScanResultBW));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
 Error:
 	return status;
@@ -4002,22 +4048,23 @@ __global__ void kernelCopyResultToUE(UniEdge *fwdArrUniEdge,UniEdge *bwdArrUniEd
 
 int PMS::extractValidExtensionTodExtv2(EXT *dArrExtension,V *dArrV,int noElem_dArrV,int idxEXT){
 	cudaError_t cudaStatus;
-
 	int status =0;
 	//2. Scan mảng dArrValid để lấy kích thước của mảng cần tạo
 	int *dArrValidScanResult = nullptr;
 
-	cudaStatus = cudaMalloc((void**)&dArrValidScanResult,sizeof(int)*noElem_dArrV);
+	CHECK(cudaStatus = cudaMalloc((void**)&dArrValidScanResult,sizeof(int)*noElem_dArrV));
 	if (cudaStatus!=cudaSuccess){
 		status = -1;
-		fprintf(stderr,"\n CudaMalloc dArrValidScanResult in extractValidExtensionToExt() failed");
 		goto Error;
 	}
 	else
 	{
-		cudaMemset(dArrValidScanResult,0,sizeof(int)*noElem_dArrV);
+		CHECK(cudaStatus = cudaMemset(dArrValidScanResult,0,sizeof(int)*noElem_dArrV));
+		if (cudaStatus!=cudaSuccess){
+			status = -1;
+			goto Error;
+		}
 	}
-
 
 	//cudaStatus = scanV(dArrV->valid,noElem_dArrV,dArrValidScanResult); //hàm scan này có vấn đề. Nó làm thay đổi giá trị đầu vào.
 	//if (cudaStatus!=cudaSuccess){
@@ -4025,7 +4072,12 @@ int PMS::extractValidExtensionTodExtv2(EXT *dArrExtension,V *dArrV,int noElem_dA
 	//	fprintf(stderr,"\n scanV dArrValid in extractValidExtensionToExt() failed");
 	//	goto Error;
 	//}
-	myScanV(dArrV->valid,noElem_dArrV,dArrValidScanResult);
+
+	CHECK(cudaStatus = myScanV(dArrV->valid,noElem_dArrV,dArrValidScanResult));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
 	//In nội dung kết quả dArrValidScanResult
 	printf("\n********dArrValid******\n");
@@ -4091,120 +4143,30 @@ int PMS::extractValidExtensionTodExtv2(EXT *dArrExtension,V *dArrV,int noElem_dA
 	//Chuẩn bị bộ nhớ để trích các cạnh duy nhất
 	//Trích các mở rộng duy nhất forward: lưu chúng vào mảng dUniEdgeForwardTemp
 	//Các tham số:1. dArrExt: để trích các forward uniedge extension
-	UniEdgek tempUniEdgeForward;
-	FUNCHECK(status=extractUniqueForwardEdge_LastExt(hLevelEXTv2.at(idxLevel).vE.at(idxEXT),tempUniEdgeForward));
+	//hLevelUniEdgev2.at(idxLevel).vUE.at(0); //chúng ta lưu vào đây, vì sao? vì đây là hàm khai thác các backward và forward edge ở EXT cuối.
+	UniEdgek tempUniEdgeBF; //khai báo cấu trúc chứa các cạnh duy nhất backward và forward
+	FUNCHECK(status=extractUniqueForwardBackwardEdge_LastExt(hLevelEXTv2.at(idxLevel).vE.at(idxEXT),hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT)));
 	if(status!=0){
 		goto Error;
 	}
 
-	//Trích các mở rộng duy nhất backward: lưu chúng vào mảng dUniEdgeBackwardTemp
-	//Ghép 2 mảng kết quả lại với nhau, kết quả lưu vào dUniEdge
-	//Duyệt qua mảng dUniEdge để tính độ hỗ trợ
+	printf("\n ************ dArrUniEdge from hLevelUniEdgev2 ***************\n");
+	printf("\n noElem:%d",hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).noElem);
+	printf("\n Li:%d",hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).Li);
+	printf("\n firstIndex of forward extension:%d",hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).firstIndexForwardExtension);
+	displayArrUniEdge(hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).dArrUniEdge,hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).noElem);
+
+	//Duyệt qua mảng dUniEdge để tính độ hỗ trợ. 
+	//Như vậy, trong trường hợp này chúng ta sẽ tính độ hỗ trợ cho các mở rộng backward trước nếu có, rồi mới đến forward.
+	//vì backward nằm trước forward extension trong mảng dArrUniEdge
+	FUNCHECK(status = computeSupportv2(hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).noElem,hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).dArrUniEdge,hLevelUniEdgev2.at(idxLevel).vUE.at(idxEXT).noElem,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).noElem,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).dArrUniEdge,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).hArrSupport));
+	if(status!=0){
+		goto Error;
+	}
 
 
-	////Dựa vào dArrV để trích các cạnh duy nhất từ dArrExt và lưu vào dArrUniEdge tại vị trí tương ứng
-	////Ở đây chỉ trích các mở rộng forward, vì nó chưa tồn tại mở rộng backward.
-
-	////dim3 blockc(blocksize);
-	////dim3 gridc((hLevelEXTv2.at(idxLevel).vE.at(idxEXT).noElem + blockc.x -1)/blockc.x);
-	////kernelForwardPossibleExtension_NonLast<<<gridc,blockc>>>(hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).noElem,Lv,dArrAllPossibleExtension);
-	////cudaDeviceSynchronize();
-	////cudaStatus = cudaGetLastError();
-	////CHECK(cudaStatus);
-	////if(cudaStatus !=cudaSuccess){
-	////	status =-1;
-	////	fprintf(stderr,"\n kernelForwardPossibleExtension_NonLast  failed",cudaStatus);
-	////	goto Error;
-	////}
-
-	////Scan mảng dArrAllPossibleExtension để biết kích thước của mảng dArrUniEdge và ánh xạ từ vị trí trong dArrAllPossibleExtension thành nhãn để lưu vào dArrUniEdge được quản lý bởi hLevelUniEdge
-	////int *dArrAllPossibleExtensionScanResult =nullptr;
-	////cudaStatus = cudaMalloc((void**)&dArrAllPossibleExtensionScanResult,noElem_dArrAllPossibleExtension*sizeof(int));
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status = -1;
-	////	fprintf(stderr,"\n cudaMalloc dArrAllPossibleExtensionScanResult  failed",cudaStatus);
-	////	goto Error;
-	////}
-	////cudaStatus = scanV(dArrAllPossibleExtension,noElem_dArrAllPossibleExtension,dArrAllPossibleExtensionScanResult);
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status = -1;
-	////	fprintf(stderr,"\n scanV dArrAllPossibleExtension failed",cudaStatus);
-	////	goto Error;
-	////}
-	////myScanV(dArrAllPossibleExtension,noElem_dArrAllPossibleExtension,dArrAllPossibleExtensionScanResult);
-	////Tính kích thước của dArrUniEdge và lưu vào noElem_dArrUniEdge
-	////cudaStatus =getSizeBaseOnScanResult(dArrAllPossibleExtension,dArrAllPossibleExtensionScanResult,noElem_dArrAllPossibleExtension,noElem_dArrUniEdge);
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status = -1;
-	////	fprintf(stderr,"\n scanV dArrAllPossibleExtension in extractUniExtension() failed",cudaStatus);
-	////	goto Error;
-	////}
-
-	////Hiển thị giá trị của noElem_dArrUniEdge
-	////printf("\n******noElem_dArrUniEdge************\n");
-	////printf("\n noElem_dArrUniEdge:%d",noElem_dArrUniEdge);
-
-	////hLevelUniEdge.at(idxLevel).vUE.at(idxEXT).noElem=noElem_dArrUniEdge;
-
-	////Cấp phát bộ nhớ cho dArrUniEdge
-	////cudaStatus = cudaMalloc((void**)&hLevelUniEdge.at(idxLevel).vUE.at(idxEXT).dArrUniEdge,noElem_dArrUniEdge*sizeof(UniEdge));
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status =-1;
-	////	fprintf(stderr,"\n cudaMalloc dArrUniEdge  failed",cudaStatus);
-	////	goto Error;
-	////}
-
-	////lấy nhãn Li lưu vào biến dFromLi	
-	////int *dFromLi=nullptr;
-	////cudaStatus = cudaMalloc((void**)&dFromLi,sizeof(int));
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status =-1;
-	////	printf("\n cudaMalloc dFromLi failed");
-	////	goto Error;
-	////}
-
-	////kernelGetFromLabel<<<1,1>>>(hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,dFromLi);
-	////cudaDeviceSynchronize();
-	////cudaStatus=cudaGetLastError();
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status =-1;
-	////	fprintf(stderr,"\n  kernelGetFromLabel  failed");
-	////	goto Error;
-	////}
-
-
-
-	////Gọi hàm để ánh xạ dữ liệu từ dArrAllPossibleExtension sang mảng dArrUniEdge
-	/////* Input Data:	dArrAllPossibleExtension, dArrAllPossibleExtensionScanResult,  */
-	////dim3 blockd(blocksize);
-	////dim3 gridd((noElem_dArrAllPossibleExtension + blockd.x -1)/blockd.x);
-	////kernelFilldArrUniEdge<<<gridd,blockd>>>(dArrAllPossibleExtension,dArrAllPossibleExtensionScanResult,noElem_dArrAllPossibleExtension,hLevelUniEdge.at(idxLevel).vUE.at(idxEXT).dArrUniEdge,Lv,dFromLi);
-	////cudaDeviceSynchronize();
-	////cudaStatus = cudaGetLastError();
-	////CHECK(cudaStatus);
-	////if(cudaStatus!=cudaSuccess){
-	////	status =-1;
-	////	fprintf(stderr,"\n kernelFilldArrUniEdge failed",cudaStatus);
-	////	goto Error;
-	////}
-
-	////In nội dung mảng dArrUniEdge
-	////printf("\n**********dArrUniEdge************");
-	////displaydArrUniEdge(hLevelUniEdge.at(idxLevel).vUE.at(idxEXT).dArrUniEdge,noElem_dArrUniEdge);
-
-	////Duyệt qua các cạnh duy nhất tính và lưu trữ độ hỗ trợ của chúng vào một mảng tạm nào đó
 	////Sau đó trích những độ hỗ trợ thoả minsup vào lưu vào hLevelUniEdgeSatisfyMinsup
 	////Chỉ cần quan tâm kết quả trả về gồm số lượng cạnh thoả minsup, cạnh đó là gì và độ hỗ trợ là bao nhiêu.
-	////status = computeSupportv2(hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).noElem,hLevelUniEdge.at(idxLevel).vUE.at(idxEXT).dArrUniEdge,hLevelUniEdge.at(idxLevel).vUE.at(idxEXT).noElem,hLevelUniEdgeSatisfyMinsup.at(idxLevel).vecUES.at(idxEXT).noElem,hLevelUniEdgeSatisfyMinsup.at(idxLevel).vecUES.at(idxEXT).dArrUniEdge,hLevelUniEdgeSatisfyMinsup.at(idxLevel).vecUES.at(idxEXT).hArrSupport);
-	////if(status!=0){
-	////	goto Error;
-	////}
 
 
 
@@ -4253,41 +4215,47 @@ int PMS::computeSupportv2(EXT *dArrExt,int noElemdArrExt,UniEdge *dArrUniEdge,in
 #pragma region "find Boundary and scan Boundary"
 	int *dArrBoundary=nullptr;
 	int noElemdArrBoundary = noElemdArrExt;
-	cudaStatus=cudaMalloc((void**)&dArrBoundary,sizeof(int)*noElemdArrBoundary);
-	CHECK(cudaStatus);
+	CHECK(cudaStatus=cudaMalloc((void**)&dArrBoundary,sizeof(int)*noElemdArrBoundary));
 	if(cudaStatus!=cudaSuccess){
 		status =-1;
-		fprintf(stderr,"\n cudaMalloc dArrBoundary in computeSupportv2() failed");
 		goto Error;
 	}
 	else
 	{
-		cudaMemset(dArrBoundary,0,sizeof(int)*noElemdArrBoundary);
+		CHECK(cudaStatus=cudaMemset(dArrBoundary,0,sizeof(int)*noElemdArrBoundary));
+		if(cudaStatus!=cudaSuccess){
+			status =-1;
+			goto Error;
+		}
 	}
 
 	int *dArrBoundaryScanResult=nullptr;
-	cudaStatus=cudaMalloc((void**)&dArrBoundaryScanResult,sizeof(int)*noElemdArrBoundary);
-	CHECK(cudaStatus);
+	CHECK(cudaStatus=cudaMalloc((void**)&dArrBoundaryScanResult,sizeof(int)*noElemdArrBoundary));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
-		fprintf(stderr,"\n cudaMalloc dArrBoundary in computeSupportv2() failed");
 		goto Error;
 	}
 	else
 	{
-		cudaMemset(dArrBoundaryScanResult,0,sizeof(int)*noElemdArrBoundary);
+		CHECK(cudaStatus=cudaMemset(dArrBoundaryScanResult,0,sizeof(int)*noElemdArrBoundary));
+		if(cudaStatus!=cudaSuccess){
+			status=-1;
+			goto Error;
+		}
 	}
 
 	//Tìm boundary của EXTk và lưu kết quả vào mảng dArrBoundary
-	status = findBoundary(dArrExt,noElemdArrExt,dArrBoundary);
-	FUNCHECK(status);
+	FUNCHECK(status = findBoundary(dArrExt,noElemdArrExt,dArrBoundary));
 	if(status!=0){
-		printf("\n findBoundary() in computeSupportv2() failed");
 		goto Error;
 	}
 
 	printf("\n ************* dArrBoundary ************\n");
-	displayDeviceArr(dArrBoundary,noElemdArrExt);
+	FUNCHECK(status=displayDeviceArr(dArrBoundary,noElemdArrExt));
+	if(status!=0){
+		goto Error;
+	}
+
 
 	//Scan dArrBoundary lưu kết quả vào dArrBoundaryScanResult
 	//cudaStatus=scanV(dArrBoundary,noElemdArrBoundary,dArrBoundaryScanResult);
@@ -4297,20 +4265,27 @@ int PMS::computeSupportv2(EXT *dArrExt,int noElemdArrExt,UniEdge *dArrUniEdge,in
 	//	fprintf(stderr,"\n Exclusive scan dArrBoundary in computeSupportv2() failed",cudaStatus);
 	//	goto Error;
 	//}
-	myScanV(dArrBoundary,noElemdArrBoundary,dArrBoundaryScanResult);
+
+	CHECK(cudaStatus = myScanV(dArrBoundary,noElemdArrBoundary,dArrBoundaryScanResult));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
 	printf("\n**************dArrBoundaryScanResult****************\n");
-	displayDeviceArr(dArrBoundaryScanResult,noElemdArrBoundary);
+	FUNCHECK(status=displayDeviceArr(dArrBoundaryScanResult,noElemdArrBoundary));
+	if(status!=0){
+		goto Error;
+	}
+
 
 	//Tính support của cạnh duy nhất.
 	float *dF=nullptr; //khai báo mảng dF
 	int noElemdF = 0; //Số lượng phần tử của mảng dF
 
-	cudaStatus = cudaMemcpy(&noElemdF,&dArrBoundaryScanResult[noElemdArrBoundary-1],sizeof(int),cudaMemcpyDeviceToHost);
-	CHECK(cudaStatus);
+	CHECK(cudaStatus = cudaMemcpy(&noElemdF,&dArrBoundaryScanResult[noElemdArrBoundary-1],sizeof(int),cudaMemcpyDeviceToHost));
 	if(cudaStatus !=cudaSuccess){
 		status =-1;
-		fprintf(stderr,"\n cudamemcpy noElemdF failed",cudaStatus);
 		goto Error;
 	}
 	noElemdF++; //Phải tăng lên 1 vì giá trị hiện tại chỉ là chỉ số của mảng
@@ -4318,107 +4293,102 @@ int PMS::computeSupportv2(EXT *dArrExt,int noElemdArrExt,UniEdge *dArrUniEdge,in
 	printf("noElemdF:%d",noElemdF);
 
 	//Cấp phát bộ nhớ trên device cho mảng dF
-	cudaStatus = cudaMalloc((void**)&dF,sizeof(float)*noElemdF);
-	CHECK(cudaStatus)
+	CHECK(cudaStatus = cudaMalloc((void**)&dF,sizeof(float)*noElemdF));
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
+	else
+	{
+		CHECK(cudaStatus = cudaMemset(dF,0,sizeof(float)*noElemdF));
 		if(cudaStatus!=cudaSuccess){
 			status =-1;
-			fprintf(stderr,"\ncudaMalloc dF failed",cudaStatus);
 			goto Error;
 		}
-		else
-		{
-			cudaMemset(dF,0,sizeof(float)*noElemdF);
-		}
+	}
 #pragma endregion "end of finding Boundary"
 
-		//Tạm thời chứa độ hỗ trợ của tất cả các cạnh duy nhất.
-		//Sau đó, trích những cạnh và độ hỗ trợ thoả minsup vào hLevelUniEdgeSatisfyMinsup tại level tương ứng
-		int *hArrSupportTemp = (int*)malloc(sizeof(int)*noElemdArrUniEdge);
-		if(hArrSupportTemp==NULL){
+	//Tạm thời chứa độ hỗ trợ của tất cả các cạnh duy nhất.
+	//Sau đó, trích những cạnh và độ hỗ trợ thoả minsup vào hLevelUniEdgeSatisfyMinsup tại level tương ứng
+	int *hArrSupportTemp = (int*)malloc(sizeof(int)*noElemdArrUniEdge);
+	if(hArrSupportTemp==NULL){
+		status =-1;
+		printf("\n Malloc hArrSupportTemp in computeSupportv2() failed");
+		goto Error;
+	}
+	else
+	{
+		memset(hArrSupportTemp,0,sizeof(unsigned int)*noElemdArrUniEdge);
+	}
+	//		//Duyệt và tính độ hỗ trợ của các cạnh
+	dim3 blocke(blocksize);
+	dim3 gride((noElemdArrExt+blocke.x-1)/blocke.x);
+
+	//printf("\n**********dArrUniEdge************");				
+	//displaydArrUniEdge(dArrUniEdge,noElemdArrUniEdge);
+
+	for (int i = 0; i < noElemdArrUniEdge; i++)
+	{					
+		float support=0;
+		kernelFilldF<<<gride,blocke>>>(dArrUniEdge,i,dArrExt,noElemdArrExt,dArrBoundaryScanResult,dF);
+
+		cudaDeviceSynchronize();
+		CHECK(cudaStatus = cudaGetLastError());
+		if(cudaStatus !=cudaSuccess){
 			status =-1;
-			printf("\n Malloc hArrSupportTemp in computeSupportv2() failed");
+			goto Error;
+		}				
+
+		printf("\n**********dF****************\n");
+		displayDeviceArr(dF,noElemdF);
+
+		CHECK(cudaStatus = reduction(dF,noElemdF,support));
+		if(cudaStatus!=cudaSuccess){
+			status=-1;
 			goto Error;
 		}
-		else
-		{
-			memset(hArrSupportTemp,0,sizeof(unsigned int)*noElemdArrUniEdge);
-		}
-		//		//Duyệt và tính độ hỗ trợ của các cạnh
-		dim3 blocke(blocksize);
-		dim3 gride((noElemdArrExt+blocke.x-1)/blocke.x);
 
-		//printf("\n**********dArrUniEdge************");				
-		//displaydArrUniEdge(dArrUniEdge,noElemdArrUniEdge);
+		printf("\n******support********");
+		printf("\n Support:%f",support);
 
-		for (int i = 0; i < noElemdArrUniEdge; i++)
-		{					
-			float support=0;
-			kernelFilldF<<<gride,blocke>>>(dArrUniEdge,i,dArrExt,noElemdArrExt,dArrBoundaryScanResult,dF);
-
-			cudaDeviceSynchronize();
-			cudaStatus = cudaGetLastError();
-			CHECK(cudaStatus);
-			if(cudaStatus !=cudaSuccess){
-				status =-1;
-				fprintf(stderr,"\n calcSupport failed",cudaStatus);
-				goto Error;
-			}				
-
-			printf("\n**********dF****************\n");
-			displayDeviceArr(dF,noElemdF);
-
-			CHECK(cudaStatus = reduction(dF,noElemdF,support));
-			if(cudaStatus!=cudaSuccess){
-				status=-1;
-				printf("\nreduction failed");
-				goto Error;
-			}
-
-			printf("\n******support********");
-			printf("\n Support:%f",support);
-
-			CHECK(cudaStatus = cudaMemset(dF,0,noElemdF*sizeof(float)));
-			if(cudaStatus!=cudaSuccess){
-				status=-1;
-				printf("\n cudaMemset failed");
-				goto Error;
-			}
-
-			hArrSupportTemp[i]=support;
-		}
-		printf("\n************hArrSupportTemp**********\n");
-		for (int j = 0; j < noElemdArrUniEdge; j++)
-		{
-			printf("j[%d]:%d ",j,hArrSupportTemp[j]);
+		CHECK(cudaStatus = cudaMemset(dF,0,noElemdF*sizeof(float)));
+		if(cudaStatus!=cudaSuccess){
+			status=-1;
+			goto Error;
 		}
 
-		//Tiếp theo là lọc giữ lại cạnh và độ hỗ trợ thoả minsup
-		status = extractUniEdgeSatisfyMinsupV2(hArrSupportTemp,dArrUniEdge,noElemdArrUniEdge,minsup,noElem,dArrUniEdgeSup,hArrSupport);
-		FUNCHECK(status)
-			if(status!=0){
-				goto Error;
-			}
+		hArrSupportTemp[i]=support;
+	}
+	printf("\n************hArrSupportTemp**********\n");
+	for (int j = 0; j < noElemdArrUniEdge; j++)
+	{
+		printf("j[%d]:%d ",j,hArrSupportTemp[j]);
+	}
+
+	//Tiếp theo là lọc giữ lại cạnh và độ hỗ trợ thoả minsup
+	status = extractUniEdgeSatisfyMinsupV2(hArrSupportTemp,dArrUniEdge,noElemdArrUniEdge,minsup,noElem,dArrUniEdgeSup,hArrSupport);
+	FUNCHECK(status)
+		if(status!=0){
+			goto Error;
+		}
 
 
-			free(hArrSupportTemp);	
+		free(hArrSupportTemp);	
 
-			CHECK(cudaStatus =cudaFree(dArrBoundary));
-			if(cudaStatus!=cudaSuccess){
-				status=-1;
-				goto Error;
-			}
+		CHECK(cudaStatus =cudaFree(dArrBoundary));
+		if(cudaStatus!=cudaSuccess){
+			status=-1;
+			goto Error;
+		}
 
-			CHECK(cudaStatus =cudaFree(dArrBoundaryScanResult));
-			if(cudaStatus!=cudaSuccess){
-				status=-1;
-				goto Error;
-			}
-
-
-
+		CHECK(cudaStatus =cudaFree(dArrBoundaryScanResult));
+		if(cudaStatus!=cudaSuccess){
+			status=-1;
+			goto Error;
+		}
 
 Error:	
-			return status;
+		return status;
 }
 
 int PMS::extractUniEdgeSatisfyMinsupV2(int *hResultSup,UniEdge *dArrUniEdge,int noElemUniEdge,unsigned int minsup,int &noElem,UniEdge *&dArrUniEdgeSup,int *&hArrSupport){

@@ -1,10 +1,10 @@
-﻿Build started 9/14/2017 3:02:32 PM.
+﻿Build started 9/14/2017 8:29:13 PM.
      1>Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu 
        CudaBuild:
          Compiling CUDA source file pms.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp8f2ce38257c64606adfe532ac228a909.cmd"
+         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp8609a68d58964c83b3019e1f6462f6bc.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu"
          
          D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu" 
@@ -69,90 +69,92 @@
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2788): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2806): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2813): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2875): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2883): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2890): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2898): warning : variable "noElemEXTk" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3138): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3158): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3389): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3418): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3441): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3456): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3465): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3487): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3503): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3513): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3529): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3544): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3554): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3564): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3703): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3712): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3718): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2878): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2887): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2895): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2902): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2910): warning : variable "noElemEXTk" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3150): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3170): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3401): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3430): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3453): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3468): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3477): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3499): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3515): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3525): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3541): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3556): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3566): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3576): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3715): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3724): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3742): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3730): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3736): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3749): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3756): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3763): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3772): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3777): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3783): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3788): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3770): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3779): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3784): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3790): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3795): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3800): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3814): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3819): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3825): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3830): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3839): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3844): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3859): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3802): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3807): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3821): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3826): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3832): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3837): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3846): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3851): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3866): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3874): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3873): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3881): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3947): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3953): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3958): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3964): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4014): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4043): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4064): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4071): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4081): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4088): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4261): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4274): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4286): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4314): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4326): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4340): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4432): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4437): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4443): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4452): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4457): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4468): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3888): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3993): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3999): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4004): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4010): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4058): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4065): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4079): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4095): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4116): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4123): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4133): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4140): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4223): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4236): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4248): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4276): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4288): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4302): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4394): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4399): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4405): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4414): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4419): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4430): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4436): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4444): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4467): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4474): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4482): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4499): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4505): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4512): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4520): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4634): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4654): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4662): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4670): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4678): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4698): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4706): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4795): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4808): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4818): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4830): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4931): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4937): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4596): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4616): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4624): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4632): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4640): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4660): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4668): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4757): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4770): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4780): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4792): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4893): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4899): warning : transfer of control bypasses initialization of:
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(15): warning : extern inline function "reduction(int *, int, int &)" was referenced but not defined
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(14): warning : extern inline function "reduction(float *, int, float &)" was referenced but not defined
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
@@ -217,90 +219,92 @@
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2788): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2806): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2813): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2875): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2883): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2890): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2898): warning : variable "noElemEXTk" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3138): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3158): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3389): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3418): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3441): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3456): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3465): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3487): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3503): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3513): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3529): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3544): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3554): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3564): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3703): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3712): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3718): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2878): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2887): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2895): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2902): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2910): warning : variable "noElemEXTk" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3150): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3170): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3401): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3430): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3453): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3468): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3477): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3499): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3515): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3525): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3541): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3556): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3566): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3576): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3715): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3724): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3742): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3730): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3736): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3749): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3756): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3763): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3772): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3777): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3783): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3788): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3770): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3779): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3784): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3790): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3795): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3800): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3814): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3819): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3825): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3830): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3839): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3844): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3859): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3802): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3807): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3821): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3826): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3832): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3837): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3846): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3851): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3866): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3874): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3873): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3881): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3947): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3953): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3958): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3964): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4014): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4043): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4064): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4071): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4081): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4088): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4261): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4274): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4286): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4314): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4326): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4340): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4432): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4437): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4443): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4452): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4457): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4468): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3888): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3993): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3999): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4004): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4010): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4058): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4065): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4079): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4095): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4116): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4123): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4133): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4140): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4223): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4236): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4248): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4276): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4288): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4302): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4394): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4399): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4405): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4414): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4419): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4430): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4436): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4444): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4467): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4474): warning : transfer of control bypasses initialization of:
      1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4482): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4499): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4505): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4512): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4520): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4634): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4654): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4662): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4670): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4678): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4698): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4706): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4795): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4808): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4818): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4830): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4931): warning : transfer of control bypasses initialization of:
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4937): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4596): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4616): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4624): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4632): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4640): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4660): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4668): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4757): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4770): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4780): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4792): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4893): warning : transfer of control bypasses initialization of:
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4899): warning : transfer of control bypasses initialization of:
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(15): warning : extern inline function "reduction(int *, int, int &)" was referenced but not defined
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(14): warning : extern inline function "reduction(float *, int, float &)" was referenced but not defined
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h(9): warning C4005: 'BLOCK_SIZE' : macro redefinition
@@ -455,430 +459,442 @@
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2740) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2723) : see declaration of 'block'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2740) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854): warning C4533: initialization of 'grid' is skipped by 'goto Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866): warning C4533: initialization of 'grid' is skipped by 'goto Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854): warning C4533: initialization of 'block' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866): warning C4533: initialization of 'block' is skipped by 'goto Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2823) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
                  D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2822) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2854) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630): warning C4533: initialization of 'gridd' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630): warning C4533: initialization of 'blockd' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630): warning C4533: initialization of 'gridc' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3495) : see declaration of 'gridc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630): warning C4533: initialization of 'blockc' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3494) : see declaration of 'blockc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3495) : see declaration of 'gridc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3494) : see declaration of 'blockc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3495) : see declaration of 'gridc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3494) : see declaration of 'blockc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3495) : see declaration of 'gridc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3494) : see declaration of 'blockc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630): warning C4533: initialization of 'gridb' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3448) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630): warning C4533: initialization of 'blockb' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3447) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3495) : see declaration of 'gridc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3494) : see declaration of 'blockc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3448) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3447) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3572) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3571) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3495) : see declaration of 'gridc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3494) : see declaration of 'blockc'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3448) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3447) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3630) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934): warning C4533: initialization of 'gridd' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934): warning C4533: initialization of 'blockd' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3893) : see declaration of 'gridd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3892) : see declaration of 'blockd'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3934) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978): warning C4533: initialization of 'grid' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3970) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978): warning C4533: initialization of 'block' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3969) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3970) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3969) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3970) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3969) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3970) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3969) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3978) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244): warning C4533: initialization of 'tempUniEdgeForward' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4094) : see declaration of 'tempUniEdgeForward'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4094) : see declaration of 'tempUniEdgeForward'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4094) : see declaration of 'tempUniEdgeForward'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244): warning C4533: initialization of 'gridb' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4075) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244): warning C4533: initialization of 'blockb' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4074) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4094) : see declaration of 'tempUniEdgeForward'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4075) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4074) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4094) : see declaration of 'tempUniEdgeForward'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4075) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4074) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4094) : see declaration of 'tempUniEdgeForward'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4075) : see declaration of 'gridb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4074) : see declaration of 'blockb'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4244) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4387): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420): warning C4533: initialization of 'gride' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4348) : see declaration of 'gride'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420): warning C4533: initialization of 'blocke' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4347) : see declaration of 'blocke'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4348) : see declaration of 'gride'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4347) : see declaration of 'blocke'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4348) : see declaration of 'gride'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4347) : see declaration of 'blocke'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4348) : see declaration of 'gride'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4347) : see declaration of 'blocke'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4348) : see declaration of 'gride'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4347) : see declaration of 'blocke'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4348) : see declaration of 'gride'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4347) : see declaration of 'blocke'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4420) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560): warning C4533: initialization of 'grida' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560): warning C4533: initialization of 'grid' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560): warning C4533: initialization of 'block' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4460) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4460) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4460) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4460) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4524) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4523) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4461) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4460) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4560) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746): warning C4533: initialization of 'grida' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4715) : see declaration of 'grida'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4714) : see declaration of 'blocka'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4746) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859): warning C4533: initialization of 'blockSize' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4838) : see declaration of 'blockSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859): warning C4533: initialization of 'gridSize' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4837) : see declaration of 'gridSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4838) : see declaration of 'blockSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4837) : see declaration of 'gridSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4838) : see declaration of 'blockSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4837) : see declaration of 'gridSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4838) : see declaration of 'blockSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4837) : see declaration of 'gridSize'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4859) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4953): warning C4533: initialization of 'grid' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4941) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4953) : see declaration of 'Error'
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4953): warning C4533: initialization of 'block' is skipped by 'goto Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4940) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4953) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4941) : see declaration of 'grid'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4953) : see declaration of 'Error'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4940) : see declaration of 'block'
-                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4953) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2866) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642): warning C4533: initialization of 'gridd' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642): warning C4533: initialization of 'blockd' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642): warning C4533: initialization of 'gridc' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3507) : see declaration of 'gridc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642): warning C4533: initialization of 'blockc' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3506) : see declaration of 'blockc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3507) : see declaration of 'gridc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3506) : see declaration of 'blockc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3507) : see declaration of 'gridc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3506) : see declaration of 'blockc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3507) : see declaration of 'gridc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3506) : see declaration of 'blockc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642): warning C4533: initialization of 'gridb' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3460) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642): warning C4533: initialization of 'blockb' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3459) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3507) : see declaration of 'gridc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3506) : see declaration of 'blockc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3460) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3459) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3584) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3583) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3507) : see declaration of 'gridc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3506) : see declaration of 'blockc'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3460) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3459) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3642) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980): warning C4533: initialization of 'gridd' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980): warning C4533: initialization of 'blockd' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3900) : see declaration of 'gridd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3899) : see declaration of 'blockd'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3980) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024): warning C4533: initialization of 'grid' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4016) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024): warning C4533: initialization of 'block' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4015) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4016) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4015) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4016) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4015) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4016) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4015) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4024) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206): warning C4533: initialization of 'tempUniEdgeBF' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206): warning C4533: initialization of 'gridb' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4127) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206): warning C4533: initialization of 'blockb' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4126) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4127) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4126) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4127) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4126) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4127) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4126) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4127) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4126) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4147) : see declaration of 'tempUniEdgeBF'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4127) : see declaration of 'gridb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4126) : see declaration of 'blockb'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4206) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4349): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382): warning C4533: initialization of 'gride' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4310) : see declaration of 'gride'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382): warning C4533: initialization of 'blocke' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4309) : see declaration of 'blocke'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4310) : see declaration of 'gride'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4309) : see declaration of 'blocke'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4310) : see declaration of 'gride'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4309) : see declaration of 'blocke'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4310) : see declaration of 'gride'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4309) : see declaration of 'blocke'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4310) : see declaration of 'gride'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4309) : see declaration of 'blocke'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4310) : see declaration of 'gride'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4309) : see declaration of 'blocke'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4382) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522): warning C4533: initialization of 'grida' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522): warning C4533: initialization of 'grid' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4423) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522): warning C4533: initialization of 'block' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4422) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4423) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4422) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4423) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4422) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4423) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4422) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4486) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4485) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4423) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4422) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4522) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708): warning C4533: initialization of 'grida' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708): warning C4533: initialization of 'blocka' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4677) : see declaration of 'grida'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4676) : see declaration of 'blocka'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4708) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821): warning C4533: initialization of 'blockSize' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4800) : see declaration of 'blockSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821): warning C4533: initialization of 'gridSize' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4799) : see declaration of 'gridSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4800) : see declaration of 'blockSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4799) : see declaration of 'gridSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4800) : see declaration of 'blockSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4799) : see declaration of 'gridSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4800) : see declaration of 'blockSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4799) : see declaration of 'gridSize'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4821) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4915): warning C4533: initialization of 'grid' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4903) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4915) : see declaration of 'Error'
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4915): warning C4533: initialization of 'block' is skipped by 'goto Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4902) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4915) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4903) : see declaration of 'grid'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4915) : see declaration of 'Error'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4902) : see declaration of 'block'
+                 D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(4915) : see declaration of 'Error'
        Link:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.lib" /MACHINE:X86 Debug\dfs.cu.obj
          Debug\graph.cu.obj
@@ -903,4 +919,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:21.03
+Time Elapsed 00:00:16.72

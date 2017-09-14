@@ -345,7 +345,7 @@ public:
 	int findListVer(Embedding**,int,int*,int,vector<listVer>&);
 	int findVerOnRMPForBWCheck(ptrArrEmbedding,int*,int,int*&);
 	int findValidFBExtension(int*,ptrArrEmbedding,int,int,int*,int*);
-	int extractUniqueForwardEdge_LastExt(EXTk,UniEdgek&);
+	int extractUniqueForwardBackwardEdge_LastExt(EXTk,UniEdgek&);
 	int markValidForwardEdge(EXT*,int,unsigned int,int*);
 	int markValidBackwardEdge(EXT*,int,unsigned int,int*);
 	int cpResultToUE(UniEdgek,UniEdgek,int*,UniEdgek&);
