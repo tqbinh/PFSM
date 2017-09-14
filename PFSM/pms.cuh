@@ -82,9 +82,11 @@ struct arrUniEdge
 
 struct UniEdgek
 {
-	int noElem;
+	int noElem; //số lượng phần tử của mảng dArrUniEdge
+	int firstIndexForwardExtension; //Đây là index của phần tử uniEdge forward đầu tiên trong mảng dArrUniEdge
+	int Li; //Nhãn của đỉnh mà từ đó thực hiện mở rộng
 	UniEdge *dArrUniEdge;
-	UniEdgek():noElem(0),dArrUniEdge(0){};
+	UniEdgek():noElem(0),firstIndexForwardExtension(0),Li(-1),dArrUniEdge(0){};
 };
 
 struct vecArrUniEdge
@@ -193,13 +195,16 @@ struct listVer
 //	int *dListVer;
 //	listVer():noElem(0),dListVer(0){}
 //};
+extern __global__ void kernelCopyResultToUE(UniEdge *fwdArrUniEdge,UniEdge *bwdArrUniEdge,int bwnoElem,UniEdge *uedArrUniEdge,int uenoElem);
+extern __global__ void kernelmarkValidBackwardEdge_LastExt(EXT* dArrExt, int noElemdArrExt,unsigned int Lv,int *dAllPossibleExtension);
+extern __global__ void kernelmarkValidForwardEdge_LastExt(EXT* dArrExt, int noElemdArrExt,unsigned int Lv,int *dAllPossibleExtension);
 extern __global__ void kernelFindVidOnRMP(Embedding **dArrPointerEmbedding,int noElemEmbedding,int *rmp,int noElemVerOnRMP,int *dArrVidOnRMP,int step);
 extern __global__ void kernelDisplaydArrPointerEmbedding(Embedding **dArrPointerEmbedding,int noElemEmbeddingCol,int noElemEmbedding);
 extern __global__ void kernelSetValueForEmbeddingColumn(EXT *dArrExt,int noElemInArrExt,Embedding *dArrQ,int *dM,int *dMScanResult);
 extern __global__ void kernelMarkEXT(const EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int li,int lij,int lj);
 extern __global__ void kernelFilldF(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,float *dF);
 extern __global__ void kernelfindBoundary(EXT *dArrExt, int noElemdArrExt, int *dArrBoundary,unsigned int maxOfVer);
-//extern __global__ void kernelFindValidFBExtension(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,V *dArrV,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *fromPosCol);
+extern __global__ void kernelFindValidFBExtension(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp);
 extern __global__ void	kernelExtractFromListVer(int *listVer,int from,int noElemEmbedding,int *temp);
 extern __global__ void kernelFindListVer(Embedding **dArrPointerEmbedding,int noElemEmbedding,int *rmp,int noElemVerOnRMP,int *listVer);
 extern __global__ void kernelPrintdArrPointerEmbedding(Embedding **dArrPointerEmbedding,int noElem,int sizeArr);
@@ -247,7 +252,7 @@ extern cudaError_t calcBoundary(Extension *d_ValidExtension,unsigned int noElem_
 extern cudaError_t getLastElement(int *dScanResult,unsigned int noElem,int &output);
 extern cudaError_t calcSupport(UniEdge *dUniEdge,int noElemdUniEdge,Extension *dValidExtension,int noElemdValidExtension,int *dBScanResult,int *dF,int noElemF,int *&hResultSup);
 extern cudaError_t getLastElementExtension(Extension* inputArray,unsigned int numberElementOfInputArray,int &outputValue,unsigned int maxOfVer);
-extern void  myScanV(int *dArrInput,int noElem,int *&dResult);
+extern cudaError_t  myScanV(int *dArrInput,int noElem,int *&dResult);
 extern int displayDeviceEXT(EXT *dArrEXT,int noElemdArrEXT);
 
 
@@ -263,6 +268,7 @@ public:
 	vector<arrUniEdge> hUniEdge;
 	vector<arrUniEdgeSatisfyMinSup> hUniEdgeSatisfyMinsup;
 	vector<vecArrUniEdgeStatisfyMinSup> hLevelUniEdgeSatisfyMinsup;
+	vector<vecArrUniEdgeStatisfyMinSup> hLevelUniEdgeSatisfyMinsupv2;
 
 	vector<EmbeddingColumn> hEmbedding; //Mỗi phần tử của vector là một Embedding column
 	//Embedding **dArrPointerEmbedding;
@@ -271,13 +277,16 @@ public:
 
 	 
 	vector<vecArrUniEdge> hLevelUniEdge;
+	vector<vecArrUniEdge> hLevelUniEdgev2;
 	vector<listVer> hListVer;
+	vector<listVer> hListVerv2;
 
 	vector<RMP> hRMP;
 	vector<RMP> hRMPv2;
 	
 	//vector<EXTk> hEXTk; //Có bao nhiêu EXTk
 	vector<vecArrEXT> hLevelEXT; //quản lý EXTk theo Level, mỗi một Level là 1 lần gọi đệ quy FSMining function
+	vector<vecArrEXT> hLevelEXTv2;
 	
 	PMS();
 	~PMS();
@@ -322,6 +331,7 @@ public:
 	int findMaxDegreeOfVer(int*,int&,float*&,int);
 	int findDegreeOfVer(int*,float*&,int);
 	int extractValidExtensionTodExt(EXT*,V*,int,int);
+	int extractValidExtensionTodExtv2(EXT*,V*,int,int);
 	int computeSupportv2(EXT*,int,UniEdge*,int,int&,UniEdge*&,int*&);
 	int findBoundary(EXT*,int,int *&);
 	int extractUniEdgeSatisfyMinsupV2(int *,UniEdge*,int ,unsigned int ,int &,UniEdge *&,int *&);
@@ -330,5 +340,14 @@ public:
 	int extendEmbedding(UniEdge ue,int idxExt);
 	int updateRMP();
 	int displaydArrPointerEmbedding(Embedding** ,int noElemEmbeddingCol,int noElemEmbedding);
+	int buildArrPointerEmbedding(vector<EmbeddingColumn>,vector<ptrArrEmbedding>&);
+	int buildrmpOnDevice(RMP,int*&);
+	int findListVer(Embedding**,int,int*,int,vector<listVer>&);
+	int findVerOnRMPForBWCheck(ptrArrEmbedding,int*,int,int*&);
+	int findValidFBExtension(int*,ptrArrEmbedding,int,int,int*,int*);
+	int extractUniqueForwardEdge_LastExt(EXTk,UniEdgek&);
+	int markValidForwardEdge(EXT*,int,unsigned int,int*);
+	int markValidBackwardEdge(EXT*,int,unsigned int,int*);
+	int cpResultToUE(UniEdgek,UniEdgek,int*,UniEdgek&);
 };
 
