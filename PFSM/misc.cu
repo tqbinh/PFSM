@@ -14,7 +14,7 @@ const RMPath& DFSCode::buildRMPath() //buildRMPath là một phương thức c�
 {
 	rmpath.clear();
 	int old_from = -1;
-	for(int i = size() -1;i>=0;--i) //Duyệt qua số cạnh của DFS_CODE
+	for(int i = size() -1;i>=0;--i) //Duyệt qua tất cả các cạnh của DFS_CODE theo thứ tự từ cạnh cuối đến cạnh đầu (Duyệt ngược)
 	{
 		if ((*this)[i].from < (*this)[i].to && (rmpath.empty() || old_from == (*this)[i].to)) //nếu from < to và rmpath rỗng hoặc 
 		{
@@ -46,7 +46,7 @@ void History::build(Graph& g,PDFS* e)
 		std::reverse(begin(),end());
 	}
 }
-
+//Tìm các mở rộng cho các đỉnh còn lại trên Right Most Path, ngoại trừ đỉnh cuối cùng của DFS_CODE
 bool get_forward_rmpath (Graph &graph, Edge *e, int minlabel, History& history, EdgeList &result) //Phát triển right most path, từ mỗi đỉnh của rightmostpath sẽ thêm vào các cạnh nào? Danh dách các cạnh sẽ được lưu vào result
 {
 	result.clear ();
@@ -71,7 +71,7 @@ bool get_forward_rmpath (Graph &graph, Edge *e, int minlabel, History& history, 
 
 bool get_forward_pure (Graph &graph, Edge *e, int minlabel, History& history, EdgeList &result)
 {
-	result.clear ();
+	result.clear (); //Tìm các forward edge và lưu kết quả trong result.
 	for (Vertex::edge_iterator it = graph[e->to].edge.begin() ; //bắt đầu mở rộng cạnh từ đỉnh to, lưu ý đỉnh này phải thuộc right most path
 		 it != graph[e->to].edge.end() ; ++it) //ở đây là duyệt qua tất cả các cạnh kề với đỉnh to trên right most path
 	{

@@ -133,7 +133,7 @@ struct PDFS{	//PDFS là một cấu trúc tự trỏ(hay nói cách khác nó l�
 	PDFS *prev;	//Trỏ đến node trước đó. Nếu tưởng tượng nó là tree, thì khi thêm một node mới, node mới sẽ trỏ đến node cũ tức là node phía trên của node vừa thêm.
 	PDFS():id(0),edge(0),prev(0){};
 };
-
+//History chính là bản sao của đồ thị (Graph& g). Bản sao này ghi nhận những cạnh đã được mở rộng hay nói cách khác là chúng đã thuộc vào embedding (PDFS* P). Do đó, khi tìm các mở rộng fw/bw thì ta tránh các cạnh đã thuộc embeddings.
 class History:public std::vector<Edge*>{
 public:
 	std::vector<int> edge;
@@ -159,15 +159,15 @@ public:
 
 typedef std::vector<Edge*> EdgeList; //EdgeList là một kiểu dữ liệu vector<Edge*> với mỗi phần tử của nó là một con trỏ kiểu Edge dùng để lưu trữ địa chỉ của một edge (edge là một structure).
 
-bool get_forward_pure(Graph&,Edge*,int,History&,EdgeList&);
-bool get_forward_rmpath(Graph&,Edge*,int,History&,EdgeList&);
-bool get_forward_root(Graph&,Vertex&,EdgeList&);
-Edge* get_backward(Graph&,Edge*,Edge*,History&);
+bool get_forward_pure(Graph&,Edge*,int,History&,EdgeList&); //tìm các mở rộng forward từ đỉnh cuối thuộc right most path của các embeddings
+bool get_forward_rmpath(Graph&,Edge*,int,History&,EdgeList&);//tìm các mở rộng forward từ các đỉnh còn lại (trừ đỉnh cuối) thuộc rmp của các embeddings
+bool get_forward_root(Graph&,Vertex&,EdgeList&); //tìm các mở rộng forward ban đầu
+Edge* get_backward(Graph&,Edge*,Edge*,History&);//tìm các mở rộng backward
 
 class gSpan{
 public:
 	typedef std::map<int,std::map<int,std::map<int,Projected> > >					Projected_map3; //Định nghĩa một kiểu dữ liệu mới tên là Projected_map3. Nó gồm có 3 ánh xạ lồng nhau (f1<first1,second1>) trong đó second1=(f2<first2,second2>) và second2=(f3<first3,second3>). Trong đó second3 = Projected
-	typedef std::map<int,std::map<int,Projected> >									Projected_map2; //Định nghĩa một kiểu dữ liệu mới tên là Projected_map2. Nó gồm có 2 hánh xạ lồng nhau
+	typedef std::map<int,std::map<int,Projected> >									Projected_map2; //Định nghĩa một kiểu dữ liệu mới tên là Projected_map2. Nó gồm có 2 ánh xạ lồng nhau
 	typedef std::map<int,Projected>													Projected_map1; //Định nghĩa một kiểu dữ liệu mới
 	typedef std::map<int,std::map<int,std::map<int,Projected> > >::iterator			Projected_iterator3; //Định nghĩa các kiểu iterator để duyệt các phần tử trong ánh xạ
 	typedef std::map<int,std::map<int,Projected> >::iterator						Projected_iterator2;

@@ -58,6 +58,7 @@ using namespace std;
 
 
 int main(int argc, char * const  argv[]){	
+	int status=0;
 	StopWatchWin timer;
 
 #pragma region "load database"
@@ -67,7 +68,12 @@ int main(int argc, char * const  argv[]){
 	timer.start();
 	PMS pms;
 	pms.os=&fout;
-	pms.prepareDataBase(); //chuẩn bị dữ liệu
+	FUNCHECK(status=pms.prepareDataBase()); //chuẩn bị dữ liệu
+	if(status!=0){
+		cout<<endl<<"prepareDataBase function failed"<<endl;
+		exit(1);
+	}
+
 	timer.stop();
 	pms.printdb(); //hiển thị dữ liệu
 	
@@ -87,9 +93,9 @@ int main(int argc, char * const  argv[]){
 	FUNCHECK(pms.extractUniEdge());
 
 	FUNCHECK(pms.computeSupport()); //Tính độ hộ trợ của cả cạnh trong UniEdge và loại bỏ những mở rộng không thoả minsup
-
+	//Đến đây, chúng ta đã thu thập được các mở rộng một cạnh thoả minsup (hUniEdgeSatisfyMinSup)
+	//
 	FUNCHECK(pms.Mining()); //kiểm tra DFS_CODE có phải là min hay không, nếu là min thì ghi kết quả vào file result.txt, và xây dựng Embedding Columns
-
 
 	system("pause");
 
