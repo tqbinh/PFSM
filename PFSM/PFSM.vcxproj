@@ -68,7 +68,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\BinhLuanVan\PMSv2\LV\PFSM\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\BinhLuanVan\PMSv2\LV\PFSM\src;D:\BinhLuanVan\PMSv2\LV\PFSM\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -149,6 +149,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="..\src\mgpucontext.cu" />
     <CudaCompile Include="dfs.cu" />
     <CudaCompile Include="graph.cu" />
     <CudaCompile Include="gspan.cu" />
@@ -162,10 +163,50 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="scan_largearray_kernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\include\device\ctaloadbalance.cuh" />
+    <None Include="..\include\device\ctamerge.cuh" />
+    <None Include="..\include\device\ctascan.cuh" />
+    <None Include="..\include\device\ctasearch.cuh" />
+    <None Include="..\include\device\ctasegreduce.cuh" />
+    <None Include="..\include\device\ctasegscan.cuh" />
+    <None Include="..\include\device\ctasegsort.cuh" />
+    <None Include="..\include\device\ctasortedsearch.cuh" />
+    <None Include="..\include\device\devicetypes.cuh" />
+    <None Include="..\include\device\deviceutil.cuh" />
+    <None Include="..\include\device\intrinsics.cuh" />
+    <None Include="..\include\device\launchbox.cuh" />
+    <None Include="..\include\device\loadstore.cuh" />
+    <None Include="..\include\device\serialsets.cuh" />
+    <None Include="..\include\device\sortnetwork.cuh" />
+    <None Include="..\include\kernels\bulkinsert.cuh" />
+    <None Include="..\include\kernels\bulkremove.cuh" />
+    <None Include="..\include\kernels\csrtools.cuh" />
+    <None Include="..\include\kernels\cubradixsort.cuh" />
+    <None Include="..\include\kernels\intervalmove.cuh" />
+    <None Include="..\include\kernels\join.cuh" />
+    <None Include="..\include\kernels\loadbalance.cuh" />
+    <None Include="..\include\kernels\localitysort.cuh" />
+    <None Include="..\include\kernels\merge.cuh" />
+    <None Include="..\include\kernels\mergesort.cuh" />
+    <None Include="..\include\kernels\reduce.cuh" />
+    <None Include="..\include\kernels\reducebykey.cuh" />
+    <None Include="..\include\kernels\scan.cuh" />
+    <None Include="..\include\kernels\search.cuh" />
+    <None Include="..\include\kernels\segmentedsort.cuh" />
+    <None Include="..\include\kernels\segreduce.cuh" />
+    <None Include="..\include\kernels\segreducecsr.cuh" />
+    <None Include="..\include\kernels\sets.cuh" />
+    <None Include="..\include\kernels\sortedsearch.cuh" />
+    <None Include="..\include\kernels\spmvcsr.cuh" />
     <None Include="gspan.cuh" />
     <None Include="pms.cuh" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\util\format.h" />
+    <ClInclude Include="..\include\util\mgpualloc.h" />
+    <ClInclude Include="..\include\util\mgpucontext.h" />
+    <ClInclude Include="..\include\util\static.h" />
+    <ClInclude Include="..\include\util\util.h" />
     <ClInclude Include="castingIntToFloat.h" />
     <ClInclude Include="exception.h" />
     <ClInclude Include="helper_cuda.h" />
@@ -174,6 +215,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="reduction.h" />
     <ClInclude Include="scanV.h" />
     <ClInclude Include="scan_largearray_kernel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\mgpuutil.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

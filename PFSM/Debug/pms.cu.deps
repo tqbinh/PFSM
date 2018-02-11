@@ -633,3 +633,58 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_pa
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\reduction.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
+D:\BinhLuanVan\PMSv2\LV\PFSM\include\moderngpu.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/reduce.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../mgpuhost.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\mgpudevice.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\mgpuenums.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/deviceutil.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/intrinsics.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/devicetypes.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../util/static.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\functional
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xfunctional
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\tuple
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\list
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cassert
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\assert.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\memory
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdint.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/launchbox.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../util/mgpucontext.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\util/util.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\util/format.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\util\mgpualloc.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/loadstore.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/ctasegscan.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/ctascan.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/scan.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/bulkremove.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../kernels/search.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctamerge.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/ctasearch.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/sortnetwork.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/bulkinsert.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/merge.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/mergesort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/segmentedsort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctasegsort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/localitysort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/sortedsearch.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctasortedsearch.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/loadbalance.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctaloadbalance.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/intervalmove.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/join.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/sets.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/serialsets.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/segreducecsr.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../kernels/segreduce.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../kernels/csrtools.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctasegreduce.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/reducebykey.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/spmvcsr.cuh

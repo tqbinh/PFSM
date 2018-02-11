@@ -1,8 +1,9 @@
 #pragma once
 
-//#include "moderngpu.cuh"		// Include all MGPU kernels.
-//
-//using namespace mgpu;
+#include "moderngpu.cuh"		// Include all MGPU kernels.
+
+using namespace mgpu;
+
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
@@ -62,11 +63,12 @@ using namespace std;
 
 
 
-int main(int argc, char * const  argv[]){	
+int main(int argc, char** argv){	
 	int status=0;
+	ContextPtr ctx = CreateCudaDevice(argc, argv, true);
 	StopWatchWin timer;
-
-
+	
+	system("pause");
 #pragma region "load database"
 
 	std::ofstream fout("result.txt", std::ios_base::app | std::ios_base::out);
@@ -83,9 +85,9 @@ int main(int argc, char * const  argv[]){
 	timer.stop();
 	pms.printdb(); //hiển thị dữ liệu
 	
-	printf("\n\n**===-------------------------------------------------===**\n");
-    printf("Loading data...\n");
-	printf("Processing time: %f (ms)\n", timer.getTime());
+	std::printf("\n\n**===-------------------------------------------------===**\n");
+    std::printf("Loading data...\n");
+	std::printf("Processing time: %f (ms)\n", timer.getTime());
 	hTime=timer.getTime();
 	timer.reset();
 

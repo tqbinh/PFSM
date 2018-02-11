@@ -12,6 +12,7 @@
     <CudaCompile Include="reduction.cu" />
     <CudaCompile Include="scanV.cu" />
     <CudaCompile Include="scan_largearray_kernel.cu" />
+    <CudaCompile Include="..\src\mgpucontext.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="castingIntToFloat.h" />
@@ -22,9 +23,143 @@
     <ClInclude Include="reduction.h" />
     <ClInclude Include="scanV.h" />
     <ClInclude Include="scan_largearray_kernel.h" />
+    <ClInclude Include="..\include\util\format.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\util\mgpualloc.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\util\mgpucontext.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\util\static.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\util\util.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="gspan.cuh" />
     <None Include="pms.cuh" />
+    <None Include="..\include\device\ctaloadbalance.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctamerge.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctascan.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctasearch.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctasegreduce.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctasegscan.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctasegsort.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\ctasortedsearch.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\devicetypes.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\deviceutil.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\intrinsics.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\launchbox.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\loadstore.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\serialsets.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\device\sortnetwork.cuh">
+      <Filter>device</Filter>
+    </None>
+    <None Include="..\include\kernels\bulkinsert.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\bulkremove.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\csrtools.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\cubradixsort.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\intervalmove.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\join.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\loadbalance.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\localitysort.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\merge.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\mergesort.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\reduce.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\reducebykey.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\scan.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\search.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\segmentedsort.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\segreduce.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\segreducecsr.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\sets.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\sortedsearch.cuh">
+      <Filter>kernels</Filter>
+    </None>
+    <None Include="..\include\kernels\spmvcsr.cuh">
+      <Filter>kernels</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="device">
+      <UniqueIdentifier>{75068b1f-1595-45ac-8a9b-50d6a4607e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="kernels">
+      <UniqueIdentifier>{f4155f91-b6bd-4cf1-9a97-97928eec46f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{1c82fef8-d7d2-4b2a-b995-2083ca7d3dd5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\mgpuutil.cpp" />
   </ItemGroup>
 </Project>

@@ -242,15 +242,19 @@ c:\program files\nvidia gpu computing toolkit\cuda\v5.5\include\host_defines.h
 c:\program files\nvidia gpu computing toolkit\cuda\v5.5\include\vector_functions.h
 c:\program files\nvidia gpu computing toolkit\cuda\v5.5\include\device_launch_parameters.h
 c:\program files\nvidia gpu computing toolkit\cuda\v5.5\include\vector_types.h
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdio.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\swprintf.inl
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\vector
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xmemory
+D:\BinhLuanVan\PMSv2\LV\PFSM\include\moderngpu.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/reduce.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../mgpuhost.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\mgpudevice.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\mgpuenums.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/deviceutil.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/intrinsics.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/devicetypes.cuh
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\climits
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../util/static.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\functional
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xfunctional
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xstring
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xmemory0
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\limits
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\ymath.h
@@ -259,10 +263,10 @@ C:\Program Files\Microsoft Visual Studio 11.0\VC\include\float.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtwrn.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\climits
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cwchar
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\wchar.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\swprintf.inl
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xstddef
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cstddef
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\new
@@ -275,6 +279,8 @@ C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xutility
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\utility
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\iosfwd
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cstdio
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdio.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cstring
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdbg.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
@@ -299,9 +305,9 @@ C:\Program Files\Microsoft Visual Studio 11.0\VC\include\ammintrin.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\mm3dnow.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\mmintrin.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdexcept
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xstring
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\iostream
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\typeinfo
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\tuple
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\iterator
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\istream
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\ostream
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\ios
@@ -309,7 +315,7 @@ C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xlocnum
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\streambuf
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xiosbase
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xlocale
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\typeinfo
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdexcept
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xlocinfo
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xlocinfo.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\ctype.h
@@ -317,23 +323,72 @@ C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\locale.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xdebug
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xmemory
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xfacet
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\system_error
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cerrno
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\errno.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\share.h
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\string
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\iterator
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\vector
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\list
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\map
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xtree
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\algorithm
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cassert
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\assert.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\memory
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdint.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/launchbox.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../util/mgpucontext.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\util/util.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\util/format.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\string
+d:\binhluanvan\pmsv2\lv\pfsm\include\util\mgpualloc.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda.h
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/loadstore.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device/ctasegscan.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/ctascan.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/scan.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/bulkremove.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../kernels/search.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctamerge.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/ctasearch.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\device\../device/sortnetwork.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/bulkinsert.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/merge.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/mergesort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/segmentedsort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctasegsort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/localitysort.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/sortedsearch.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctasortedsearch.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/loadbalance.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctaloadbalance.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/intervalmove.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/join.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/sets.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/serialsets.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/segreducecsr.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../kernels/segreduce.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../kernels/csrtools.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels\../device/ctasegreduce.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/reducebykey.cuh
+d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/spmvcsr.cuh
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\iostream
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\conio.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\fstream
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\set
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\algorithm
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\helper_timer.h
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\exception.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\sstream
