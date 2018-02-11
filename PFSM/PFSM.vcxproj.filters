@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="dfs.cu" />
+    <CudaCompile Include="graph.cu" />
+    <CudaCompile Include="gspan.cu" />
+    <CudaCompile Include="ismin.cu" />
+    <CudaCompile Include="kernelCastingInt2Float.cu" />
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="misc.cu" />
+    <CudaCompile Include="pms.cu" />
+    <CudaCompile Include="reduction.cu" />
+    <CudaCompile Include="scanV.cu" />
+    <CudaCompile Include="scan_largearray_kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="castingIntToFloat.h" />
+    <ClInclude Include="exception.h" />
+    <ClInclude Include="helper_cuda.h" />
+    <ClInclude Include="helper_string.h" />
+    <ClInclude Include="helper_timer.h" />
+    <ClInclude Include="reduction.h" />
+    <ClInclude Include="scanV.h" />
+    <ClInclude Include="scan_largearray_kernel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gspan.cuh" />
+    <None Include="pms.cuh" />
+  </ItemGroup>
+</Project>
