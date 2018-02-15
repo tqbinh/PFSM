@@ -293,6 +293,7 @@ public:
 
 public:	
 	void increaseLevel();	
+	void decreaseLevel();
 	int prepareDataBase();
 	void displayArray(int*, const unsigned int);
 	int displayDeviceArr(int *,int);
@@ -310,7 +311,7 @@ public:
 	int extractUniEdge();
 	int computeSupport();
 	int extractUniEdgeSatisfyMinsup(int*,int,unsigned int);
-	//int Mining();
+	int Mining();
 	int initialize();
 	int Miningv2(int,UniEdge*,int*,EXT*,int,int);
 	int Miningv3(int,UniEdge*,int*,EXT*,int,int);

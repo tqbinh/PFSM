@@ -1146,7 +1146,8 @@ Error:
 void PMS::increaseLevel()
 {
 		objLevel.prevLevel=objLevel.Level;
-		objLevel.size=++objLevel.Level;
+		++objLevel.Level;
+		objLevel.size=objLevel.Level+1;
 				
 		hLevelEXT.resize(objLevel.size);
 		hLevelUniEdgeSatisfyMinsup.resize(objLevel.size);
@@ -1154,6 +1155,23 @@ void PMS::increaseLevel()
 		hLevelRMP.resize(objLevel.size);
 		hLevelListVerRMP.resize(objLevel.size);
 	}
+
+void PMS::decreaseLevel()
+{
+	objLevel.size=objLevel.Level;	
+	--objLevel.Level;	
+	objLevel.prevLevel=objLevel.Level-1;
+
+	/*hLevelEXT.resize(objLevel.size);
+	hLevelUniEdgeSatisfyMinsup.resize(objLevel.size);
+	hLevelPtrEmbedding.resize(objLevel.size);
+	hLevelRMP.resize(objLevel.size);
+	hLevelListVerRMP.resize(objLevel.size);*/
+}
+
+
+
+
 int PMS::extractUniEdge(){
 	int status=0;
 	cudaError_t	cudaStatus;
@@ -2681,6 +2699,7 @@ cudaError_t ADM(int *&devicePointer,size_t nBytes){
 //-> 3.1 Kiểm tra is_min() (nếu thoả) -> 3.2. Ghi nhận kết quả ->3.3. Xây dựng Embedding column ban đầu 
 //-> 3.4. Gọi hàm FSMining() -> 3.6 Gỡ bỏ Embedding Column ->3.7. Gỡ bỏ DFS_CODE ban đầu
 //->1.1. Gỡ bỏ right most path.
+
 //int PMS::Mining(){
 //	int status = 0;
 //	cudaError_t cudaStatus;
@@ -2836,6 +2855,22 @@ cudaError_t ADM(int *&devicePointer,size_t nBytes){
 //	return status;
 //}
 
+int PMS::Mining(){
+	int status = 0;
+	cudaError_t cudaStatus;
+
+	//step 1. Tăng Level
+	increaseLevel();
+
+
+	//The last step. Giảm Level
+	decreaseLevel();
+
+Error:
+	return status;
+}
+
+
 int PMS::initialize()
 {
 	int status = 0;
@@ -2936,6 +2971,13 @@ int PMS::initialize()
 		{
 			goto Error;
 		}
+
+		FUNCHECK(status = Mining());
+		if(status!=0)
+		{
+			goto Error;
+		}
+
 		//FUNCHECK(status=FSMining(rmp,noElemVerOnRMP)); //Gọi FSMining.( Hàm này thực hiện theo tuần tự (1. Find Extension -> 2. Extract UniEdge -> 3.Compute & CHECK Support -> 4. CHECK minDFS_CODE -> 5. BuildEmbedding -> 6.Find RMP -> 1.)
 		//if(status!=0){
 		//	goto Error;
