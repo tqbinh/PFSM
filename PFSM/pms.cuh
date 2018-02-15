@@ -357,6 +357,7 @@ public:
 
 	int buildrmpOnDevice(RMP,int*&);
 	int findListVer(Embedding**,int,int*,int,vector<listVer>&);
+	int findListVerOnRMP();
 	int findVerOnRMPForBWCheck(ptrArrEmbedding,int*,int,int*&);
 	int findVerOnRMPForBWCheckv2(ptrArrEmbedding,int*,int,int*&);
 
@@ -397,6 +398,7 @@ public:
 
 
 //extern __global__ void	kernelGetRow(int *dV,int *dVScanResult,int noElemdV,int *dArrRow);
+__global__ void kernelCopyDeviceArray(int *dArrInput,int *dResult,int noElem);
 extern __global__ void kernelFindValidFBExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp,int *dArrVj,int noElemdArrVj);
 extern __global__ void kernelFindValidForwardExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp);
 
@@ -470,6 +472,7 @@ extern __global__ void kernelCalcBoundary_pure(EXT *d_ValidExtension,unsigned in
 extern __global__ void	kernelExtractUniEdgeSatifyMinsup_pure(UniEdge *dUniEdge,int *dV,int *dVScanResult,int noElemUniEdge,UniEdge *dUniEdgeSatisfyMinsup,int *dSup,int *dResultSup);
 extern __global__ void kernelMarkExtension(const EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int li,int lij,int lj);
 
+extern cudaError_t  myScanV_beta();
 extern cudaError_t getLastElementEXT(EXT *inputArray,int numberElementOfInputArray,int &outputValue,unsigned int maxOfVer);
 extern cudaError_t ADM(int *&devicePointer,size_t nBytes);
 extern void sumUntilReachZero(int *h_Lv,unsigned int n,int &result);

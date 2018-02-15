@@ -2,14 +2,6 @@
 
 #include "moderngpu.cuh"		// Include all MGPU kernels.
 
-using namespace mgpu;
-
-
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-
-#include <stdio.h>
-
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include <stdio.h>
@@ -47,7 +39,7 @@ using namespace mgpu;
 //
 //#include "helper_timer.h"
 using namespace std;
-
+using namespace mgpu;
 
 //
 //#define CHECK(call) \
@@ -62,10 +54,12 @@ using namespace std;
 //}
 
 
+ContextPtr ctx;
 
 int main(int argc, char** argv){	
 	int status=0;
-	ContextPtr ctx = CreateCudaDevice(argc, argv, true);
+	ctx = CreateCudaDevice(argc, argv, true);
+	//cdactx=*ctx;
 	StopWatchWin timer;
 	
 	system("pause");

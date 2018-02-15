@@ -380,8 +380,6 @@ d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/reducebykey.cuh
 d:\binhluanvan\pmsv2\lv\pfsm\include\kernels/spmvcsr.cuh
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\cuda_runtime.h
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include\device_launch_parameters.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\iostream
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\conio.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h
