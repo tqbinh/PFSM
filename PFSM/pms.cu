@@ -1143,6 +1143,7 @@ Error:
 	return cudaStatus;
 }
 
+//Tăng Level
 void PMS::increaseLevel()
 {
 		objLevel.prevLevel=objLevel.Level;
@@ -1155,7 +1156,7 @@ void PMS::increaseLevel()
 		hLevelRMP.resize(objLevel.size);
 		hLevelListVerRMP.resize(objLevel.size);
 	}
-
+//Giảm Level
 void PMS::decreaseLevel()
 {
 	objLevel.size=objLevel.Level;	
@@ -1171,7 +1172,7 @@ void PMS::decreaseLevel()
 
 
 
-
+//Trích các mở rộng duy nhất
 int PMS::extractUniEdge(){
 	int status=0;
 	cudaError_t	cudaStatus;
@@ -2855,12 +2856,25 @@ cudaError_t ADM(int *&devicePointer,size_t nBytes){
 //	return status;
 //}
 
-int PMS::Mining(){
+int PMS::Mining()
+{
 	int status = 0;
 	cudaError_t cudaStatus;
 
-	//step 1. Tăng Level
+	//Step 1. Tăng Level
 	increaseLevel();
+
+	//Step 2: Duyệt qua các UniEdge thoả minSup tại prevLevel
+	//Step 3: Xây dựng DFS_CODE cho nó
+	//Step 4: Kiểm tra xem DFS_CODE có phải nhỏ nhất nếu nhỏ nhất thì nó là mở rộng phổ biến thì làm tiếp Step 5
+	//Step 5: Thu thập thông tin các GraphId và ghi kết quả vào file result.txt
+	//        Tuỳ vào mở rộng forward hay backward mà xây dựng Embedding cho phù hợp
+	//Step 6: Xây dựng RMP cho Embedding Column
+	//Step 7: Tìm các đỉnh cần mở rộng thuộc RMP 
+	//Step 8: Tìm các mở rộng từ các đỉnh thuộc RMP
+	//Step 9: Trích các mở rộng thoả minsup
+	//Step 10: gọi đệ qui Mining() để khai thác sâu hơn.
+	//Step 11: Sau khi khai thác xong thì huỷ các bộ nhớ không cần thiết 
 
 
 	//The last step. Giảm Level
