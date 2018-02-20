@@ -8,7 +8,7 @@
 #include "device_launch_parameters.h"
 #include <device_functions.h>
 #include "scanV.h"
-#include "reduction.h"
+//#include "reduction.h"
 #include "moderngpu.cuh"		// Include all MGPU kernels.
 
 using namespace mgpu;
@@ -353,11 +353,12 @@ public:
 	int displaydArrPointerEmbedding(Embedding** ,int noElemEmbeddingCol,int noElemEmbedding);
 	int buildArrPointerEmbedding(vector<EmbeddingColumn>,vector<ptrArrEmbedding>&);
 	int buildArrPointerEmbeddingv2(vector<EmbeddingColumn>,vector<ptrArrEmbedding>&);
+	int buildArrPointerEmbeddingv3();
 
 	int buildArrPointerEmbeddingbw(vector<EmbeddingColumn>,vector<ptrArrEmbedding>&);
 
 	int buildrmpOnDevice(RMP,int*&);
-	int findListVer(Embedding**,int,int*,int,vector<listVer>&);
+	int findListVer(Embedding**,int,int*,int);
 	int findListVerOnRMP();
 	int findVerOnRMPForBWCheck(ptrArrEmbedding,int*,int,int*&);
 	int findVerOnRMPForBWCheckv2(ptrArrEmbedding,int*,int,int*&);
@@ -367,6 +368,7 @@ public:
 	int findValidForwardExtensionForNonLastSegment(int*,ptrArrEmbedding,int,int,int*,int*);
 
 	int findValidForwardExtensionv2(int*,ptrArrEmbedding,int,int,int*,int*);
+	int findForwardExtension(int*,ptrArrEmbedding,int,int,int*,int*);
 
 
 	int extractUniqueForwardBackwardEdge_LastExt(EXTk,UniEdgek&);
@@ -385,8 +387,8 @@ public:
 	int extractAllBWExtensionv2(UniEdgek& ,EXTk);
 
 	int extractAllFWExtension(UniEdgek& ,EXTk);
-	int computeSupportBW(EXT*,int*,int,UniEdge*,int,float*,int,int&);
-	int computeSupportFW(EXT*,int*,int,UniEdge*,int,float*,int,int&);
+	int computeSupportBW(EXT*,int*,int,UniEdge*,int,int*,int,int&);
+	int computeSupportFW(EXT*,int*,int,UniEdge*,int,int*,int,int&);
 	int getGraphIdContainEmbeddingFW(UniEdge,int*&,int&,EXT*,int);
 	int getGraphIdContainEmbeddingBW(UniEdge,int*&,int&,EXT*,int);
 	int extendEmbeddingBW2(UniEdge,EmbeddingColumn&,Embedding*,EXT*,int);
@@ -424,9 +426,9 @@ extern __global__ void kernelFindVidOnRMPv2(Embedding **dArrPointerEmbedding,int
 extern __global__ void kernelDisplaydArrPointerEmbedding(Embedding **dArrPointerEmbedding,int noElemEmbeddingCol,int noElemEmbedding);
 extern __global__ void kernelSetValueForEmbeddingColumn(EXT *dArrExt,int noElemInArrExt,Embedding *dArrQ,int *dM,int *dMScanResult);
 extern __global__ void kernelMarkEXT(const EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int li,int lij,int lj);
-extern __global__ void kernelFilldF(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,float *dF);
+extern __global__ void kernelFilldF(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,int *dF);
 extern __global__ void kernelfindBoundary(EXT *dArrExt, int noElemdArrExt, int *dArrBoundary,unsigned int maxOfVer);
-extern __global__ void kernelFilldFbw(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,float *dF);
+extern __global__ void kernelFilldFbw(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,int *dF);
 extern __global__ void kernelFindValidFBExtension(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp);
 extern __global__ void kernelFindValidFBExtensionv2(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp,int *dArrVj,int noElemdArrVj);
 
