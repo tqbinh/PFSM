@@ -3,9 +3,10 @@
 #include "moderngpu.cuh"		// Include all MGPU kernels.
 
 using namespace mgpu;
-
+StopWatchWin timer;
 
 #define PMS_PRINT std::printf
+
 
 float hTime=0.0;
 float dTime=0.0;
@@ -93,8 +94,8 @@ int PMS::prepareDataBase(){
 	//fname = "Klesscus";
 	//fname = "Klessorigin";
 	//fname = "KlessoriginCust1";
-	//fname= "G0G1G2_custom";
-	fname= "G0G1G2_custom1";
+	fname= "G0G1G2_custom";
+	//fname= "G0G1G2_custom1";
 	//fname="Chemical_340Origin";
 
 	////PMS pms;	
@@ -173,7 +174,7 @@ int PMS::prepareDataBase(){
 		status=-1;
 		goto Error;
 	}
-
+	//Cấp phát bộ nhớ trên GPU được quản lý bởi pointer dLO
 	CHECK(cudaStatus=cudaMalloc((void**)&graphdb.dLO,nBytesO));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
@@ -191,32 +192,33 @@ int PMS::prepareDataBase(){
 		status=-1;
 		goto Error;
 	}
-
+	//Chép dữ liệu từ mảng arrayO trên CPU sang GPU được quản lý bởi pointer dO
 	CHECK(cudaStatus=cudaMemcpy(graphdb.dO,arrayO,nBytesO,cudaMemcpyHostToDevice));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
 	}
-	delete(arrayO);
+
+	//	delete(arrayO);
 
 	CHECK(cudaStatus=cudaMemcpy(graphdb.dLO,arrayLO,nBytesO,cudaMemcpyHostToDevice));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
 	}
-	delete(arrayLO);
+	//delete(arrayLO);
 	CHECK(cudaStatus=cudaMemcpy(graphdb.dN,arrayN,nBytesN,cudaMemcpyHostToDevice));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
 	}
-	delete(arrayN);
+	//delete(arrayN);
 	CHECK(cudaStatus=cudaMemcpy(graphdb.dLN,arrayLN,nBytesN,cudaMemcpyHostToDevice));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
 	}
-	delete(arrayLN);
+	//delete(arrayLN);
 	//pms.db.push_back(graphdb); //Đưa cơ sở dữ liệu vào vector db
 	//pms.countNumberOfDifferentValue(pms.db.at(0).dLO,pms.db.at(0).noElemdO,pms.Lv);
 	//pms.countNumberOfDifferentValue(pms.db.at(0).dLN,pms.db.at(0).noElemdN,pms.Le);
@@ -376,6 +378,15 @@ Error:
 	return cudaStatus;
 }
 
+void  myReduction(int *dArrInput,int noElem,int &hResult){
+
+	CudaContext& cdactx = *ctx;
+	int total = Reduce(dArrInput, noElem, cdactx);
+	//PMS_PRINT("Reduction total: %d\n\n", total);
+	hResult = total;
+
+	return;
+}
 
 
 cudaError_t  myScanV_beta()
@@ -416,20 +427,20 @@ cudaError_t  myScanV_beta()
 	//printf("Scan total: %d\n", result);
 
 	cudaFree(p);
-	
+
 	/*
 	dim3 block(blocksize);
 	dim3 grid((noElem + block.x -1)/block.x);
 
 	CHECK(cudaStatus=cudaMalloc((void**)&dResult,noElem * sizeof(int)));
 	if(cudaStatus!=cudaSuccess){
-		goto Error;
+	goto Error;
 	}
 	kernelMyScanV<<<grid,block>>>(dArrInput,noElem,dResult);
 	cudaDeviceSynchronize();
 	CHECK(cudaStatus = cudaGetLastError());
 	if(cudaStatus!=cudaSuccess){
-		goto Error;
+	goto Error;
 	}
 	*/
 Error:
@@ -470,7 +481,7 @@ int  PMS::countNumberOfDifferentValue(int* d_LO,unsigned int sizeOfArrayLO, unsi
 	}
 
 	//Cấp phát threads
-	dim3 block(blocksize);
+	dim3 block(blocksize); //current blocksize is 512
 	dim3 grid((sizeOfArrayLO+block.x-1)/block.x);
 	kernelCountNumberOfLabelVertex<<<grid,block>>>(d_LO,d_Lv,sizeOfArrayLO);
 
@@ -499,7 +510,7 @@ Error:
 	cudaFree(d_Lv);	
 	return status;
 }
-
+//Kernel trích tất cả các mở rộng hợp lệ ban đầu vào mảng d_Extension
 __global__ void kernelGetAndStoreExtension(int *d_O,int *d_LO,unsigned int numberOfElementd_O,int *d_N,int *d_LN,unsigned int numberOfElementd_N,Extension *d_Extension){
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i<numberOfElementd_O){
@@ -507,9 +518,9 @@ __global__ void kernelGetAndStoreExtension(int *d_O,int *d_LO,unsigned int numbe
 			int j;
 			int ek;
 			//PMS_PRINT("\nThread:%d",i);	
-			for(j=i+1;j<numberOfElementd_O;++j){					
-				if(d_O[j]!=-1) {break;}				
-			}			
+			for(j=i+1;j<numberOfElementd_O;++j){	
+				if(d_O[j]!=-1) {break;}	
+			}
 
 			if (j==numberOfElementd_O) {
 				ek=numberOfElementd_N;
@@ -522,8 +533,8 @@ __global__ void kernelGetAndStoreExtension(int *d_O,int *d_LO,unsigned int numbe
 			for(int k=d_O[i];k<ek;k++){
 				//do something
 				int index= k;
-				d_Extension[index].vi=0;
-				d_Extension[index].vj=0;
+				d_Extension[index].vi=0; //không cần gán nữa vì đã khởi tạo trong định nghĩa cấu trúc Extension
+				d_Extension[index].vj=1;
 				d_Extension[index].li=d_LO[i];
 				d_Extension[index].lij=d_LN[k];
 				d_Extension[index].lj=d_LO[d_N[k]];
@@ -638,7 +649,7 @@ int PMS::displayArrUniEdge(UniEdge* dUniEdge,int noElem){
 	{
 		PMS_PRINT("\n U[%d]: (vi vj):(%d %d) (li lij lj) = (%d %d %d)",i,hUniEdge[i].vi,hUniEdge[i].vj,hUniEdge[i].li,hUniEdge[i].lij,hUniEdge[i].lj);
 	}
-//	free(hUniEdge);
+	//	free(hUniEdge);
 Error:
 	return status;
 }
@@ -726,6 +737,25 @@ Error:
 	return 0;
 }
 
+int displayDeviceArr(int *dArr,int noElem){
+	int status =0;
+	int *temp = (int*)malloc(sizeof(int)*noElem);
+	if(temp==NULL){
+		PMS_PRINT("\n Malloc temp in displayDeviceArr() failed");
+		status=-1;
+		goto Error;
+	}
+	CHECK(cudaMemcpy(temp,dArr,noElem*sizeof(int),cudaMemcpyDeviceToHost));
+	for (int i = 0; i < noElem; i++)
+	{
+		PMS_PRINT(" A[%d]:%d  ",i,temp[i]);
+	}
+	free(temp);
+Error:
+	return 0;
+}
+
+
 int PMS::displayDeviceArr(float *dArr,int noElem){
 	int status =0;
 	//dim3 block(blocksize);
@@ -783,7 +813,11 @@ cudaError_t getSizeBaseOnScanResult(int *dV,int *dVScanResult,int noElem,int &ou
 	}
 
 	kernelGetSize<<<1,1>>>(dV,dVScanResult,noElem,size);
-	cudaDeviceSynchronize();
+	CHECK(cudaStatus =cudaDeviceSynchronize());
+	if(cudaStatus != cudaSuccess){
+		fprintf(stderr,"\n cudaDeviceSynchronize kernelGetSize() in getSizeBaseOnResult() failed",cudaStatus);
+		goto Error;
+	}
 	CHECK(cudaStatus=cudaGetLastError());
 	if(cudaStatus != cudaSuccess){
 		fprintf(stderr,"\n kernelGetSize() in getSizeBaseOnResult() failed",cudaStatus);
@@ -797,6 +831,15 @@ cudaError_t getSizeBaseOnScanResult(int *dV,int *dVScanResult,int noElem,int &ou
 Error:
 
 	return cudaStatus;
+}
+
+int allocate_gpu_memory(EXT* &d_array,int noElem)
+{
+	cudaError_t cudaStatus;
+	size_t n_bytes = sizeof(EXT)*noElem;
+	CHECK(cudaStatus=cudaMalloc((void**)&d_array,n_bytes));
+	if(cudaStatus!=cudaSuccess) return -1;
+	return 0;
 }
 
 __global__ void kernelExtractValidExtension(Extension *d_Extension,int *dV,int *dVScanResult,int numberElementd_Extension,Extension *d_ValidExtension){
@@ -918,11 +961,11 @@ int PMS::getValidExtension_pure()
 	}
 	/*int(status=extractValidExtension(dV);
 	if(cudaStatus!=cudaSuccess){
-		fprintf(stderr,"cudaDeviceSynchronize validEdge failed",cudaStatus);
-		status = -1;
-		goto Error;
+	fprintf(stderr,"cudaDeviceSynchronize validEdge failed",cudaStatus);
+	status = -1;
+	goto Error;
 	}*/
-	
+
 	//Chép kết quả của dV sang hV để xem kết quả trong dV
 	int *hV = (int*)malloc(sizeof(int)*hExtension.at(0).noElem);
 	CHECK(cudaStatus=cudaMemcpy(hV,dV,sizeof(int)*hExtension.at(0).noElem,cudaMemcpyDeviceToHost));
@@ -969,30 +1012,61 @@ int PMS::getValidExtension_pure()
 		goto Error;
 	}
 
+
+
 	for (int i = 0; i < hExtension.at(0).noElem; i++)
 	{
 		int temp = hV[i]; 
 		PMS_PRINT("[%d]:%d ",i,temp);
 	}
 
+	
+	
+
 	//Phase 2: trích những cạnh hợp lệ sang một mảng khác dValidExtension
 	//arrExtension arrValidExtension;
 	//hValidExtension.resize(1);
-	hLevelEXT.resize(1); 
-	hLevelEXT.at(objLevel.Level).vE.resize(1); //Ban đầu chúng ta chỉ có 1 tập các mở rộng hợp lệ
-	CHECK(cudaStatus=getSizeBaseOnScanResult(dV,dVScanResult,hExtension.at(0).noElem,hLevelEXT.at(objLevel.Level).vE.at(0).noElem));
-	if(cudaStatus!=cudaSuccess){
-		status=-1;
-		goto Error;
-	}
 
-	PMS_PRINT("\n arrValidExtension.noElem:%d",hLevelEXT.at(objLevel.Level).vE.at(0).noElem);
-	CHECK(cudaStatus=cudaMalloc((void**)&(hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt),sizeof(EXT)*hLevelEXT.at(objLevel.Level).vE.at(0).noElem));
+	
+	hLevelEXT.resize(1); 
+	hLevelEXT.at(objLevel.Level).noElem=1;
+	hLevelEXT.at(objLevel.Level).vE.resize(1); //Ban đầu chúng ta chỉ có 1 tập các mở rộng hợp lệ
+	////Hàm getSizeBaseOnScanResult dùng để đếm xem có bao nhiêu cạnh mở rộng hợp lệ.
+	////Có thể thay thế hàm này bởi hàm myReduction
+	//timer.start();
+	/*CHECK(cudaStatus=getSizeBaseOnScanResult(dV,dVScanResult,hExtension.at(0).noElem,\
+		hLevelEXT.at(objLevel.Level).vE.at(0).noElem));
+
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
 	}
-	CHECK(cudaStatus=extractValidExtension_pure(hExtension.at(0).dExtension,dV,dVScanResult,hExtension.at(0).noElem,hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt));
+	std::printf("Time getSizeBaseOnScanResult: %f (ms)\n",timer.getTime());
+	timer.reset();
+
+	timer.start();*/
+	myReduction(dV,hExtension.at(0).noElem,hLevelEXT.at(objLevel.Level).vE.at(0).noElem);
+
+	/*timer.stop();
+	std::printf("Time myReduction: %f (ms)\n",timer.getTime());
+	timer.reset();*/
+	PMS_PRINT("\n arrValidExtension.noElem:%d",hLevelEXT.at(objLevel.Level).vE.at(0).noElem);
+	////Việc cấp phát bộ nhớ trên device có thể dùng user function allocate_gpu_memory. Nếu có lỗi thì giải reset device và exit luôn.
+	//CHECK(cudaStatus=cudaMalloc((void**)&(hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt),sizeof(EXT)*hLevelEXT.at(objLevel.Level).vE.at(0).noElem));
+	//if(cudaStatus!=cudaSuccess){
+	//	status=-1;
+	//	goto Error;
+	//}
+	
+	//timer.start();
+	FUNCHECK(status=allocate_gpu_memory(hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt,hLevelEXT.at(objLevel.Level).vE.at(0).noElem));
+	if (status != 0) goto Error;
+
+	/*timer.stop();
+	std::printf("Processing time: %f (ms)\n", timer.getTime());
+	timer.reset();*/
+
+ 	CHECK(cudaStatus=extractValidExtension_pure(hExtension.at(0).dExtension,dV,dVScanResult,hExtension.at(0).noElem,hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
@@ -1006,7 +1080,7 @@ int PMS::getValidExtension_pure()
 		goto Error;
 	}
 
-	
+
 
 	CHECK(cudaStatus=cudaFree(dV));
 	if(cudaStatus!=cudaSuccess){
@@ -1019,14 +1093,14 @@ int PMS::getValidExtension_pure()
 		status=-1;
 		goto Error;
 	}
-	
+
 	//CHECK(cudaStatus=cudaFree(hExtension.at(0).dExtension)); //Chưa giải phóng vì cần phải tìm các đồ thị chứa các frequent subgraph
 	//if(cudaStatus!=cudaSuccess){
 	//	status=-1;
 	//	goto Error;
 	//}
 	//hExtension.clear();
-	
+
 
 	free(hV);
 Error:	
@@ -1066,7 +1140,7 @@ cudaError_t markLabelEdge(Extension *d_ValidExtension,unsigned int noElem_d_Vali
 Error:
 	return cudaStatus;
 }
-
+//Các cạnh mở rộng hợp lệ có thể giống nhau==> Hàm này sẽ đi ánh xạ chúng vào không gian d_allPossibleExtension.
 cudaError_t markLabelEdge_pure(EXT *&d_ValidExtension,unsigned int noElem_d_ValidExtension,unsigned int Lv,unsigned int Le,int *&d_allPossibleExtension){
 	cudaError_t cudaStatus;
 
@@ -1084,7 +1158,7 @@ cudaError_t markLabelEdge_pure(EXT *&d_ValidExtension,unsigned int noElem_d_Vali
 Error:
 	return cudaStatus;
 }
-
+//Ánh xạ từ vị trí trong d_allPossibleExtension sang cạnh tương ứng trong UniEdge 
 __global__ void kernelCalcLabelAndStoreUniqueExtension(int *d_allPossibleExtension,int *d_allPossibleExtensionScanResult,unsigned int noElem_allPossibleExtension,UniEdge *d_UniqueExtension,unsigned int Le,unsigned int Lv){
 	int i=blockIdx.x*blockDim.x + threadIdx.x;	
 	if(i<noElem_allPossibleExtension && d_allPossibleExtension[i]==1){
@@ -1115,7 +1189,7 @@ __global__ void kernelReverseMappingToUniEdgeLabel(int *d_allPossibleExtension,i
 	}
 }
 
-
+//Ánh xạ và lưu cạnh vào dUniEdge từ vị trí có giá trị 1 trong d_allPossibleExtension
 cudaError_t calcLabelAndStoreUniqueExtension(int *d_allPossibleExtension,int *d_allPossibleExtensionScanResult,unsigned int noElem_allPossibleExtension,UniEdge *&d_UniqueExtension,unsigned int noElem_d_UniqueExtension,unsigned int Le,unsigned int Lv){
 	cudaError_t cudaStatus;
 
@@ -1154,16 +1228,16 @@ Error:
 //Tăng Level
 void PMS::increaseLevel()
 {
-		objLevel.prevLevel=objLevel.Level;
-		++objLevel.Level;
-		objLevel.size=objLevel.Level+1;
-				
-		hLevelEXT.resize(objLevel.size);
-		hLevelUniEdgeSatisfyMinsup.resize(objLevel.size);
-		hLevelPtrEmbedding.resize(objLevel.size);
-		hLevelRMP.resize(objLevel.size);
-		hLevelListVerRMP.resize(objLevel.size);
-	}
+	objLevel.prevLevel=objLevel.Level;
+	++objLevel.Level;
+	objLevel.size=objLevel.Level+1;
+
+	hLevelEXT.resize(objLevel.size);
+	hLevelUniEdgeSatisfyMinsup.resize(objLevel.size);
+	hLevelPtrEmbedding.resize(objLevel.size);
+	hLevelRMP.resize(objLevel.size);
+	hLevelListVerRMP.resize(objLevel.size);
+}
 //Giảm Level
 void PMS::decreaseLevel()
 {
@@ -1341,7 +1415,7 @@ cudaError_t calcBoundary(Extension *d_ValidExtension,unsigned int noElem_d_Valid
 Error:
 	return cudaStatus;
 }
-
+//Xây dựng boundary cho các mở rộng hợp lệ trong d_ValidExtension để tính support
 cudaError_t calcBoundary_pure(EXT *&d_ValidExtension,unsigned int noElem_d_ValidExtension,int *&dB,unsigned int maxOfVer)
 {
 	cudaError_t cudaStatus;
@@ -1388,7 +1462,7 @@ cudaError_t getLastElement(int *dScanResult,unsigned int noElem,int &output)
 	{
 		goto Error;
 	}
-	
+
 	CHECK(cudaStatus= cudaGetLastError());
 	if(cudaStatus != cudaSuccess)
 	{
@@ -1427,12 +1501,12 @@ __global__ void kernelSetValuedF(UniEdge *dUniEdge,int noElemdUniEdge,Extension 
 
 __global__ void kernelSetValuedF_pure(UniEdge *dUniEdge,int noElemdUniEdge,EXT *dValidExtension,int noElemdValidExtension,int *dBScanResult,int *dF,int noElemF)
 {
-	int i = blockDim.x * blockIdx.x +threadIdx.x;
+	int i = blockDim.x * blockIdx.x +threadIdx.x; //i là các mở rộng hợp lệ
 	if(i<noElemdValidExtension){
-		for (int j = 0; j < noElemdUniEdge; j++)
+		for (int j = 0; j < noElemdUniEdge; j++)//j là các mở rộng duy nhất
 		{
-			if(dUniEdge[j].li==dValidExtension[i].li && dUniEdge[j].lij==dValidExtension[i].lij &&	dUniEdge[j].lj==dValidExtension[i].lj){
-				dF[dBScanResult[i]+j*noElemF]=1;
+			if(dUniEdge[j].li==dValidExtension[i].li && dUniEdge[j].lij==dValidExtension[i].lij && dUniEdge[j].lj==dValidExtension[i].lj){ //Nếu mở rộng hợp lệ có trong mở rộng duy nhất (? hình như sai sai)
+				dF[dBScanResult[i]+j*noElemF]=1; //Bật 1 tại vị trí tương ứng.
 			}
 		}
 	}
@@ -1515,7 +1589,7 @@ cudaError_t calcSupport(UniEdge *dUniEdge,int noElemdUniEdge,Extension *dValidEx
 
 	return cudaStatus;
 }
-
+//Tính support cho các mở rộng duy nhất
 cudaError_t calcSupport_pure(UniEdge *dUniEdge,int noElemdUniEdge,EXT *dValidExtension,int noElemdValidExtension,int *dBScanResult,int *dF,int noElemF,int *&hResultSup)
 {
 	cudaError_t cudaStatus;
@@ -1565,6 +1639,7 @@ cudaError_t calcSupport_pure(UniEdge *dUniEdge,int noElemdUniEdge,EXT *dValidExt
 	dim3 blocka(blocksize);
 	dim3 grida((noElemF+blocka.x-1)/blocka.x);
 	/*int from =0;*/	
+	timer.start();
 	for (int i = 0; i < noElemdUniEdge; i++)
 	{		
 		//chép dữ liệu d_F sang tempF ứng theo các phần tử lần lược là i*noElemF, copy đúng noElemF
@@ -1576,14 +1651,26 @@ cudaError_t calcSupport_pure(UniEdge *dUniEdge,int noElemdUniEdge,EXT *dValidExt
 			return cudaStatus;
 		}
 
-		//reduction(tempF,noElemF,hResultSup[i]);		
-		myReduce(tempF,noElemF,hResultSup[i]);
+		//reduction(tempF,noElemF,hResultSup[i]);
+		//myReduce(tempF,noElemF,hResultSup[i]);
+		myReduction(tempF,noElemF,hResultSup[i]);
+		//cout<<"support: "<<(hResultSup[i])<<endl;
 	}
+	timer.stop();
+	std::printf("Time myReduction for each unique Extension: %f (ms)\n",timer.getTime());
+	timer.reset();
 	////In độ hỗ trợ cho các cạnh tương ứng trong mảng kết quả resultSup
-	//for (int i = 0; i < noElemdUniEdge; i++)
-	//{
-	//	PMS_PRINT("\n resultSup[%d]:%d",i,hResultSup[i]);
-	//}
+	for (int i = 0; i < noElemdUniEdge; i++)
+	{
+		PMS_PRINT("\n resultSup[%d]:%d",i,hResultSup[i]);
+	}
+	int *d_supports = nullptr;
+	timer.start();
+	DemoSegReduceCsr(dF,noElemdUniEdge,noElemF,d_supports);
+	timer.stop();
+	std::printf("Time myReduction for Segmented Extension: %f (ms)\n",timer.getTime());
+	timer.reset();
+	displayDeviceArr(d_supports,noElemdUniEdge);
 
 	CHECK(cudaStatus=cudaFree(tempF));
 	if(cudaStatus!=cudaSuccess)
@@ -1750,7 +1837,7 @@ int PMS::extractUniEdgeSatisfyMinsup(int *hResultSup,int noElemUniEdge,unsigned 
 		goto Error;
 	}
 
-	
+
 
 	dim3 blocka(blocksize);
 	dim3 grida((noElemUniEdge + blocka.x -1)/blocka.x);
@@ -1954,7 +2041,9 @@ int PMS::computeSupport()
 		}
 	}
 	int *hResultSup=nullptr;
-	CHECK(cudaStatus=calcSupport_pure(hUniEdge.at(0).dUniEdge,hUniEdge.at(0).noElem,hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt,hLevelEXT.at(objLevel.Level).vE.at(0).noElem,dBScanResult,dF,noElemF,hResultSup));
+	CHECK(cudaStatus=calcSupport_pure(hUniEdge.at(0).dUniEdge,\
+		hUniEdge.at(0).noElem,hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt,\
+		hLevelEXT.at(objLevel.Level).vE.at(0).noElem,dBScanResult,dF,noElemF,hResultSup));
 	if(cudaStatus!=cudaSuccess)
 	{
 		fprintf(stderr,"\n calcSupport() in computeSupport() failed",cudaStatus);
@@ -1992,8 +2081,70 @@ int PMS::computeSupport()
 Error:
 	return status;
 }
+__global__ void kernel_generate_segment_index(int* SegmentStarts,\
+											  int noElem_segment,\
+											  int noElem_of_graph_per_unique_ext)
+{
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	if(i<noElem_segment)
+	{
+		SegmentStarts[i]=i*noElem_of_graph_per_unique_ext;
+	}
+}
+int generate_segment_index(int noElem_of_graph_per_unique_ext,\
+						   int number_unique_extension,\
+						   int *&SegmentStarts)
+{
+	cudaError_t cudaStatus;
+	int status =0;
+	//Number element of segment array is 7
+	int noElem_segment = number_unique_extension;
+	dim3 block(blocksize);
+	dim3 grid((noElem_segment + block.x -1)/block.x);
+	CHECK(cudaStatus= cudaMalloc((void**)&SegmentStarts,noElem_segment*sizeof(int)));
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
-__global__ void kernelGetGraphIdContainEmbedding(int li,int lij,int lj,Extension *d_ValidExtension,int noElem_d_ValidExtension,int *dV,unsigned int maxOfVer){
+	kernel_generate_segment_index<<<grid,block>>>(SegmentStarts, noElem_segment, noElem_of_graph_per_unique_ext);
+	Error:
+	return status;
+}
+int DemoSegReduceCsr(int* dF,int number_unique_extension,int noElem_of_graph_per_unique_ext,int *&resultsDevice) 
+{
+	int status = 0;
+	cudaError_t cudaStatus = cudaSuccess;
+
+	CudaContext& context = *ctx;
+	std::printf("\n\nSEGMENTED REDUCE-CSR DEMONSTRATION\n\n");
+	int count = number_unique_extension*noElem_of_graph_per_unique_ext;
+	int *SegmentStarts = nullptr;
+
+	generate_segment_index(noElem_of_graph_per_unique_ext,number_unique_extension,SegmentStarts);
+	const int NumSegments = number_unique_extension;
+
+	//MGPU_MEM(int) resultsDevice = context.Malloc<int>(NumSegments);
+	//int *resultsDevice = nullptr;
+	CHECK(cudaStatus = cudaMalloc((void**)&resultsDevice,number_unique_extension*sizeof(int)));
+	if(cudaStatus!=cudaSuccess)
+	{
+		status = -1;
+		goto Error;
+	}
+	SegReduceCsr(dF, SegmentStarts, count, number_unique_extension,\
+		false, resultsDevice, (int)0, mgpu::plus<int>(), context);
+
+	Error:
+	return status;
+}
+
+
+__global__ void kernelGetGraphIdContainEmbedding(int li,int lij,int lj,\
+												 Extension *d_ValidExtension,\
+												 int noElem_d_ValidExtension,\
+												 int *dV,unsigned int maxOfVer)
+{
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 	if (i<noElem_d_ValidExtension){
 		if(	d_ValidExtension[i].li == li && d_ValidExtension[i].lij == lij && 	d_ValidExtension[i].lj == lj){
@@ -3011,9 +3162,9 @@ int PMS::Mining()
 	hLevelEXT.at(objLevel.Level).vE.resize(noElemEXTk);
 	hLevelUniEdgeSatisfyMinsup.at(objLevel.Level).vecUES.resize(noElemEXTk);
 	hLevelListVerRMP.resize(objLevel.size);
-	
 
-	
+
+
 
 	int *tempListVerCol = nullptr; //chứa danh sách các đỉnh cần mở rộng thuộc một embedding column cụ thể.
 	CHECK(cudaStatus = cudaMalloc((void**)&tempListVerCol,hLevelPtrEmbedding.at(objLevel.prevLevel).noElemEmbedding * sizeof(int)));
@@ -3053,7 +3204,7 @@ int PMS::Mining()
 			dim3 block(blocksize);
 			dim3 grid((hLevelPtrEmbedding.at(objLevel.prevLevel).noElemEmbedding + block.x -1)/block.x);
 			//Trích các đỉnh cần mở rộng của cột Embedding đang xét
-			
+
 			kernelExtractFromListVer<<<grid,block>>>(hLevelListVerRMP.at(objLevel.prevLevel).dListVer,i*hLevelPtrEmbedding.at(objLevel.prevLevel).noElemEmbedding,hLevelPtrEmbedding.at(objLevel.prevLevel).noElemEmbedding,tempListVerCol);//trích các đỉnh từ listVer, từ vị trí i*noElemEmbedding,trích noElemEmbedding phần tử, bỏ vào tempListVerCol
 			CHECK(cudaStatus=cudaDeviceSynchronize());
 			if(cudaStatus!=cudaSuccess)
@@ -3061,7 +3212,7 @@ int PMS::Mining()
 				status=-1;
 				goto Error;
 			}
-			
+
 			CHECK(cudaStatus = cudaGetLastError());
 			if(cudaStatus!=cudaSuccess)
 			{
@@ -3138,7 +3289,7 @@ int PMS::Mining()
 	}
 
 #pragma endregion
-	
+
 	//Hiển thị nội dung của hLevelUniEdgeSatisfyMinsup tại Level đang xét.
 	for (int i = 0; i < hLevelUniEdgeSatisfyMinsup.at(objLevel.Level).noElem; i++)
 	{
@@ -3184,7 +3335,7 @@ int PMS::Mining()
 		}
 
 		int noElemtemp = hLevelUniEdgeSatisfyMinsup.at(objLevel.Level).vecUES.at(i).noElem;
-		
+
 		//Cấp phát một mảng tạm ở host để chép dữ liệu từ device sang host lưu giữ các cạnh duy nhất thoả minsup
 		UniEdge *temp=(UniEdge*)malloc(sizeof(UniEdge)*noElemtemp);
 		if(temp==NULL)
@@ -3312,7 +3463,7 @@ int PMS::Mining()
 					goto Error;
 				}
 
-				
+
 
 				//3.6 Tìm danh sách các đỉnh của các Embedding Column thuộc Right Most Path cần mở rộng.
 				//FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
@@ -3478,8 +3629,8 @@ int PMS::initialize()
 
 	//Nên kiểm tra cái này ở đầu hàm Mining(), vì không có mở rộng thoả minsup nào thì chúng ta return về status liền. Không phải mất công làm các bước trên.
 	/*if(hUniEdgeSatisfyMinsup.at(0).noElem<=0){
-		PMS_PRINT("\n There no any edge in hUniEdgeSatisfyMinsup\n");
-		return status;
+	PMS_PRINT("\n There no any edge in hUniEdgeSatisfyMinsup\n");
+	return status;
 	}*/
 
 	if(hLevelUniEdgeSatisfyMinsup.at(objLevel.Level).vecUES.at(0).noElem<=0)
@@ -3515,7 +3666,7 @@ int PMS::initialize()
 	{
 		goto Error;
 	}
-	
+
 
 	for (int i = 0; i < noElemtemp; i++) //Duyệt qua các UniEdge thoả minSup để kiểm tra minDFS_CODE, nếu thoả thì ghi kết quả vào result và xây dựng embedding
 	{
@@ -3588,7 +3739,7 @@ int PMS::initialize()
 		//if(status!=0){
 		//	goto Error;
 		//}
-		
+
 		//Giải phóng bộ nhớ 
 		//Giải phóng bộ nhớ chứa các đỉnh cần mở rộng thuộc embedding columns
 		CHECK(cudaStatus=cudaFree(hLevelListVerRMP.at(objLevel.Level).dListVer));
@@ -3619,7 +3770,7 @@ int PMS::initialize()
 	if(hLevelRMP.at(objLevel.Level).noElem>0)
 	{ 
 		hLevelRMP.at(objLevel.Level).hArrRMP.clear();
-		
+
 		CHECK(cudaStatus=cudaFree(hLevelRMP.at(objLevel.Level).dRMP));
 		if(cudaStatus!=cudaSuccess)
 		{
@@ -3871,7 +4022,7 @@ int PMS::updateRMPBW()
 	{
 		goto Error;
 	}
-	
+
 #pragma endregion
 
 
@@ -3923,7 +4074,7 @@ int PMS::updateRMP()
 		PMS_PRINT("\n RMPv2[%d]:%d",i,hLevelRMP.at(objLevel.Level).hArrRMP.at(i));
 	}
 
-	#pragma region "build RMP on device"
+#pragma region "build RMP on device"
 	//Xây dựng right most path từ vector<int> hRMP
 	int noElemVerOnRMP = hLevelRMP.at(objLevel.Level).noElem; //right most path chứa bao nhiêu đỉnh
 	hLevelRMP.at(objLevel.Level).dRMP = nullptr; //rigt most path trên bộ nhớ device
@@ -4217,7 +4368,7 @@ int PMS::Miningv3(int noElemUniEdgeSatisfyMinSup,UniEdge *dArrUniEdgeSatisfyMinS
 				{//Thêm cột backward embedding mới
 					FUNCHECK(status = extendEmbeddingBW(temp[i],hEmbedding.at(lastColEmbedding),dArrEXT,noElemdArrEXT));
 				}
-				
+
 				if(status!=0){
 					goto Error;
 				}
@@ -4251,7 +4402,7 @@ int PMS::Miningv3(int noElemUniEdgeSatisfyMinSup,UniEdge *dArrUniEdgeSatisfyMinS
 		if(backward!=1){ //Nếu pop() một forward thì phải giảm maxId
 			--maxId;
 		}	
-		
+
 	}	
 	std::free(temp);
 Error:
@@ -4262,7 +4413,7 @@ int PMS::extendEmbeddingBW2(UniEdge ue,EmbeddingColumn& EC,Embedding *fromdArrEm
 {
 	int status =0;
 	cudaError_t cudaStatus;
-	
+
 	//1. Khởi tạo một mảng <int> có số lượng phần tử bằng với số lượng Embedding gọi là dV và đánh dấu các posRow chứa backward extension
 	int *dV=nullptr;
 	int noElemdV=hLevelPtrEmbedding.at(objLevel.prevLevel).noElemEmbedding; //ở đây mình dựa vào pointer embedding column nên vẫn đúng. Nhưng cần phải suy nghĩ thêm, nếu dựa vào hEmbedding Column thì phải làm thế nào?
@@ -4314,7 +4465,7 @@ int PMS::extendEmbeddingBW2(UniEdge ue,EmbeddingColumn& EC,Embedding *fromdArrEm
 		status=-1;
 		goto Error;
 	}
-	
+
 	int noElemBW=0;
 	CHECK(cudaStatus=getSizeBaseOnScanResult(dV,dVScanResult,noElemdV,noElemBW));
 	if(cudaStatus!=cudaSuccess)
@@ -4335,7 +4486,7 @@ int PMS::extendEmbeddingBW2(UniEdge ue,EmbeddingColumn& EC,Embedding *fromdArrEm
 	//	status = -1;
 	//	goto Error;
 	//}
-	
+
 	int currentSize = EC.hBackwardEmbedding.size();
 	int newsize = currentSize+1;
 	EC.hBackwardEmbedding.resize(newsize);
@@ -4387,7 +4538,7 @@ int PMS::extendEmbeddingBW(UniEdge ue,EmbeddingColumn& EC,EXT* dArrExt,int noEle
 {
 	int status =0;
 	cudaError_t cudaStatus;
-	
+
 	//1. Khởi tạo một mảng <int> có số lượng phần tử bằng với số lượng Embedding gọi là dV và đánh dấu các posRow chứa backward extension
 	int *dV=nullptr;
 	int noElemdV=hLevelPtrEmbedding.at(objLevel.prevLevel).noElemEmbedding; //ở đây mình dựa vào pointer embedding column nên vẫn đúng. Nhưng cần phải suy nghĩ thêm, nếu dựa vào hEmbedding Column thì phải làm thế nào?
@@ -4440,7 +4591,7 @@ int PMS::extendEmbeddingBW(UniEdge ue,EmbeddingColumn& EC,EXT* dArrExt,int noEle
 		status=-1;
 		goto Error;
 	}
-	
+
 	int noElemBW=0;
 	CHECK(cudaStatus=getSizeBaseOnScanResult(dV,dVScanResult,noElemdV,noElemBW));
 	if(cudaStatus!=cudaSuccess)
@@ -4461,7 +4612,7 @@ int PMS::extendEmbeddingBW(UniEdge ue,EmbeddingColumn& EC,EXT* dArrExt,int noEle
 	//	status = -1;
 	//	goto Error;
 	//}
-	
+
 	int currentSize = EC.hBackwardEmbedding.size();
 	int newsize = currentSize+1;
 	EC.hBackwardEmbedding.resize(newsize);
@@ -4865,7 +5016,7 @@ int PMS::extendEmbeddingv2(UniEdge ue,EXT *dArrExt,int noElemdArrExt)
 
 	//Cập nhật số lượng embedding ở cột mới thêm.
 	hEmbedding.at(lastEC).noElem=noElemOfdArEmbedding; 
-	
+
 	//Cấp phát bộ nhớ trên device cho embedding column mới.
 	CHECK(cudaStatus=cudaMalloc((void**)&hEmbedding.at(lastEC).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding))); 
 	if(cudaStatus!=cudaSuccess)
@@ -4873,7 +5024,7 @@ int PMS::extendEmbeddingv2(UniEdge ue,EXT *dArrExt,int noElemdArrExt)
 		status=-1;
 		goto Error;
 	}
-	
+
 	kernelSetValueForEmbeddingColumn<<<grid,block>>>(dArrExt,noElemdArrExt,hEmbedding.at(lastEC).dArrEmbedding,dV,dVScanResult);
 	CHECK(cudaStatus=cudaDeviceSynchronize());
 	if(cudaStatus!=cudaSuccess)
@@ -4890,7 +5041,7 @@ int PMS::extendEmbeddingv2(UniEdge ue,EXT *dArrExt,int noElemdArrExt)
 	}
 	//Cập nhật previous column, phải có prevCol để tìm thông tin right most path. Có cách nào để
 	//tìm right most path mà không cần đến thông tin prevCol hay không?
-	
+
 	hEmbedding.at(lastEC).prevCol=currentColEmbedding;
 	for (int i = 0; i < hEmbedding.size(); i++)
 	{
@@ -4933,145 +5084,145 @@ Error:
 /*
 //Xây dựng Embedding ban đầu
 int PMS::buildFirstEmbedding(UniEdge ue){
-	int li,lij,lj;
-	li=ue.li;
-	lij=ue.lij;
-	lj=ue.lj;
-	int status =0;
-	cudaError_t cudaStatus;
-	hEmbedding.resize(2); //Mỗi phần tử của Vector sẽ quản lý 1 dArrEmbedding trên device. Khi cần thiết có thể tập hợp chúng lại thành 1 mảng trên device.
-	hEmbedding.at(0).noElem;
+int li,lij,lj;
+li=ue.li;
+lij=ue.lij;
+lj=ue.lj;
+int status =0;
+cudaError_t cudaStatus;
+hEmbedding.resize(2); //Mỗi phần tử của Vector sẽ quản lý 1 dArrEmbedding trên device. Khi cần thiết có thể tập hợp chúng lại thành 1 mảng trên device.
+hEmbedding.at(0).noElem;
 
-	int *dV=nullptr;
-	int noElemdV = hValidExtension.at(0).noElem; //các mở rộng hợp lệ của cạnh đầu tiên được quản lý bởi hValidExtension.
-	CHECK(cudaStatus = cudaMalloc((void**)&dV, sizeof(int)*noElemdV));
-	if(cudaStatus!=cudaSuccess){
-		status=-1;
-		PMS_PRINT("\n cudaMalloc dV failed\n");
-		goto Error;
-	}
+int *dV=nullptr;
+int noElemdV = hValidExtension.at(0).noElem; //các mở rộng hợp lệ của cạnh đầu tiên được quản lý bởi hValidExtension.
+CHECK(cudaStatus = cudaMalloc((void**)&dV, sizeof(int)*noElemdV));
+if(cudaStatus!=cudaSuccess){
+status=-1;
+PMS_PRINT("\n cudaMalloc dV failed\n");
+goto Error;
+}
 
-	CHECK(cudaStatus = cudaMemset(dV,0,sizeof(int)*noElemdV));
-	if(cudaStatus!=cudaSuccess)
-	{
-		status=-1;
-		goto Error;
-	}
+CHECK(cudaStatus = cudaMemset(dV,0,sizeof(int)*noElemdV));
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+goto Error;
+}
 
-	dim3 block(blocksize);
-	dim3 grid((noElemdV+block.x-1)/block.x);
+dim3 block(blocksize);
+dim3 grid((noElemdV+block.x-1)/block.x);
 
-	//kernelPrintExtention<<<1,512>>>(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem);
-	//cudaDeviceSynchronize();
-	//CHECK(cudaGetLastError());
-	//if(cudaGetLastError() !=cudaSuccess){
-	//	PMS_PRINT("Error here");
-	//	goto Error;
-	//}
+//kernelPrintExtention<<<1,512>>>(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem);
+//cudaDeviceSynchronize();
+//CHECK(cudaGetLastError());
+//if(cudaGetLastError() !=cudaSuccess){
+//	PMS_PRINT("Error here");
+//	goto Error;
+//}
 
-	kernelMarkExtension<<<grid,block>>>(hValidExtension.at(0).dExtension,noElemdV,dV,li,lij,lj);
-	CHECK(cudaStatus=cudaDeviceSynchronize());
-	if(cudaStatus!=cudaSuccess)
-	{
-		status=-1;
-		goto Error;
-	}
+kernelMarkExtension<<<grid,block>>>(hValidExtension.at(0).dExtension,noElemdV,dV,li,lij,lj);
+CHECK(cudaStatus=cudaDeviceSynchronize());
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+goto Error;
+}
 
-	CHECK(cudaStatus = cudaGetLastError());
-	//CHECK(cudaStatus);
-	if(cudaStatus!=cudaSuccess){
-		status = -1;
-		fprintf(stderr,"\n kernelMarkExtension failed",cudaStatus);
-		goto Error;
-	}
+CHECK(cudaStatus = cudaGetLastError());
+//CHECK(cudaStatus);
+if(cudaStatus!=cudaSuccess){
+status = -1;
+fprintf(stderr,"\n kernelMarkExtension failed",cudaStatus);
+goto Error;
+}
 
-	int* dVScanResult;
-	CHECK(cudaStatus=cudaMalloc((int**)&dVScanResult,noElemdV*sizeof(int)));
-	if(cudaStatus!=cudaSuccess){
-		status=-1;
-		PMS_PRINT("\n cudamalloc dVScanResult failed\n");
-		goto Error;
-	}
+int* dVScanResult;
+CHECK(cudaStatus=cudaMalloc((int**)&dVScanResult,noElemdV*sizeof(int)));
+if(cudaStatus!=cudaSuccess){
+status=-1;
+PMS_PRINT("\n cudamalloc dVScanResult failed\n");
+goto Error;
+}
 
-	CHECK(cudaStatus=cudaMemset(dVScanResult,0,noElemdV*sizeof(int)));
-	if(cudaStatus!=cudaSuccess){
-		status=-1;
-		PMS_PRINT("\n cudamemset dVScanResult failed\n");
-		goto Error;
-	}
-	//CHECK(scanV(dV,noElemdV,dVScanResult));
-	FUNCHECK(status=myScanV(dV,noElemdV,dVScanResult));
-	if(status!=0)
-	{
-		goto Error;
-	}
-	int noElemOfdArEmbedding=0;
+CHECK(cudaStatus=cudaMemset(dVScanResult,0,noElemdV*sizeof(int)));
+if(cudaStatus!=cudaSuccess){
+status=-1;
+PMS_PRINT("\n cudamemset dVScanResult failed\n");
+goto Error;
+}
+//CHECK(scanV(dV,noElemdV,dVScanResult));
+FUNCHECK(status=myScanV(dV,noElemdV,dVScanResult));
+if(status!=0)
+{
+goto Error;
+}
+int noElemOfdArEmbedding=0;
 
-	CHECK(cudaStatus=getSizeBaseOnScanResult(dV,dVScanResult,noElemdV,noElemOfdArEmbedding));
-	if(cudaStatus!=cudaSuccess)
-	{
-		status=-1;
-		goto Error;
-	}
+CHECK(cudaStatus=getSizeBaseOnScanResult(dV,dVScanResult,noElemdV,noElemOfdArEmbedding));
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+goto Error;
+}
 
-	hEmbedding.at(0).noElem=hEmbedding.at(1).noElem=noElemOfdArEmbedding;
+hEmbedding.at(0).noElem=hEmbedding.at(1).noElem=noElemOfdArEmbedding;
 
-	CHECK(cudaStatus=cudaMalloc((void**)&hEmbedding.at(0).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding)));
-	if(cudaStatus!=cudaSuccess)
-	{
-		status=-1;
-		PMS_PRINT("\n cudaMalloc hEmbedding.at(0).dArrEmbedding failed\n");
-		goto Error;
-	}
+CHECK(cudaStatus=cudaMalloc((void**)&hEmbedding.at(0).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding)));
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+PMS_PRINT("\n cudaMalloc hEmbedding.at(0).dArrEmbedding failed\n");
+goto Error;
+}
 
-	CHECK(cudaStatus=cudaMalloc((void**)&hEmbedding.at(1).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding)));
-	if(cudaStatus!=cudaSuccess)
-	{
-		status=-1;
-		PMS_PRINT("\n cudaMalloc hEmbedding.at(1).dArrEmbedding failed\n");
-		goto Error;
-	}
-	//kernelSetValueForFirstTwoEmbeddingColumn<<<grid,block>>>(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem,hEmbedding.at(0).dArrEmbedding,hEmbedding.at(1).dArrEmbedding,dVScanResult,li,lij,lj);
-	CHECK(cudaStatus=cudaDeviceSynchronize());
-	if(cudaStatus!=cudaSuccess)
-	{
-		status=-1;
-		goto Error;
-	}
+CHECK(cudaStatus=cudaMalloc((void**)&hEmbedding.at(1).dArrEmbedding,noElemOfdArEmbedding*sizeof(Embedding)));
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+PMS_PRINT("\n cudaMalloc hEmbedding.at(1).dArrEmbedding failed\n");
+goto Error;
+}
+//kernelSetValueForFirstTwoEmbeddingColumn<<<grid,block>>>(hValidExtension.at(0).dExtension,hValidExtension.at(0).noElem,hEmbedding.at(0).dArrEmbedding,hEmbedding.at(1).dArrEmbedding,dVScanResult,li,lij,lj);
+CHECK(cudaStatus=cudaDeviceSynchronize());
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+goto Error;
+}
 
-	CHECK(cudaStatus = cudaGetLastError());
-	if(cudaStatus !=cudaSuccess)
-	{
-		fprintf(stderr,"\n kernelSetValueForFirstTwoEmbeddingColumn in failed",cudaStatus);
-		status = -1;
-		goto Error;
-	}
+CHECK(cudaStatus = cudaGetLastError());
+if(cudaStatus !=cudaSuccess)
+{
+fprintf(stderr,"\n kernelSetValueForFirstTwoEmbeddingColumn in failed",cudaStatus);
+status = -1;
+goto Error;
+}
 
-	hEmbedding.at(0).prevCol=-1;
-	hEmbedding.at(1).prevCol=0;
+hEmbedding.at(0).prevCol=-1;
+hEmbedding.at(1).prevCol=0;
 
-	for (int i = 0; i < hEmbedding.size(); i++)
-	{
-		PMS_PRINT("\n\n Q[%d] prevCol:%d ",i,hEmbedding.at(i).prevCol);		
-		kernelPrintEmbedding<<<1,512>>>(hEmbedding.at(i).dArrEmbedding,hEmbedding.at(i).noElem);
-		CHECK(cudaStatus=cudaDeviceSynchronize());
-		if(cudaStatus!=cudaSuccess)
-		{
-			status=-1;
-			PMS_PRINT("kernelPrintEmbedding cudaDeviceSynchronize failed");
-			goto Error;
-		}
+for (int i = 0; i < hEmbedding.size(); i++)
+{
+PMS_PRINT("\n\n Q[%d] prevCol:%d ",i,hEmbedding.at(i).prevCol);		
+kernelPrintEmbedding<<<1,512>>>(hEmbedding.at(i).dArrEmbedding,hEmbedding.at(i).noElem);
+CHECK(cudaStatus=cudaDeviceSynchronize());
+if(cudaStatus!=cudaSuccess)
+{
+status=-1;
+PMS_PRINT("kernelPrintEmbedding cudaDeviceSynchronize failed");
+goto Error;
+}
 
-		CHECK(cudaStatus = cudaGetLastError());
-		if(cudaStatus!=cudaSuccess)
-		{
-			status =-1;
-			PMS_PRINT("kernelPrintEmbedding failed");
-			goto Error;
-		}
-	}
+CHECK(cudaStatus = cudaGetLastError());
+if(cudaStatus!=cudaSuccess)
+{
+status =-1;
+PMS_PRINT("kernelPrintEmbedding failed");
+goto Error;
+}
+}
 Error:
-	return status;
+return status;
 }
 */
 int PMS::buildEmbedding_pure(UniEdge ue)
@@ -5113,7 +5264,7 @@ int PMS::buildEmbedding_pure(UniEdge ue)
 	//	PMS_PRINT("Error here");
 	//	goto Error;
 	//}
-	
+
 	/*kernelMarkExtension<<<grid,block>>>(hValidExtension.at(0).dExtension,noElemdV,dV,li,lij,lj);*/
 	kernelMarkExtension_pure<<<grid,block>>>(hLevelEXT.at(objLevel.Level).vE.at(0).dArrExt,noElemdV,dV,li,lij,lj);
 	CHECK(cudaStatus=cudaDeviceSynchronize());
@@ -5245,7 +5396,7 @@ int PMS::buildEmbedding_pure(UniEdge ue)
 		PMS_PRINT("\n kernelGetPointerdArrEmbedding failed");
 		goto Error;
 	}
-	
+
 	FUNCHECK(status=displaydArrPointerEmbedding(hLevelPtrEmbedding.at(objLevel.Level).dArrPointerEmbedding,hLevelPtrEmbedding.at(objLevel.Level).noElem,hLevelPtrEmbedding.at(objLevel.Level).noElemEmbedding));
 	if(status!=0){
 		goto Error;
@@ -5278,7 +5429,7 @@ int PMS::findListVerOnRMP()
 	int status=0;
 	cudaError_t cudaStatus;
 
-	#pragma region "cudaMalloc for listVer to find listVer On All EmbeddingColumn that belong to RMP"
+#pragma region "cudaMalloc for listVer to find listVer On All EmbeddingColumn that belong to RMP"
 	//Tìm danh sách các đỉnh thuộc right most path của các embedding
 	//Kết quả lưu vào các vector tương ứng
 	//int lastCol = hEmbedding.size() - 1; //cột cuối của embedding
@@ -5303,7 +5454,7 @@ int PMS::findListVerOnRMP()
 	dim3 grid((hLevelPtrEmbedding.at(objLevel.Level).noElemEmbedding + block.x -1)/block.x);
 	//Kernel tìm các đỉnh thuộc embedding và lưu chúng vào hListVer
 	//int noElemVerOnRMP = hLevelRMP.at(objLevel.Level).noElem; //right most path chứa bao nhiêu đỉnh
-	
+
 	kernelFindListVer<<<grid,block>>>(hLevelPtrEmbedding.at(objLevel.Level).dArrPointerEmbedding,hLevelPtrEmbedding.at(objLevel.Level).noElemEmbedding,hLevelRMP.at(objLevel.Level).dRMP,hLevelRMP.at(objLevel.Level).noElem,hLevelListVerRMP.at(objLevel.Level).dListVer); //tìm listVer
 	CHECK(cudaStatus=cudaDeviceSynchronize());
 	if(cudaStatus!=cudaSuccess)
@@ -5497,7 +5648,7 @@ int PMS::buildRMP(){
 	hLevelRMP.at(objLevel.Level).hArrRMP.push_back(1);
 	hLevelRMP.at(objLevel.Level).hArrRMP.push_back(0);
 
-	#pragma region "build RMP on device"
+#pragma region "build RMP on device"
 	//Xây dựng right most path từ vector<int> hRMP
 	int noElemVerOnRMP = hLevelRMP.at(objLevel.Level).noElem; //right most path chứa bao nhiêu đỉnh
 	hLevelRMP.at(objLevel.Level).dRMP = nullptr; //rigt most path trên bộ nhớ device
@@ -5536,8 +5687,8 @@ int PMS::buildRMP(){
 	if(status!=0){
 		goto Error;
 	}
-	
-	
+
+
 #pragma endregion
 
 Error:
@@ -5627,41 +5778,41 @@ int PMS::FSMining(int *rmp,int noElemVerOnRMP)
 	}
 
 
-//#pragma region "build RMP on device"
-//
-//	//Xây dựng right most path từ vector<int> hRMP
-//	int noElemVerOnRMP = hRMP.at(0).noElem; //right most path chứa bao nhiêu đỉnh
-//	int *rmp = nullptr; //rigt most path trên bộ nhớ device
-//	CHECK(cudaStatus = cudaMalloc((void**)&rmp,noElemVerOnRMP*sizeof(int))); //cấp phát bộ nhớ trên device cho rmp
-//	if(cudaStatus!=cudaSuccess){
-//		status =-1;
-//		goto Error;
-//	}
-//	int *temp=(int*)malloc(sizeof(int)*noElemVerOnRMP); //dùng để chứa dữ liệu từ vector hRMP
-//	if(temp==NULL){
-//		status =-1;
-//		goto Error;
-//	}
-//	//chép dữ liệu từ hRMP sang bộ nhớ temp
-//	for (int i = 0; i < noElemVerOnRMP; i++)
-//	{
-//		temp[i] = hRMP.at(0).hArrRMP.at(i);
-//	}
-//	//Chép dữ liệu từ temp trên host sang rmp trên device
-//	CHECK(cudaStatus =cudaMemcpy(rmp,temp,sizeof(int)*noElemVerOnRMP,cudaMemcpyHostToDevice)); //chép dữ liệu từ temp ở host sang rmp trên device
-//	if(cudaStatus!=cudaSuccess){
-//		status =-1;
-//		goto Error;
-//	}
-//
-//	std::free(temp);
-//
-//	PMS_PRINT("\n\n ******* rmp *********\n");
-//	FUNCHECK(status=displayDeviceArr(rmp,noElemVerOnRMP));
-//	if(status!=0){
-//		goto Error;
-//	}
-//#pragma endregion
+	//#pragma region "build RMP on device"
+	//
+	//	//Xây dựng right most path từ vector<int> hRMP
+	//	int noElemVerOnRMP = hRMP.at(0).noElem; //right most path chứa bao nhiêu đỉnh
+	//	int *rmp = nullptr; //rigt most path trên bộ nhớ device
+	//	CHECK(cudaStatus = cudaMalloc((void**)&rmp,noElemVerOnRMP*sizeof(int))); //cấp phát bộ nhớ trên device cho rmp
+	//	if(cudaStatus!=cudaSuccess){
+	//		status =-1;
+	//		goto Error;
+	//	}
+	//	int *temp=(int*)malloc(sizeof(int)*noElemVerOnRMP); //dùng để chứa dữ liệu từ vector hRMP
+	//	if(temp==NULL){
+	//		status =-1;
+	//		goto Error;
+	//	}
+	//	//chép dữ liệu từ hRMP sang bộ nhớ temp
+	//	for (int i = 0; i < noElemVerOnRMP; i++)
+	//	{
+	//		temp[i] = hRMP.at(0).hArrRMP.at(i);
+	//	}
+	//	//Chép dữ liệu từ temp trên host sang rmp trên device
+	//	CHECK(cudaStatus =cudaMemcpy(rmp,temp,sizeof(int)*noElemVerOnRMP,cudaMemcpyHostToDevice)); //chép dữ liệu từ temp ở host sang rmp trên device
+	//	if(cudaStatus!=cudaSuccess){
+	//		status =-1;
+	//		goto Error;
+	//	}
+	//
+	//	std::free(temp);
+	//
+	//	PMS_PRINT("\n\n ******* rmp *********\n");
+	//	FUNCHECK(status=displayDeviceArr(rmp,noElemVerOnRMP));
+	//	if(status!=0){
+	//		goto Error;
+	//	}
+	//#pragma endregion
 
 #pragma region "find listVer from All EmbeddingColumn"
 
@@ -5832,11 +5983,11 @@ int PMS::FSMining(int *rmp,int noElemVerOnRMP)
 		hLevelUniEdge.clear();
 	}
 
-		
+
 	if(hLevelUniEdgeSatisfyMinsup.at(0).noElem>0){
 		hLevelUniEdgeSatisfyMinsup.at(0).vecUES.clear();
 	}
-	
+
 	if(hLevelUniEdgeSatisfyMinsup.size()>0){
 		hLevelUniEdgeSatisfyMinsup.clear();
 	}
@@ -6009,7 +6160,7 @@ int PMS::buildArrPointerEmbeddingbw(vector<EmbeddingColumn> hEmbedding,vector<pt
 	//int lastCol = hEmbedding.size() - 1; //cột cuối của embedding. Nếu mình lấy cột cuối thì không đúng. Phải lấy cột hiện tại. Vì khi quay lui mà vẫn lấy cột cuối là sai.
 	hLevelPtrEmbedding.resize(Level);
 	hLevelPtrEmbedding.at(idxLevel).noElem=hEmbedding.size(); //số lượng embedding column
-	
+
 	int hbwLast = hEmbedding.at(currentColEmbedding).hBackwardEmbedding.size() - 1;//lấy index của backward embedding column cuối cùng trong cột Embedding
 	hLevelPtrEmbedding.at(idxLevel).noElemEmbedding= hEmbedding.at(currentColEmbedding).hBackwardEmbedding.at(hbwLast).noElem; //số lượng embedding
 	CHECK(cudaStatus = cudaMalloc((void**)&hLevelPtrEmbedding.at(idxLevel).dArrPointerEmbedding,hEmbedding.size()*sizeof(Embedding**))); //Cấp phát bộ nhớ cho mảng dArrPointerEmbedding tại Level tương ứng.
@@ -6022,7 +6173,7 @@ int PMS::buildArrPointerEmbeddingbw(vector<EmbeddingColumn> hEmbedding,vector<pt
 	for (int i = 0; i < hEmbedding.size(); i++)
 	{		
 		if(i==currentColEmbedding){
-			
+
 			kernelGetPointerdArrEmbedding<<<1,1>>>(hEmbedding.at(i).hBackwardEmbedding.at(hbwLast).dArrEmbedding,hLevelPtrEmbedding.at(idxLevel).dArrPointerEmbedding,i); //Mỗi phần tử của mảng dArrPointerEmbedding chứa địa chỉ của dArrEmbedding
 		}
 		else //Nếu tại hEmbedding[i] mà có backward embedding column thì chúng ta copy địa chỉ của backward embedding column cuối cùng đó.
@@ -6033,7 +6184,7 @@ int PMS::buildArrPointerEmbeddingbw(vector<EmbeddingColumn> hEmbedding,vector<pt
 			}
 			else
 			{
-			kernelGetPointerdArrEmbedding<<<1,1>>>(hEmbedding.at(i).dArrEmbedding,hLevelPtrEmbedding.at(idxLevel).dArrPointerEmbedding,i); //Mỗi phần tử của mảng dArrPointerEmbedding chứa địa chỉ của dArrEmbedding
+				kernelGetPointerdArrEmbedding<<<1,1>>>(hEmbedding.at(i).dArrEmbedding,hLevelPtrEmbedding.at(idxLevel).dArrPointerEmbedding,i); //Mỗi phần tử của mảng dArrPointerEmbedding chứa địa chỉ của dArrEmbedding
 			}
 		}
 	}
@@ -6127,7 +6278,7 @@ int PMS::findListVer(Embedding **dArrPointerEmbedding,int noElemEmbedding,int *r
 	FUNCHECK(status=displayDeviceArr(hLevelListVerRMP.at(objLevel.Level).dListVer,hLevelListVerRMP.at(objLevel.Level).noElem));
 	if(status!=0)
 	{
-		goto Error;
+	goto Error;
 	}*/
 
 Error:
@@ -6137,91 +6288,91 @@ Error:
 int PMS::findVerOnRMPForBWCheck(ptrArrEmbedding hLevelPtrEmbeddingatALevel,int* rmp,int noElemVerOnRMP,int *&dArrVidOnRMP){
 	int status = 0;
 	cudaError_t cudaStatus;
-		int noElemdArrVidOnRMP= noElemVerOnRMP - 1;
-		//int *fromPosCol=nullptr; //lưu trữ các cột của Embedding mà tại đó thuộc right most path. Thật ra mình có thể suy luận được từ rmp
+	int noElemdArrVidOnRMP= noElemVerOnRMP - 1;
+	//int *fromPosCol=nullptr; //lưu trữ các cột của Embedding mà tại đó thuộc right most path. Thật ra mình có thể suy luận được từ rmp
 
-		cudaStatus = cudaMalloc((void**)&dArrVidOnRMP,hLevelPtrEmbeddingatALevel.noElemEmbedding*noElemdArrVidOnRMP*sizeof(int));
-		CHECK(cudaStatus);
-		if(cudaStatus!=cudaSuccess){
-			status =-1;
-			goto Error;
-		}
+	cudaStatus = cudaMalloc((void**)&dArrVidOnRMP,hLevelPtrEmbeddingatALevel.noElemEmbedding*noElemdArrVidOnRMP*sizeof(int));
+	CHECK(cudaStatus);
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
 
-		FUNCHECK(status = displaydArrPointerEmbedding(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElem,hLevelPtrEmbeddingatALevel.noElemEmbedding));
-		if(status!=0){
-			goto Error;
-		}
+	FUNCHECK(status = displaydArrPointerEmbedding(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElem,hLevelPtrEmbeddingatALevel.noElemEmbedding));
+	if(status!=0){
+		goto Error;
+	}
 
-		dim3 block(blocksize);
-		dim3 grid((hLevelPtrEmbeddingatALevel.noElemEmbedding + block.x -1)/block.x);
+	dim3 block(blocksize);
+	dim3 grid((hLevelPtrEmbeddingatALevel.noElemEmbedding + block.x -1)/block.x);
 
-		//Hàm này tìm các vid thuộc right most path và lưu vào mảng dArrVidOnRMP. Mảng này dùng để tìm các valid backward edge.
-		kernelFindVidOnRMP<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
-		//kernelFindVidOnRMPv2<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
-		CHECK(cudaStatus=cudaDeviceSynchronize());
-		if(cudaStatus!=cudaSuccess){
-			status =-1;
-			goto Error;
-		}
-		CHECK(cudaStatus = cudaGetLastError());
-		if(cudaStatus!=cudaSuccess){
-			status =-1;
-			goto Error;
-		}
+	//Hàm này tìm các vid thuộc right most path và lưu vào mảng dArrVidOnRMP. Mảng này dùng để tìm các valid backward edge.
+	kernelFindVidOnRMP<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
+	//kernelFindVidOnRMPv2<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
+	CHECK(cudaStatus=cudaDeviceSynchronize());
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
+	CHECK(cudaStatus = cudaGetLastError());
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
 
-		PMS_PRINT("\n ******** dArrVidOnRMP *******\n");
-		FUNCHECK(status=displayDeviceArr(dArrVidOnRMP,noElemdArrVidOnRMP*hLevelPtrEmbeddingatALevel.noElemEmbedding));
-		if(status!=0){
-			goto Error;
-		}
+	PMS_PRINT("\n ******** dArrVidOnRMP *******\n");
+	FUNCHECK(status=displayDeviceArr(dArrVidOnRMP,noElemdArrVidOnRMP*hLevelPtrEmbeddingatALevel.noElemEmbedding));
+	if(status!=0){
+		goto Error;
+	}
 
-		//PMS_PRINT("\n ******** fromPosCol *******\n");
-		//displayDeviceArr(fromPosCol,noElemdArrVidOnRMP);
+	//PMS_PRINT("\n ******** fromPosCol *******\n");
+	//displayDeviceArr(fromPosCol,noElemdArrVidOnRMP);
 Error:
 	return status;
 }
 int PMS::findVerOnRMPForBWCheckv2(ptrArrEmbedding hLevelPtrEmbeddingatALevel,int* rmp,int noElemVerOnRMP,int *&dArrVidOnRMP){
 	int status = 0;
 	cudaError_t cudaStatus;
-		int noElemdArrVidOnRMP= noElemVerOnRMP - 1;
-		//int *fromPosCol=nullptr; //lưu trữ các cột của Embedding mà tại đó thuộc right most path. Thật ra mình có thể suy luận được từ rmp
+	int noElemdArrVidOnRMP= noElemVerOnRMP - 1;
+	//int *fromPosCol=nullptr; //lưu trữ các cột của Embedding mà tại đó thuộc right most path. Thật ra mình có thể suy luận được từ rmp
 
-		CHECK(cudaStatus = cudaMalloc((void**)&dArrVidOnRMP,hLevelPtrEmbeddingatALevel.noElemEmbedding*noElemdArrVidOnRMP*sizeof(int)));
-		if(cudaStatus!=cudaSuccess){
-			status =-1;
-			goto Error;
-		}
+	CHECK(cudaStatus = cudaMalloc((void**)&dArrVidOnRMP,hLevelPtrEmbeddingatALevel.noElemEmbedding*noElemdArrVidOnRMP*sizeof(int)));
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
 
-		/*FUNCHECK(status = displaydArrPointerEmbedding(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElem,hLevelPtrEmbeddingatALevel.noElemEmbedding));
-		if(status!=0){
-			goto Error;
-		}*/
+	/*FUNCHECK(status = displaydArrPointerEmbedding(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElem,hLevelPtrEmbeddingatALevel.noElemEmbedding));
+	if(status!=0){
+	goto Error;
+	}*/
 
-		dim3 block(blocksize);
-		dim3 grid((hLevelPtrEmbeddingatALevel.noElemEmbedding + block.x -1)/block.x);
+	dim3 block(blocksize);
+	dim3 grid((hLevelPtrEmbeddingatALevel.noElemEmbedding + block.x -1)/block.x);
 
-		//Hàm này tìm các vid thuộc right most path và lưu vào mảng dArrVidOnRMP. Mảng này dùng để tìm các valid backward edge.
-		kernelFindVidOnRMP<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
-		//kernelFindVidOnRMPv2<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
-		CHECK(cudaStatus=cudaDeviceSynchronize());
-		if(cudaStatus!=cudaSuccess){
-			status = -1;
-			goto Error;
-		}
-		CHECK(cudaStatus = cudaGetLastError());
-		if(cudaStatus!=cudaSuccess){
-			status =-1;
-			goto Error;
-		}
+	//Hàm này tìm các vid thuộc right most path và lưu vào mảng dArrVidOnRMP. Mảng này dùng để tìm các valid backward edge.
+	kernelFindVidOnRMP<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
+	//kernelFindVidOnRMPv2<<<grid,block>>>(hLevelPtrEmbeddingatALevel.dArrPointerEmbedding,hLevelPtrEmbeddingatALevel.noElemEmbedding,rmp,noElemVerOnRMP,dArrVidOnRMP,noElemdArrVidOnRMP);
+	CHECK(cudaStatus=cudaDeviceSynchronize());
+	if(cudaStatus!=cudaSuccess){
+		status = -1;
+		goto Error;
+	}
+	CHECK(cudaStatus = cudaGetLastError());
+	if(cudaStatus!=cudaSuccess){
+		status =-1;
+		goto Error;
+	}
 
-		PMS_PRINT("\n ******** dArrVidOnRMP *******\n");
-		FUNCHECK(status=displayDeviceArr(dArrVidOnRMP,noElemdArrVidOnRMP*hLevelPtrEmbeddingatALevel.noElemEmbedding));
-		if(status!=0){
-			goto Error;
-		}
+	PMS_PRINT("\n ******** dArrVidOnRMP *******\n");
+	FUNCHECK(status=displayDeviceArr(dArrVidOnRMP,noElemdArrVidOnRMP*hLevelPtrEmbeddingatALevel.noElemEmbedding));
+	if(status!=0){
+		goto Error;
+	}
 
-		//PMS_PRINT("\n ******** fromPosCol *******\n");
-		//displayDeviceArr(fromPosCol,noElemdArrVidOnRMP);
+	//PMS_PRINT("\n ******** fromPosCol *******\n");
+	//displayDeviceArr(fromPosCol,noElemdArrVidOnRMP);
 Error:
 	return status;
 }
@@ -6328,7 +6479,7 @@ int PMS::findValidFBExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingA
 	if(status!=0){
 		goto Error;
 	}
-	
+
 	////Chép kết quả từ dArrExtensionTemp sang dExt
 	//chúng ta cần có mảng dArrV để trích các mở rộng duy nhất
 	FUNCHECK(status = displayDeviceEXT(dArrExtensionTemp,dArrV->noElem));
@@ -6343,7 +6494,7 @@ int PMS::findValidFBExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingA
 	}
 
 	//Giải phóng bộ nhớ
-	
+
 	CHECK(cudaStatus = cudaFree(dArrDegreeOfVid)); //1.
 	if(cudaStatus!=cudaSuccess){
 		status =-1;
@@ -6459,7 +6610,7 @@ int PMS::findValidFBExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddin
 	int noElemdArrVj=hEmbedding.at(currentColEmbedding).hBackwardEmbedding.size(); //Số lượng Backward embedding đã có.
 	//int noElemOnRMP = hRMPv2.at(idxLevel).noElem;
 	int noElemOnRMP = hLevelRMP.at(objLevel.prevLevel).noElem;
-	
+
 	if( noElemdArrVj==0)
 	{ //tồn tại mở rộng forward lẫn backward, không cần kiểm tra các backward sẵn có là cạnh nào.
 		kernelFindValidFBExtension<<<grid,block>>>(hLevelPtrEmbeddingAtALevel.dArrPointerEmbedding,hLevelPtrEmbeddingAtALevel.noElem,hLevelPtrEmbeddingAtALevel.noElemEmbedding,hdb.at(0).dO,hdb.at(0).dLO,hdb.at(0).dN,hdb.at(0).dLN,dArrDegreeOfVid,maxDegreeOfVer,dArrV->valid,dArrV->backward,dArrExtensionTemp,listOfVer,minLabel,maxId,fromColumEmbedding,dArrVidOnRMP,hLevelRMP.at(objLevel.prevLevel).noElem-1,hLevelRMP.at(objLevel.prevLevel).dRMP);
@@ -6478,7 +6629,7 @@ int PMS::findValidFBExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddin
 		}
 	} /*else if(noElemdArrVj == (noElemOnRMP-2)){ //chỉ tồn tại mở rộng forward, vì đã mở rộng hết tất cả các backward có thể có rồi.
 
-	}*/else //tồn tại mở rộng forward lẫn backward nhưng phải kiểm tra sự tồn tại của các mở rộng backward đã có
+	  }*/else //tồn tại mở rộng forward lẫn backward nhưng phải kiểm tra sự tồn tại của các mở rộng backward đã có
 	{
 		int *dArrVj = nullptr;
 		FUNCHECK(status=getVjFromDFSCODE(dArrVj,noElemdArrVj)); //Nếu backward chưa được khai thác thì noElemdArrVj=0, ==> chúng ta không được gọi hàm getVjFromDFSCODE, và chúng ta không được gọi hàm kernelFindValidFBExtensionv2 với tham số dArrVj
@@ -6523,7 +6674,7 @@ int PMS::findValidFBExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddin
 	{
 		goto Error;
 	}
-	
+
 	////Chép kết quả từ dArrExtensionTemp sang dExt
 	//chúng ta cần có mảng dArrV để trích các mở rộng duy nhất
 	FUNCHECK(status = displayDeviceEXT(dArrExtensionTemp,dArrV->noElem));
@@ -6545,7 +6696,7 @@ int PMS::findValidFBExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddin
 	}
 
 	//Giải phóng bộ nhớ
-	
+
 	CHECK(cudaStatus = cudaFree(dArrDegreeOfVid)); //1.
 	if(cudaStatus!=cudaSuccess)
 	{
@@ -6733,7 +6884,7 @@ int PMS::findValidForwardExtensionForNonLastSegment(int *listOfVer,ptrArrEmbeddi
 	{
 		goto Error;
 	}
-	
+
 	////Chép kết quả từ dArrExtensionTemp sang dExt
 	//chúng ta cần có mảng dArrV để trích các mở rộng duy nhất
 	FUNCHECK(status = displayDeviceEXT(dArrExtensionTemp,dArrV->noElem));
@@ -6751,11 +6902,11 @@ int PMS::findValidForwardExtensionForNonLastSegment(int *listOfVer,ptrArrEmbeddi
 	/*FUNCHECK(status = extractValidExtensionTodExtv3(dArrExtensionTemp,dArrV,dArrV->noElem,k));
 	if(status!=0)
 	{
-		goto Error;
+	goto Error;
 	}*/
 
 	//Giải phóng bộ nhớ
-	
+
 	CHECK(cudaStatus = cudaFree(dArrDegreeOfVid)); //1.
 	if(cudaStatus!=cudaSuccess)
 	{
@@ -6900,7 +7051,7 @@ int PMS::findForwardExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingA
 	{
 		goto Error;
 	}
-	
+
 	////Chép kết quả từ dArrExtensionTemp sang dExt
 	//chúng ta cần có mảng dArrV để trích các mở rộng duy nhất
 	FUNCHECK(status = displayDeviceEXT(dArrExtensionTemp,dArrV->noElem));
@@ -6922,7 +7073,7 @@ int PMS::findForwardExtension(int *listOfVer,ptrArrEmbedding hLevelPtrEmbeddingA
 	}
 
 	//Giải phóng bộ nhớ
-	
+
 	CHECK(cudaStatus = cudaFree(dArrDegreeOfVid)); //1.
 	if(cudaStatus!=cudaSuccess)
 	{
@@ -7032,16 +7183,16 @@ int PMS::findValidForwardExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmb
 	dim3 grid((hLevelPtrEmbeddingAtALevel.noElemEmbedding+block.x - 1)/block.x);
 	kernelFindValidForwardExtension<<<grid,block>>>(hLevelPtrEmbeddingAtALevel.dArrPointerEmbedding,hLevelPtrEmbeddingAtALevel.noElem,hLevelPtrEmbeddingAtALevel.noElemEmbedding,hdb.at(0).dO,hdb.at(0).dLO,hdb.at(0).dN,hdb.at(0).dLN,dArrDegreeOfVid,maxDegreeOfVer,dArrExtensionTemp,listOfVer,minLabel,maxId,fromColumEmbedding,dArrV->valid,dArrV->backward);
 	CHECK(cudaStatus=cudaDeviceSynchronize());
-		if(cudaStatus!=cudaSuccess){
-			status=-1;
-			goto Error;
-		}
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
-		CHECK(cudaStatus=cudaGetLastError());
-		if(cudaStatus!=cudaSuccess){
-			status=-1;
-			goto Error;
-		}
+	CHECK(cudaStatus=cudaGetLastError());
+	if(cudaStatus!=cudaSuccess){
+		status=-1;
+		goto Error;
+	}
 
 	////In mảng dArrV để kiểm tra thử
 	PMS_PRINT("\n****************dArrV_valid*******************\n");
@@ -7055,7 +7206,7 @@ int PMS::findValidForwardExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmb
 	//if(status!=0){
 	//	goto Error;
 	//}
-	
+
 	////Chép kết quả từ dArrExtensionTemp sang dExt
 	//chúng ta cần có mảng dArrV để trích các mở rộng duy nhất
 	FUNCHECK(status = displayDeviceEXT(dArrExtensionTemp,dArrV->noElem));
@@ -7075,7 +7226,7 @@ int PMS::findValidForwardExtensionv2(int *listOfVer,ptrArrEmbedding hLevelPtrEmb
 	}
 
 	//Giải phóng bộ nhớ
-	
+
 	CHECK(cudaStatus = cudaFree(dArrDegreeOfVid)); //1.
 	if(cudaStatus!=cudaSuccess){
 		status =-1;
@@ -7131,7 +7282,7 @@ int PMS::getVjFromDFSCODE(int *&dArrVj,int noElemdArrVj){ //Lấy vj từ DFS_co
 		goto Error;
 	}
 
-	
+
 	int idx=DFS_CODE.size()-1;
 	//Dựa vào số lượng phần tử hBackwardEmbedding.size() hiện có để duyệt và lấy ra vj của DFS_CODE
 	for (int i = 0; i < noElemdArrVj; i++,idx--)
@@ -7187,11 +7338,11 @@ int PMS::FSMiningv2() //đã có Embedding mới và RMP tương ứng với nó
 	}
 
 	//3.3. Dựa vào dArrPointerEmbedding và rmp để tìm các đỉnh cần mở rộng
-//	FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
+	//	FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
 	if(status !=0){
 		goto Error;
 	}
-		//hiển thị danh sách đỉnh
+	//hiển thị danh sách đỉnh
 	PMS_PRINT("\n\n ********* listVer *********\n");
 	FUNCHECK(status=displayDeviceArr(hListVerv2.at(idxLevel).dListVer,hListVerv2.at(idxLevel).noElem)); //5. need cudaFree and pop_back
 	if(status!=0){
@@ -7217,7 +7368,7 @@ int PMS::FSMiningv2() //đã có Embedding mới và RMP tương ứng với nó
 	hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).noElem= noElemVerOnRMP;
 	hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.resize(noElemVerOnRMP);
 
-	
+
 	int *tempListVerCol = nullptr; //6. need cudaFree //chứa danh sách các đỉnh cần mở rộng thuộc một embedding column cụ thể.
 	CHECK(cudaStatus = cudaMalloc((void**)&tempListVerCol,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding * sizeof(int)));
 	if(cudaStatus!=cudaSuccess){
@@ -7230,7 +7381,7 @@ int PMS::FSMiningv2() //đã có Embedding mới và RMP tương ứng với nó
 	{ //Nếu số lượng đỉnh trên RMP lớn hơn 2 thì mới tồn tại backward. Vì ở đây chỉ xét đơn đồ thị vô hướng
 		//dArrVidOnRMP: chứa các đỉnh thuộc RMP của mỗi Embedding. Dùng để kiểm tra sự tồn tại của đỉnh trên right most path
 		//khi tìm các mở rộng backward. Chỉ dùng tới khi right most path có 3 đỉnh trở lên (chỉ xét trong đơn đồ thị vô hướng).
-		
+
 		FUNCHECK(status = findVerOnRMPForBWCheck(hLevelPtrEmbeddingv2.at(idxLevel),rmp,noElemVerOnRMP,dArrVidOnRMP));
 		if(status!=0){
 			goto Error;
@@ -7345,7 +7496,7 @@ int PMS::FSMiningv2() //đã có Embedding mới và RMP tương ứng với nó
 		status=-1;
 		goto Error;
 	}
-	
+
 	hListVerv2.pop_back(); //5.pop_back
 
 	CHECK(cudaStatus=cudaFree(tempListVerCol)); //6.
@@ -7409,11 +7560,11 @@ int PMS::FSMiningv3(int bw) //đã có Embedding mới và RMP tương ứng v�
 	}
 
 	//3.3. Dựa vào dArrPointerEmbedding và rmp để tìm các đỉnh cần mở rộng
-//	FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
+	//	FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
 	if(status !=0){
 		goto Error;
 	}
-		//hiển thị danh sách đỉnh
+	//hiển thị danh sách đỉnh
 	PMS_PRINT("\n\n ********* listVer *********\n");
 	FUNCHECK(status= displayDeviceArr(hListVerv2.at(idxLevel).dListVer,hListVerv2.at(idxLevel).noElem)); //5. need cudaFree and pop_back
 	if(status!=0){
@@ -7438,7 +7589,7 @@ int PMS::FSMiningv3(int bw) //đã có Embedding mới và RMP tương ứng v�
 	hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).noElem= noElemVerOnRMP;
 	hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.resize(noElemVerOnRMP);
 
-	
+
 	int *tempListVerCol = nullptr; //6. need cudaFree //chứa danh sách các đỉnh cần mở rộng thuộc một embedding column cụ thể.
 	CHECK(cudaStatus = cudaMalloc((void**)&tempListVerCol,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding * sizeof(int)));
 	if(cudaStatus!=cudaSuccess){
@@ -7549,7 +7700,7 @@ int PMS::FSMiningv3(int bw) //đã có Embedding mới và RMP tương ứng v�
 		status=-1;
 		goto Error;
 	}
-	
+
 	hListVerv2.pop_back(); //5.pop_back
 
 	CHECK(cudaStatus=cudaFree(tempListVerCol)); //6.
@@ -7569,7 +7720,7 @@ int PMS::FSMiningv3(int bw) //đã có Embedding mới và RMP tương ứng v�
 		hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.clear();
 		hLevelUniEdgeSatisfyMinsupv2.pop_back();
 	}
-	
+
 
 	--Level; //Giảm Level
 	idxLevel=Level-1;	//Cập nhật lại idxLevel 
@@ -7601,7 +7752,7 @@ int PMS::FSMiningv4(int bw) //đã có Embedding mới và RMP tương ứng v�
 		}
 	}
 
-	
+
 	//2. Lấy số lượng đỉnh trên right most path
 	int noElemVerOnRMP = hRMPv2.at(idxLevel).noElem; //1.need pop_back this level //right most path chứa bao nhiêu đỉnh 
 
@@ -7609,15 +7760,15 @@ int PMS::FSMiningv4(int bw) //đã có Embedding mới và RMP tương ứng v�
 	//3.1 xây dựng dArrPointerEmbedding. hEmbedding là bộ nhớ trên host. Muốn khai thác trên device thì cần phải xây dựng một bộ nhớ trên device.
 
 	//if(bw!=1){
-		FUNCHECK(status = buildArrPointerEmbeddingv2(hEmbedding,hLevelPtrEmbeddingv2)); //4. need cudaFree and pop_back Level//xây dựng dArrPointerEmbedding dựa vào hEmbedding
-		if(status!=0){
-			goto Error;
-		}
+	FUNCHECK(status = buildArrPointerEmbeddingv2(hEmbedding,hLevelPtrEmbeddingv2)); //4. need cudaFree and pop_back Level//xây dựng dArrPointerEmbedding dựa vào hEmbedding
+	if(status!=0){
+		goto Error;
+	}
 	//Kiểm tra xem việc xây dựng embedding trên device đã đúng chưa
-		FUNCHECK(status=displaydArrPointerEmbedding(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElem,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding));
-		if(status!=0){
-			goto Error;
-		}
+	FUNCHECK(status=displaydArrPointerEmbedding(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElem,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding));
+	if(status!=0){
+		goto Error;
+	}
 	//}
 	//else
 	//{
@@ -7640,11 +7791,11 @@ int PMS::FSMiningv4(int bw) //đã có Embedding mới và RMP tương ứng v�
 	}
 
 	//3.3. Dựa vào dArrPointerEmbedding và rmp để tìm các đỉnh cần mở rộng
-//	FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
+	//	FUNCHECK(status = findListVer(hLevelPtrEmbeddingv2.at(idxLevel).dArrPointerEmbedding,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding,rmp,noElemVerOnRMP,hListVerv2));
 	if(status !=0){
 		goto Error;
 	}
-		//hiển thị danh sách đỉnh
+	//hiển thị danh sách đỉnh
 	PMS_PRINT("\n\n ********* listVer *********\n");
 	FUNCHECK(status= displayDeviceArr(hListVerv2.at(idxLevel).dListVer,hListVerv2.at(idxLevel).noElem)); //5. need cudaFree and pop_back
 	if(status!=0){
@@ -7669,18 +7820,18 @@ int PMS::FSMiningv4(int bw) //đã có Embedding mới và RMP tương ứng v�
 	hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).noElem= noElemVerOnRMP;
 	hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.resize(noElemVerOnRMP);
 
-	
+
 	int *tempListVerCol = nullptr; //6. need cudaFree //chứa danh sách các đỉnh cần mở rộng thuộc một embedding column cụ thể.
 	CHECK(cudaStatus = cudaMalloc((void**)&tempListVerCol,hLevelPtrEmbeddingv2.at(idxLevel).noElemEmbedding * sizeof(int)));
 	if(cudaStatus!=cudaSuccess){
 		status = -1;
 		goto Error;
 	}
-		int *dArrVidOnRMP = nullptr; //7. need cudaFree //lưu trữ các đỉnh trên RMP của Embedding, có kích thước nhỏ hơn  đỉnh so với RMP
-		FUNCHECK(status = findVerOnRMPForBWCheckv2(hLevelPtrEmbeddingv2.at(idxLevel),rmp,noElemVerOnRMP,dArrVidOnRMP));
-		if(status!=0){
-			goto Error;
-		}
+	int *dArrVidOnRMP = nullptr; //7. need cudaFree //lưu trữ các đỉnh trên RMP của Embedding, có kích thước nhỏ hơn  đỉnh so với RMP
+	FUNCHECK(status = findVerOnRMPForBWCheckv2(hLevelPtrEmbeddingv2.at(idxLevel),rmp,noElemVerOnRMP,dArrVidOnRMP));
+	if(status!=0){
+		goto Error;
+	}
 
 	if(hRMPv2.at(idxLevel).noElem>2){ //Nếu số lượng đỉnh trên RMP lớn hơn 2 thì mới tồn tại backward. Vì ở đây chỉ xét đơn đồ thị vô hướng
 		//dArrVidOnRMP: chứa các đỉnh thuộc RMP của mỗi Embedding. Dùng để kiểm tra sự tồn tại của đỉnh trên right most path
@@ -7808,7 +7959,7 @@ int PMS::FSMiningv4(int bw) //đã có Embedding mới và RMP tương ứng v�
 		status=-1;
 		goto Error;
 	}
-	
+
 	hListVerv2.pop_back(); //5.pop_back. Gỡ bỏ phần tử quản lý các đỉnh thuộc embedding column trên device
 
 	CHECK(cudaStatus=cudaFree(tempListVerCol)); //6.Giải phóng bộ nhớ tạm lưu trữ các đỉnh của một embedding column cần mở rộng
@@ -7828,7 +7979,7 @@ int PMS::FSMiningv4(int bw) //đã có Embedding mới và RMP tương ứng v�
 		hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.clear();
 		hLevelUniEdgeSatisfyMinsupv2.pop_back();
 	}
-	
+
 	cout<<endl<<"****** Decrease Level ****";
 	--Level; //Giảm Level
 	idxLevel=Level-1;	//Cập nhật lại idxLevel 
@@ -8026,7 +8177,7 @@ __global__ void kernelFindValidFBExtensionv2(Embedding **dArrPointerEmbedding,in
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 	//Duyệt qua các Embedding và xét các mở rộng cho đỉnh tại vị trí idxQ
 	if(i<noElem_Embedding){
-	//	int fromPosCol;
+		//	int fromPosCol;
 		//int idxRMP=0;
 		//int noELemVerOnRMP = segdArrVidOnRMP +1;
 		int posColumn =noElem_dArrPointerEmbedding-1;
@@ -8053,14 +8204,14 @@ __global__ void kernelFindValidFBExtensionv2(Embedding **dArrPointerEmbedding,in
 			PMS_PRINT("\nThread %d, j: %d has ToVidLabel:%d",i,j,labelToVid);
 			//1. Trước tiên kiểm tra nhãn của labelToVid có nhỏ hơn minLabel hay không. Nếu nhỏ hơn thì return. Vì nó cũng không có khả năng là backward extension
 			if(labelToVid<minLabel) 
-					return;
-					//goto backward;
+				return;
+			//goto backward;
 			//2. kiểm tra xem đỉnh toVid có tồn tại trong embedding hay không, nếu tồn tại thì nó không là forward extension --> có khả năng nó là backward
 			//Duyệt qua embedding column từ Q cuối đến Q đầu, lần lượt lấy vid so sánh với toVid
 
 			//PMS_PRINT("\n Q[%d] Row[%d] (idx:%d vid:%d)",posColumn,posRow,Q[posRow].idx,Q[posRow].vid);//Q[1][0]
 			if(toVid==Q[posRow].vid) 
-					goto backward;
+				goto backward;
 
 			//PMS_PRINT("\nj:%d toVid:%d Q.vid:%d",j,toVid,Q[posRow].vid);
 
@@ -8103,7 +8254,7 @@ backward:
 			//2. Kiểm tra backward. Vấn đề là khi mở rộng backward từ một backward embedding thì làm sao biết backward extension đó đã có rồi.
 			//==> giải pháp là dựa vào các vj của backward extension trong DFS_CODE.
 			//Nếu nobwWeHave = 2 thì chúng ta phải lấy 2 vj của DFS_CODE của embedding column hiện tại
-			
+
 			for (int k = 1; k < segdArrVidOnRMP; k++) //tại sao k lại bắt đầu từ 1, vì k=0 là node kế trước của node đang mở rộng, nên sẽ không tồn tại backward với node kế trước.
 			{
 				int agreeK = 0; //backward extension chưa tồn tại. Ở đây có thể cải tiến song song cho việc kiểm tra tồn tại backward extension
@@ -8166,8 +8317,8 @@ __device__ bool IsVertexOnEmbedding(int vertex,Embedding **dArrPointerEmbedding,
 __global__ void kernelFindValidFBExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp,int *dArrVj,int noElemdArrVj){
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 	if(i<noElem_Embedding){ //Mỗi một thread i sẽ tìm mở rộng cho một đỉnh của Embedding.
-	//if(i==0){
-	    //int fromPosCol;
+		//if(i==0){
+		//int fromPosCol;
 		//int idxRMP=0;
 		//int noELemVerOnRMP = segdArrVidOnRMP +1;
 		int posColumn =noElem_dArrPointerEmbedding-1; 
@@ -8195,19 +8346,19 @@ __global__ void kernelFindValidFBExtensionv3(Embedding **dArrPointerEmbedding,in
 			PMS_PRINT("\nThread %d, j: %d has ToVidLabel:%d",i,j,labelToVid);
 			//1. Trước tiên kiểm tra nhãn của labelToVid có nhỏ hơn minLabel hay không. Nếu nhỏ hơn thì return. Vì nó cũng không có khả năng là backward extension
 			if(labelToVid<minLabel) 
-					continue;
-					//goto backward;
+				continue;
+			//goto backward;
 			//2. kiểm tra xem đỉnh toVid có tồn tại trong embedding hay không, nếu tồn tại thì nó không là forward extension --> có khả năng nó là backward
-//			__device__ bool IsVertexOnEmbedding(int vertex,Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int row){
+			//			__device__ bool IsVertexOnEmbedding(int vertex,Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int row){
 			b=IsVertexOnEmbedding(toVid,dArrPointerEmbedding,noElem_dArrPointerEmbedding,i);
 
 			/*
 			if(b==true){
-				PMS_PRINT("\nThread %d Exist:%d",i,toVid);
+			PMS_PRINT("\nThread %d Exist:%d",i,toVid);
 			}
 			else
 			{
-				PMS_PRINT("\nThread %d NonExist:%d",i,toVid);
+			PMS_PRINT("\nThread %d NonExist:%d",i,toVid);
 			}
 			*/
 
@@ -8284,8 +8435,8 @@ backward:
 __global__ void kernelFindValidForwardExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp){
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 	if(i<noElem_Embedding){ //Mỗi một thread i sẽ tìm mở rộng cho một đỉnh của Embedding.
-	//if(i==0){
-	    //int fromPosCol;
+		//if(i==0){
+		//int fromPosCol;
 		//int idxRMP=0;
 		//int noELemVerOnRMP = segdArrVidOnRMP +1;
 		int posColumn =noElem_dArrPointerEmbedding-1; 
@@ -8313,24 +8464,24 @@ __global__ void kernelFindValidForwardExtensionv3(Embedding **dArrPointerEmbeddi
 			PMS_PRINT("\nThread %d, j: %d has ToVidLabel:%d",i,j,labelToVid);
 			//1. Trước tiên kiểm tra nhãn của labelToVid có nhỏ hơn minLabel hay không. Nếu nhỏ hơn thì return. Vì nó cũng không có khả năng là backward extension
 			if(labelToVid<minLabel) 
-					continue;
-					//goto backward;
+				continue;
+			//goto backward;
 			//2. kiểm tra xem đỉnh toVid có tồn tại trong embedding hay không, nếu tồn tại thì nó không là forward extension --> có khả năng nó là backward
-//			__device__ bool IsVertexOnEmbedding(int vertex,Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int row){
+			//			__device__ bool IsVertexOnEmbedding(int vertex,Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int row){
 			b=IsVertexOnEmbedding(toVid,dArrPointerEmbedding,noElem_dArrPointerEmbedding,i);
 
 			/*
 			if(b==true){
-				PMS_PRINT("\nThread %d Exist:%d",i,toVid);
+			PMS_PRINT("\nThread %d Exist:%d",i,toVid);
 			}
 			else
 			{
-				PMS_PRINT("\nThread %d NonExist:%d",i,toVid);
+			PMS_PRINT("\nThread %d NonExist:%d",i,toVid);
 			}
 			*/
 
 			if(b==true){
-				 continue;
+				continue;
 			}
 
 			int indexOfd_arr_V=i*maxDegreeOfVer+j;
@@ -8481,8 +8632,8 @@ __global__ void kernelGetFromLabel(EXT *dArrExt,int *dFromLi){
 
 //kernelGetFromLabelv3<<<grida,blocka>>>(ext.dArrExt,dFromVi,dFromLi);
 __global__ void kernelGetFromLabelv3(EXT *dArrExt,int *dFromVi,int *dFromLi){
-			*dFromVi = dArrExt[0].vi; //trích ra vi của DFS_CODE
-			*dFromLi = dArrExt[0].li; //trích ra li nhãn của đỉnh to của DFS_CODE
+	*dFromVi = dArrExt[0].vi; //trích ra vi của DFS_CODE
+	*dFromLi = dArrExt[0].li; //trích ra li nhãn của đỉnh to của DFS_CODE
 }
 
 
@@ -8846,7 +8997,7 @@ int PMS::extractValidExtensionTodExt(EXT *dArrExtension,V *dArrV,int noElem_dArr
 		status=-1;
 		goto Error;
 	}
-	
+
 	if(hLevelUniEdge.at(0).vUE.at(idxEXT).noElem>0){
 		CHECK(cudaStatus=cudaFree(hLevelUniEdge.at(0).vUE.at(idxEXT).dArrUniEdge));
 		if(cudaStatus!=cudaSuccess){
@@ -8877,8 +9028,8 @@ __global__ void kernelmarkValidForwardEdge_LastExt(EXT* dArrExt, int noElemdArrE
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if(i<noElemdArrExt){
 		if(dArrExt[i].vi < dArrExt[i].vj){ //Chỉ xét các forward
-		int index=	dArrExt[i].lij*Lv + dArrExt[i].lj;
-		dAllPossibleExtension[index]=1;
+			int index=	dArrExt[i].lij*Lv + dArrExt[i].lj;
+			dAllPossibleExtension[index]=1;
 		}
 	}
 }
@@ -8942,7 +9093,7 @@ Error:
 int PMS::extractUniqueForwardBackwardEdge_LastExt(EXTk ext,UniEdgek& ue){
 	cudaError_t cudaStatus;
 	int status =0;
-	
+
 	UniEdgek fwEdgeTemp; //1. need cudaFree
 	UniEdgek bwEdgeTemp; //2. need cudaFree
 
@@ -8952,7 +9103,7 @@ int PMS::extractUniqueForwardBackwardEdge_LastExt(EXTk ext,UniEdgek& ue){
 		goto Error;
 	}
 
-		//Input: EXTk, dTempAllBWExtension,d_allPossibleExtensionBW
+	//Input: EXTk, dTempAllBWExtension,d_allPossibleExtensionBW
 	FUNCHECK(status = extractAllFWExtension(fwEdgeTemp,ext)); //Hàm trích tất cả các forward uniEdge hợp lệ
 	if(status!=0){
 		goto Error;
@@ -9026,7 +9177,7 @@ int PMS::extractUniqueForwardBackwardEdge_LastExtv2(EXTk ext,UniEdgek& ue)
 {
 	cudaError_t cudaStatus;
 	int status =0;
-	
+
 	UniEdgek fwEdgeTemp; //1. need cudaFree
 	UniEdgek bwEdgeTemp; //2. need cudaFree
 
@@ -9173,7 +9324,7 @@ Error:
 int PMS::extractUniqueForwardEdge_NonLastExtv2(EXTk ext,UniEdgek& ue){
 	cudaError_t cudaStatus;
 	int status =0;
-	
+
 	UniEdgek fwEdgeTemp; //1. need cudaFree
 	//UniEdgek bwEdgeTemp; //2. need cudaFree
 
@@ -9181,14 +9332,14 @@ int PMS::extractUniqueForwardEdge_NonLastExtv2(EXTk ext,UniEdgek& ue){
 	//int noBWCurrent = hEmbedding.at(currentColEmbedding).hBackwardEmbedding.size();
 	//int noBWCanHave = hRMPv2.at(idxLevel).noElem - 2;
 	//if(noBWCanHave>noBWCurrent){
-		////Input: EXTk, dTempAllBWExtension,d_allPossibleExtensionBW
-		//FUNCHECK(status = extractAllBWExtensionv2(bwEdgeTemp,ext)); //Hàm trích tất cả các backward uniEdge hợp lệ
-		//if(status!=0){
+	////Input: EXTk, dTempAllBWExtension,d_allPossibleExtensionBW
+	//FUNCHECK(status = extractAllBWExtensionv2(bwEdgeTemp,ext)); //Hàm trích tất cả các backward uniEdge hợp lệ
+	//if(status!=0){
 	//		goto Error;
 	//	}
 	//}
 
-		//Input: EXTk, dTempAllBWExtension,d_allPossibleExtensionBW
+	//Input: EXTk, dTempAllBWExtension,d_allPossibleExtensionBW
 	FUNCHECK(status = extractAllFWExtension(fwEdgeTemp,ext)); //Hàm trích tất cả các forward uniEdge hợp lệ //Nếu không có fw thì không trích
 	if(status!=0){
 		goto Error;
@@ -9315,7 +9466,7 @@ Error:
 int PMS::extractAllFWExtension(UniEdgek &ue ,EXTk ext){
 	int status =0;
 	cudaError_t cudaStatus;
-	
+
 	int *dFromLi=nullptr;
 	CHECK(cudaStatus = cudaMalloc((void**)&dFromLi,sizeof(int)));
 	if(cudaStatus!=cudaSuccess){
@@ -9375,7 +9526,7 @@ int PMS::extractAllFWExtension(UniEdgek &ue ,EXTk ext){
 			goto Error;
 		}
 	}
-	
+
 	int *d_allPossibleExtensionScanResultFW=nullptr; //cần được giải phóng cuối hàm
 	CHECK(cudaStatus=cudaMalloc((void**)&d_allPossibleExtensionScanResultFW,noElem_dallPossibleExtension*sizeof(int)));
 	if (cudaStatus!=cudaSuccess){
@@ -9440,7 +9591,7 @@ int PMS::extractAllFWExtension(UniEdgek &ue ,EXTk ext){
 			status=-1;
 			goto Error;
 		}
-		
+
 		CHECK(cudaStatus=cudaFree(dFromVi));
 		if(cudaStatus!=cudaSuccess){
 			status=-1;
@@ -9464,7 +9615,7 @@ int PMS::extractAllFWExtension(UniEdgek &ue ,EXTk ext){
 			goto Error;
 		}
 	}
-	
+
 	////Ánh xạ ngược lại từ vị trí trong d_allPossibleExtension thành cạnh và lưu kết quả vào d_UniqueExtension
 	dim3 block(blocksize);
 	dim3 grid((noElem_dallPossibleExtension + block.x -1)/block.x);
@@ -9500,7 +9651,7 @@ int PMS::extractAllFWExtension(UniEdgek &ue ,EXTk ext){
 		status=-1;
 		goto Error;
 	}
-	
+
 	CHECK(cudaStatus=cudaFree(dFromLi));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
@@ -9523,7 +9674,7 @@ Error:
 int PMS::extractAllBWExtension(UniEdgek &ue ,EXTk ext){
 	int status =0;
 	cudaError_t cudaStatus;
-	
+
 	int noElem_dallPossibleExtensionBW=hRMPv2.at(idxLevel).hArrRMP.at(2) + 1;
 	int *d_allPossibleExtensionBW=nullptr; //cần được giải phóng ở cuối hàm
 	CHECK(cudaStatus=cudaMalloc((void**)&d_allPossibleExtensionBW,noElem_dallPossibleExtensionBW*sizeof(int)));
@@ -9637,7 +9788,7 @@ int PMS::extractAllBWExtensionv2(UniEdgek &ue ,EXTk ext)
 {
 	int status =0;
 	cudaError_t cudaStatus;
-	
+
 	//int noElem_dallPossibleExtensionBW=hRMPv2.at(idxLevel).hArrRMP.at(2) + 1; //Tại sao lại chỉ định là hằng số at.(2)?
 	int noElem_dallPossibleExtensionBW = hLevelRMP.at(objLevel.prevLevel).noElem - 2; //Số lượng các mở rộng backward có thể có chính bằng số lượng đỉnh thuộc right most path trừ 2;
 	int *d_allPossibleExtensionBW=nullptr; //cần được giải phóng ở cuối hàm
@@ -9861,23 +10012,23 @@ int PMS::extractAllBWExtensionv2(UniEdgek &ue ,EXTk ext)
 Error:
 	return status;
 }
-
+//Hiển thị nội dung device array. Chép qua host rồi mới hiển thị nội dung.
 int PMS::displaydArrEXT(EXT* dArrEXT,int noElem){
 	int status= 0;
 	cudaError_t cudaStatus;
-
+	//Cấp phát bộ nhớ ở host
 	EXT* hArrEXT = (EXT*)malloc(noElem *sizeof(EXT));
 	if(hArrEXT==NULL){
 		status=-1;
 		PMS_PRINT("\n malloc hArrEXT failed\n");
 		goto Error;
-	}
+	} //Chép dữ liệu từ GPU sang HOST
 	CHECK(cudaStatus=cudaMemcpy(hArrEXT,dArrEXT,sizeof(EXT)*noElem,cudaMemcpyDeviceToHost));
 	if(cudaStatus!=cudaSuccess){
 		status=-1;
 		goto Error;
 	}
-
+	//Duyệt và hiển thị từng phần tử. Mỗi phần tử là một cạnh của DFS Code
 	for (int i = 0; i < noElem; i++)
 	{
 		PMS_PRINT("\n dArrEXT[%d]:(vi,vj) (%d %d) (li,lij,lj) (%d,%d,%d) (vgi, vgj) (%d, %d) posRow:%d",i,hArrEXT[i].vi,hArrEXT[i].vj,hArrEXT[i].li,hArrEXT[i].lij,hArrEXT[i].lj,hArrEXT[i].vgi,hArrEXT[i].vgj,hArrEXT[i].posRow);
@@ -10181,8 +10332,8 @@ int PMS::extractValidExtensionTodExtv2(EXT *dArrExtension,V *dArrV,int noElem_dA
 	{
 		CHECK(cudaStatus = cudaMemset(hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,0,sizeof(EXT)*noElem_dExt));
 		if(cudaStatus!=cudaSuccess){
-		status =-1;
-		goto Error;
+			status =-1;
+			goto Error;
 		}
 	}
 	dim3 block(blocksize);
@@ -10395,8 +10546,8 @@ int PMS::extractValidExtensionTodExtv3(EXT *dArrExtension,V *dArrV,int noElem_dA
 		CHECK(cudaStatus = cudaMemset(hLevelEXT.at(objLevel.Level).vE.at(idxEXT).dArrExt,0,sizeof(EXT)*noElem_dExt));
 		if(cudaStatus!=cudaSuccess)
 		{
-		status =-1;
-		goto Error;
+			status =-1;
+			goto Error;
 		}
 	}
 	dim3 block(blocksize);
@@ -10434,7 +10585,7 @@ int PMS::extractValidExtensionTodExtv3(EXT *dArrExtension,V *dArrV,int noElem_dA
 	hLevelUniEdge.resize(1);
 	hLevelUniEdge.at(0).noElem=1;
 	hLevelUniEdge.at(0).vUE.resize(1);
-	
+
 	FUNCHECK(status=extractUniqueForwardBackwardEdge_LastExtv2(hLevelEXT.at(objLevel.Level).vE.at(idxEXT),hLevelUniEdge.at(0).vUE.at(0)));
 	if(status!=0)
 	{
@@ -10446,7 +10597,7 @@ int PMS::extractValidExtensionTodExtv3(EXT *dArrExtension,V *dArrV,int noElem_dA
 	PMS_PRINT("\n Li:%d",hLevelUniEdge.at(0).vUE.at(0).Li);
 	PMS_PRINT("\n firstIndex of forward extension:%d",hLevelUniEdge.at(0).vUE.at(0).firstIndexForwardExtension);
 	FUNCHECK(status=displayArrUniEdge(hLevelUniEdge.at(0).vUE.at(0).dArrUniEdge,hLevelUniEdge.at(0).vUE.at(0).noElem)); //3. bộ nhớ dArrUniEdge phỉ được giải phóng ở cuối hàm
- 	if(status!=0)
+	if(status!=0)
 	{
 		goto Error;
 	}
@@ -10492,11 +10643,11 @@ int PMS::extractValidExtensionTodExtv3(EXT *dArrExtension,V *dArrV,int noElem_dA
 	//}
 
 	if(hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).noElem>0){
-		FUNCHECK(status=Miningv3(hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).noElem,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).dArrUniEdge,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).hArrSupport,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).noElem,idxEXT));
-		if(status!=0)
-		{
-			goto Error;
-		}
+	FUNCHECK(status=Miningv3(hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).noElem,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).dArrUniEdge,hLevelUniEdgeSatisfyMinsupv2.at(idxLevel).vecUES.at(idxEXT).hArrSupport,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,hLevelEXTv2.at(idxLevel).vE.at(idxEXT).noElem,idxEXT));
+	if(status!=0)
+	{
+	goto Error;
+	}
 	}
 
 	*/
@@ -10607,8 +10758,8 @@ int PMS::extractValidExtensionTodExtv4(EXT *dArrExtension,V *dArrV,int noElem_dA
 	{
 		CHECK(cudaStatus = cudaMemset(hLevelEXTv2.at(idxLevel).vE.at(idxEXT).dArrExt,0,sizeof(EXT)*noElem_dExt));
 		if(cudaStatus!=cudaSuccess){
-		status =-1;
-		goto Error;
+			status =-1;
+			goto Error;
 		}
 	}
 	dim3 block(blocksize);
@@ -11152,8 +11303,8 @@ int PMS::computeSupportBW(EXT* dArrExt,int* dArrBoundaryScanResult,int noElemdAr
 	/*CHECK(cudaStatus = reduction(dF,noElemdF,support));
 	if(cudaStatus!=cudaSuccess)
 	{
-		status=-1;
-		goto Error;
+	status=-1;
+	goto Error;
 	}*/
 	myReduce(dF,noElemdF,hSupport);
 
@@ -11204,8 +11355,8 @@ int PMS::computeSupportFW(EXT* dArrExt,int* dArrBoundaryScanResult,int noElemdAr
 	/*CHECK(cudaStatus = reduction(dF,noElemdF,support));
 	if(cudaStatus!=cudaSuccess)
 	{
-		status=-1;
-		goto Error;
+	status=-1;
+	goto Error;
 	}*/
 
 	myReduce(dF,noElemdF,hSupport);
@@ -11369,8 +11520,8 @@ int PMS::computeSupportv2(EXT *dArrExt,int noElemdArrExt,UniEdge *dArrUniEdge,in
 
 		/*CHECK(cudaStatus = reduction(dF,noElemdF,support));
 		if(cudaStatus!=cudaSuccess){
-			status=-1;
-			goto Error;
+		status=-1;
+		goto Error;
 		}*/
 
 		PMS_PRINT("\n******support********");
@@ -12019,7 +12170,7 @@ int PMS::forwardExtension(int idxhEXTk,int *listOfVer,int noElemEmbedding,int fr
 		}
 	}
 
-	
+
 Error:
 	return status;
 }

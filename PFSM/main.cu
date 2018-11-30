@@ -1,7 +1,7 @@
 #pragma once
 
 #include "moderngpu.cuh"		// Include all MGPU kernels.
-
+#include <typeinfo>
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include <stdio.h>
@@ -56,19 +56,23 @@ using namespace mgpu;
 
 ContextPtr ctx;
 
+
+
 int main(int argc, char** argv){	
 	int status=0;
+	
 	ctx = CreateCudaDevice(argc, argv, true);
+	cout << typeid(ctx).name() << endl;
 	//cdactx=*ctx;
 	StopWatchWin timer;
 	
 	system("pause");
 #pragma region "load database"
-
+	//Open file result.txt to write append
 	std::ofstream fout("result.txt", std::ios_base::app | std::ios_base::out);
 	
 	timer.start();
-	PMS pms;
+	PMS pms; //Tạo đối tượng PMS.
 	pms.os=&fout;
 	FUNCHECK(status=pms.prepareDataBase()); //chuẩn bị dữ liệu
 	if(status!=0){
@@ -88,9 +92,9 @@ int main(int argc, char** argv){
 #pragma endregion "end load database"
 
 	FUNCHECK(pms.extractAllEdgeInDB()); //Từ CSDL đã nạp vào device, trích tất cả các cạnh trong CSDL song song
-	pms.displayArrExtension(pms.hExtension.at(0).dExtension,pms.hExtension.at(0).noElem); //Những cạnh này được xem như là một mở rộng của pattern P
+	pms.displayArrExtension(pms.hExtension.at(0).dExtension,pms.hExtension.at(0).noElem); //Những cạnh này được xem như là một mở rộng của pattern P. Bước này chỉ đơn thuần là xây dựng DFS Code cho các cạnh trong đồ thị.
 
-	FUNCHECK(pms.getValidExtension_pure()); //Trích các mở rộng hợp lệ (li<lj: chỉ xét cho đơn đồ thị vô hướng)
+	FUNCHECK(pms.getValidExtension_pure()); //Trích các mở rộng hợp lệ (li<lj: chỉ xét cho đơn đồ thị vô hướng) ==> Notes: Cần phải xét cho trường hợp đa đồ thị vô hướng và có hướng
 	
 	FUNCHECK(pms.extractUniEdge());
 

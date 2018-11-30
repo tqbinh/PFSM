@@ -2,6 +2,7 @@
 #include "gspan.cuh"
 #include <stdio.h>
 #include <vector>
+#include <stdlib.h> /* exit, EXIT_FAILURE */
 #include "helper_timer.h"
 #include "scan_largearray_kernel.h"
 #include "cuda_runtime.h"
@@ -13,7 +14,9 @@
 
 using namespace mgpu;
 using namespace std;
-
+//
+//#define SUCCESS 0;
+//#define ERROR 1;
 
 #define blocksize 512
 
@@ -22,7 +25,7 @@ using namespace std;
 const int error = call; \
 if (error != 0) \
 { \
-std::printf("Error: %s:%d, ", __FILE__, __LINE__); \
+std::printf("Error: %s:%d:%s, ", __FILE__, __LINE__,__FUNCTION__); \
 std::printf("code:%d, reason: %s\n", error, "Function failed"); \
 } \
 }
@@ -58,7 +61,7 @@ struct Extension //Thông tin của một cạnh thuộc CSDL
 	int vi,vj,li,lij,lj; //DFS_code của cạnh mở rộng
 	int vgi,vgj; //global id của đỉnh
 	//struct_Embedding *d_rowpointer;//lưu trữ pointer trỏ đến embedding mà nó mở rộng.
-	Extension():vi(0),vj(0),li(0),lij(0),lj(0),vgi(0),vgj(0){};//khởi tạo cấu trúc
+	Extension():vi(0),vj(1),li(0),lij(0),lj(0),vgi(0),vgj(0){};//khởi tạo cấu trúc
 };
 
 struct arrExtension
@@ -152,7 +155,7 @@ struct EXT
 	//Hai thông tin bên dưới cho biết cạnh mở rộng từ embedding nào. Chúng ta cần phải biết thông tin này để 
 	//int posColumn; /* vị trí của embedding column trong mảng các embedding Q*/
 	int posRow; //vị trí của embedding trong cột Q
-	EXT():vi(0),vj(0),li(0),lij(0),lj(0),vgi(0),vgj(0),posRow(0){};
+	EXT():vi(0),vj(1),li(0),lij(0),lj(0),vgi(0),vgj(0),posRow(-1){};
 };
 
 struct EXTk
@@ -296,7 +299,7 @@ public:
 	void decreaseLevel();
 	int prepareDataBase();
 	void displayArray(int*, const unsigned int);
-	int displayDeviceArr(int *,int);
+	int displayDeviceArr(int*,int);
 	int displayDeviceArr(float*,int);
 	//void displayEmbeddingColumn(EmbeddingColumn);
 	int displayArrExtension(Extension*, int);
@@ -475,6 +478,7 @@ extern __global__ void kernelCalcBoundary_pure(EXT *d_ValidExtension,unsigned in
 extern __global__ void	kernelExtractUniEdgeSatifyMinsup_pure(UniEdge *dUniEdge,int *dV,int *dVScanResult,int noElemUniEdge,UniEdge *dUniEdgeSatisfyMinsup,int *dSup,int *dResultSup);
 extern __global__ void kernelMarkExtension(const EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int li,int lij,int lj);
 
+extern int allocate_gpu_memory(EXT* &d_array,int noElem);
 extern cudaError_t  myScanV_beta();
 extern cudaError_t getLastElementEXT(EXT *inputArray,int numberElementOfInputArray,int &outputValue,unsigned int maxOfVer);
 extern cudaError_t ADM(int *&devicePointer,size_t nBytes);
@@ -496,8 +500,10 @@ extern cudaError_t getLastElementExtension(Extension* inputArray,unsigned int nu
 extern cudaError_t getLastElementExtension_pure(EXT* inputArray,unsigned int numberElementOfInputArray,int &outputValue,unsigned int maxOfVer);
 
 extern cudaError_t  myScanV(int *dArrInput,int noElem,int *&dResult);
+extern void  myReduction(int *dArrInput,int noElem,int &dResult);
 extern int displayDeviceEXT(EXT *dArrEXT,int noElemdArrEXT);
-
-
-
+extern int DemoSegReduceCsr(int* dF,int number_unique_extension,int noElem_of_graph_per_unique_ext,int *&resultDevice);
+extern int generate_segment_index(int noElem_of_graph_per_unique_ext,int noElem_unique_ext,int *&SegmentStarts);
+extern __global__ void kernel_generate_segment_index(int* SegmentStarts,int noElem_segment,int noElem_of_graph_per_unique_ext);
+extern int displayDeviceArr(int*,int);
 
