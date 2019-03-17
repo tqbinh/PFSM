@@ -114,8 +114,8 @@ struct arrUniEdgeSatisfyMinSup
 
 struct Embedding
 {
-	int idx;
-	int vid;
+	int idx; //index dòng của previous embedding column
+	int vid; //id của đỉnh
 	Embedding():idx(0),vid(0){};
 };
 
@@ -139,11 +139,14 @@ struct EmbeddingColumn
 };
 
 
-
+//Struct lưu trữ RMP của DFS_CODE trên host lẫn device
 struct RMP
 {
+	//Số đỉnh trên DFS_CODE thuộc RMP
 	int noElem;
+	//vector lưu trữ các đỉnh thuộc RMP trên host
 	vector<int> hArrRMP;
+	//vector lưu trữ các đỉnh thuộc RMP trên device
 	int *dRMP;
 	RMP():noElem(0),hArrRMP(0),dRMP(0){};
 };
@@ -158,17 +161,27 @@ struct EXT
 	EXT():vi(0),vj(1),li(0),lij(0),lj(0),vgi(0),vgj(0),posRow(-1){};
 };
 
+//Lưu trữ các mở rộng hợp lệ trên device.
 struct EXTk
 {
-	int noElem; //Số lượng phần tử dArrExt
+	//Số lượng phần tử dArrExt.
+	int noElem;
+	//Lưu trữ các mở rộng hợp lệ trên device.
 	EXT *dArrExt;
 	EXTk():noElem(0),dArrExt(0){};
 };
 
+/*Số lượng phần tử vE dựa vào số lượng đỉnh thuộc right most path của Level đang xét.
+	Nếu Level đang xét có 3 đỉnh thuộc right most path thì chúng ta tạo ra 3 phần tử vE, 
+	mỗi phần tử vE sẽ lưu trữ các mở rộng hợp lệ của các đỉnh thuộc embedding column đang 
+	xét.
+*/
 struct vecArrEXT
-{
-	int noElem; //Số lượng phần tử vE dựa vào số lượng đỉnh thuộc right most path của Level đang xét. Nếu Level đang xét có 3 đỉnh thuộc right most path thì chúng ta tạo ra 3 phần tử vE, mỗi phần tử vE sẽ lưu trữ các mở rộng hợp lệ của các đỉnh thuộc embedding column đang xét.
-	vector<EXTk> vE; //mỗi phần tử của vector vE sẽ quản lý 1 phần tử dArrExt
+{	
+	//Số lượng phần tử vE
+	int noElem; 
+	//Mỗi phần tử của vector vE sẽ quản lý 1 phần tử dArrExt
+	vector<EXTk> vE; 
 	vecArrEXT():noElem(0),vE(0){};
 };
 
@@ -204,12 +217,16 @@ struct V
 
 struct ptrArrEmbedding
 {
-	int noElem; //số lượng embedding column. Nên đoi tên là noElemColumn
-	int noElemEmbedding; //số lượng phần tử ở cột cuối cùng
+	//số lượng embedding column. Nên đổi tên là noElemColumn
+	int noElem;
+	//số lượng phần tử ở cột cuối cùng
+	int noElemEmbedding;
+	//trỏ đến embedding column trên device.
 	Embedding **dArrPointerEmbedding;
 	ptrArrEmbedding():noElem(0),noElemEmbedding(0),dArrPointerEmbedding(0){};
 };
 
+//Lưu giữ danh sách đỉnh thuộc RMP trên device
 struct listVer
 {
 	int noElem;
@@ -259,9 +276,10 @@ public:
 	vector<arrUniEdgeSatisfyMinSup> hUniEdgeSatisfyMinsup;
 	vector<vecArrUniEdgeStatisfyMinSup> hLevelUniEdgeSatisfyMinsup;
 	vector<vecArrUniEdgeStatisfyMinSup> hLevelUniEdgeSatisfyMinsupv2;
-
+	//vector Embedding column ban đầu. Mỗi phần tử là một embedding column.
 	vector<EmbeddingColumn> hEmbedding; //Mỗi phần tử của vector là một Embedding column
 	//Embedding **dArrPointerEmbedding;
+	//Lưu trữ embedding ở từng level.
 	vector<ptrArrEmbedding> hLevelPtrEmbedding;
 	vector<ptrArrEmbedding> hLevelPtrEmbeddingv2;
 
@@ -270,15 +288,20 @@ public:
 	vector<vecArrUniEdge> hLevelUniEdgev2;
 	vector<listVer> hListVer;
 	vector<listVer> hListVerv2;
+
+	//Các đỉnh thuộc RMP ở từng Level
 	vector<listVer> hLevelListVerRMP;
 
 	vector<RMP> hRMP;
 	vector<RMP> hRMPv2;
+	//Dùng để lưu trữ Right Most Path của DFS_CODE ban đầu (level 0)
 	vector<RMP> hLevelRMP;
 
 	
 	//vector<EXTk> hEXTk; //Có bao nhiêu EXTk
-	vector<vecArrEXT> hLevelEXT; //quản lý EXTk theo Level, mỗi một Level là 1 lần gọi đệ quy FSMining function
+
+	//Quản lý EXTk theo Level, mỗi một Level là 1 lần gọi đệ quy FSMining function
+	vector<vecArrEXT> hLevelEXT; 
 	vector<vecArrEXT> hLevelEXTv2;
 	
 	PMS();
@@ -428,7 +451,7 @@ extern __global__ void kernelFindVidOnRMPv2(Embedding **dArrPointerEmbedding,int
 
 extern __global__ void kernelDisplaydArrPointerEmbedding(Embedding **dArrPointerEmbedding,int noElemEmbeddingCol,int noElemEmbedding);
 extern __global__ void kernelSetValueForEmbeddingColumn(EXT *dArrExt,int noElemInArrExt,Embedding *dArrQ,int *dM,int *dMScanResult);
-extern __global__ void kernelMarkEXT(const EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int li,int lij,int lj);
+extern __global__ void kernelMarkEXT(const EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,int vi,int vj,int li,int lij,int lj);
 extern __global__ void kernelFilldF(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,int *dF);
 extern __global__ void kernelfindBoundary(EXT *dArrExt, int noElemdArrExt, int *dArrBoundary,unsigned int maxOfVer);
 extern __global__ void kernelFilldFbw(UniEdge *dArrUniEdge,int pos,EXT *dArrExt,int noElemdArrExt,int *dArrBoundaryScanResult,int *dF);
@@ -471,7 +494,7 @@ extern 	__global__ void printdArrUniEdge(UniEdge *dArrUniEdge,int i);
 extern __global__ void	kernelGetvivj(EXT *dArrEXT,int noElemdArrEXT,int li,int lij,int lj,int *dvi,int *dvj);
 extern __global__ void kernelGetLastElementEXT(EXT *inputArray,int noEleInputArray,int *value,unsigned int maxOfVer);
 
-extern __global__ void kernelGetGraphIdContainEmbeddingv2(int li,int lij,int lj,EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,unsigned int maxOfVer);
+extern __global__ void kernelGetGraphIdContainEmbeddingv2(int vi,int vj,int li,int lij,int lj,EXT *d_ValidExtension,int noElem_d_ValidExtension,int *dV,unsigned int maxOfVer);
 extern __global__ void kernelExtractValidExtension_pure(Extension *d_Extension,int *dV,int *dVScanResult,int numberElementd_Extension,EXT *d_ValidExtension);
 extern __global__ void kernelMarkLabelEdge_pure(EXT *d_ValidExtension,unsigned int noElem_d_ValidExtension,unsigned int Lv,unsigned int Le,int *d_allPossibleExtension);
 extern __global__ void kernelCalcBoundary_pure(EXT *d_ValidExtension,unsigned int noElem_d_ValidExtension,int *dB,unsigned int maxOfVer);
@@ -502,7 +525,7 @@ extern cudaError_t getLastElementExtension_pure(EXT* inputArray,unsigned int num
 extern cudaError_t  myScanV(int *dArrInput,int noElem,int *&dResult);
 extern void  myReduction(int *dArrInput,int noElem,int &dResult);
 extern int displayDeviceEXT(EXT *dArrEXT,int noElemdArrEXT);
-extern int DemoSegReduceCsr(int* dF,int number_unique_extension,int noElem_of_graph_per_unique_ext,int *&resultDevice);
+extern int SegReduce(int* dF,int number_unique_extension,int noElem_of_graph_per_unique_ext,int *&resultDevice);
 extern int generate_segment_index(int noElem_of_graph_per_unique_ext,int noElem_unique_ext,int *&SegmentStarts);
 extern __global__ void kernel_generate_segment_index(int* SegmentStarts,int noElem_segment,int noElem_of_graph_per_unique_ext);
 extern int displayDeviceArr(int*,int);

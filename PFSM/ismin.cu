@@ -26,9 +26,9 @@ bool gSpan::is_min ()
 			for (EdgeList::iterator it = edges.begin(); it != edges.end();  ++it)
 				root[GRAPH_IS_MIN[from].label][(*it)->elabel][GRAPH_IS_MIN[(*it)->to].label].push (0, *it, 0); //đưa tất cả các forward edge vào ánh xạ map3 gọi là root
 	
-	Projected_iterator3 fromlabel = root.begin();
-	Projected_iterator2 elabel    = fromlabel->second.begin();
-	Projected_iterator1 tolabel   = elabel->second.begin();
+	Projected_iterator3 fromlabel = root.begin(); //From vertex label
+	Projected_iterator2 elabel    = fromlabel->second.begin();//edge label
+	Projected_iterator1 tolabel   = elabel->second.begin();//To vertex label
 	
 	DFS_CODE_IS_MIN.push (0, 1, fromlabel->first, elabel->first, tolabel->first); //Cạnh nhỏ nhất luôn là cạnh đầu tiên trong ánh xạ map3. Đưa cạnh đó vào DFS_CODE_MIN
 	

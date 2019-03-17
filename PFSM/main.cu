@@ -66,7 +66,7 @@ int main(int argc, char** argv){
 	//cdactx=*ctx;
 	StopWatchWin timer;
 	
-	system("pause");
+	//system("pause");
 #pragma region "load database"
 	//Open file result.txt to write append
 	std::ofstream fout("result.txt", std::ios_base::app | std::ios_base::out);
@@ -81,29 +81,53 @@ int main(int argc, char** argv){
 	}
 
 	timer.stop();
-	pms.printdb(); //hiển thị dữ liệu
+	//pms.printdb(); //hiển thị dữ liệu
 	
 	std::printf("\n\n**===-------------------------------------------------===**\n");
     std::printf("Loading data...\n");
-	std::printf("Processing time: %f (ms)\n", timer.getTime());
+	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time: 6595
 	hTime=timer.getTime();
 	timer.reset();
 
 #pragma endregion "end load database"
 
 	FUNCHECK(pms.extractAllEdgeInDB()); //Từ CSDL đã nạp vào device, trích tất cả các cạnh trong CSDL song song
-	pms.displayArrExtension(pms.hExtension.at(0).dExtension,pms.hExtension.at(0).noElem); //Những cạnh này được xem như là một mở rộng của pattern P. Bước này chỉ đơn thuần là xây dựng DFS Code cho các cạnh trong đồ thị.
-
+	//pms.displayArrExtension(pms.hExtension.at(0).dExtension,pms.hExtension.at(0).noElem); //Những cạnh này được xem như là một mở rộng của pattern P. Bước này chỉ đơn thuần là xây dựng DFS Code cho các cạnh trong đồ thị.
+	timer.start();
 	FUNCHECK(pms.getValidExtension_pure()); //Trích các mở rộng hợp lệ (li<lj: chỉ xét cho đơn đồ thị vô hướng) ==> Notes: Cần phải xét cho trường hợp đa đồ thị vô hướng và có hướng
-	
+	timer.stop();
+	std::printf("\n\n**===-------------------------------------------------===**\n");
+    std::printf("getValidExtension_pure\n");
+	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time: 8.730469 (ms)
+	hTime=timer.getTime();
+	timer.reset();
+	timer.start();
 	FUNCHECK(pms.extractUniEdge());
-
+	timer.stop();
+	std::printf("\n\n**===-------------------------------------------------===**\n");
+    std::printf("extractUniEdge\n");
+	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time: 1.730469 (ms)
+	hTime=timer.getTime();
+	timer.reset();
+	timer.start();
 	FUNCHECK(pms.computeSupport()); //Tính độ hộ trợ của cả cạnh trong UniEdge và loại bỏ những mở rộng không thoả minsup
 	//Đến đây, chúng ta đã thu thập được các mở rộng một cạnh thoả minsup (hUniEdgeSatisfyMinSup)
 	//
 	//FUNCHECK(pms.Mining()); //kiểm tra DFS_CODE có phải là min hay không, nếu là min thì ghi kết quả vào file result.txt, và xây dựng Embedding Columns
+	timer.stop();
+	std::printf("\n\n**===-------------------------------------------------===**\n");
+    std::printf("computeSupport\n");
+	std::printf("Processing time: %f (ms)\n", timer.getTime()/1000);//Processing time: 15.730469 (s)
+	hTime=timer.getTime();
+	timer.reset();
+	
+	timer.start();
 	FUNCHECK(pms.initialize()); //Duyệt qua các cạnh thoả minsup để xây dựng DFSCODE, hEmbedding, hLevelPtrEmbedding, hLevelListVerRMP và hLevelRMP để chuẩn bị khai thác.
-
+	timer.stop();
+	std::printf("\n\n**===-------------------------------------------------===**\n");
+    std::printf("Mining()\n");
+	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time:  (ms)
+	hTime=timer.getTime();
 	system("pause");
 
 	return 0;

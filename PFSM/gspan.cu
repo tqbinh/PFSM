@@ -140,7 +140,7 @@ void gSpan::project(Projected& projected) //Đây là phương thức của lớ
 
 	//std::cout << "project report" << std::endl;
 	report(projected,sup); //Hàm report trả về kết quả các đồ thị phổ biến thỏa minsup đã cho.
-
+	
 	if(maxpat_max>maxpat_min && DFS_CODE.nodeCount() > maxpat_max)
 		return;
 
