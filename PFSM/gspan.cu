@@ -363,7 +363,7 @@ void gSpan::report(int *graph,int noEle_graph,unsigned int sup){
 		DFS_CODE.toGraph(g); //Convert DFS code sang đồ thị.
 
 		if(!where) //default value of where is true
-			*os << "t # " << ID << " * " << sup; 		
+			*os << "t # " << ID << " * " << sup;
 		g.write(*os);
 		
 	}else{

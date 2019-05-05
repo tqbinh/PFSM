@@ -58,14 +58,17 @@ ContextPtr ctx;
 
 
 
-int main(int argc, char** argv){	
+
+int main(int argc, char** argv){
 	int status=0;
-	
+	cudaDeviceReset();
 	ctx = CreateCudaDevice(argc, argv, true);
 	cout << typeid(ctx).name() << endl;
+
+	//device_info();
 	//cdactx=*ctx;
 	StopWatchWin timer;
-	
+	//exit(0);
 	//system("pause");
 #pragma region "load database"
 	//Open file result.txt to write append
@@ -84,7 +87,7 @@ int main(int argc, char** argv){
 	//pms.printdb(); //hiển thị dữ liệu
 	
 	std::printf("\n\n**===-------------------------------------------------===**\n");
-    std::printf("Loading data...\n");
+	std::printf("Loading data...\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time: 6595
 	hTime=timer.getTime();
 	timer.reset();
@@ -97,7 +100,7 @@ int main(int argc, char** argv){
 	FUNCHECK(pms.getValidExtension_pure()); //Trích các mở rộng hợp lệ (li<lj: chỉ xét cho đơn đồ thị vô hướng) ==> Notes: Cần phải xét cho trường hợp đa đồ thị vô hướng và có hướng
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
-    std::printf("getValidExtension_pure\n");
+	std::printf("getValidExtension_pure\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time: 8.730469 (ms)
 	hTime=timer.getTime();
 	timer.reset();
@@ -105,7 +108,7 @@ int main(int argc, char** argv){
 	FUNCHECK(pms.extractUniEdge());
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
-    std::printf("extractUniEdge\n");
+	std::printf("extractUniEdge\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time: 1.730469 (ms)
 	hTime=timer.getTime();
 	timer.reset();
@@ -116,16 +119,20 @@ int main(int argc, char** argv){
 	//FUNCHECK(pms.Mining()); //kiểm tra DFS_CODE có phải là min hay không, nếu là min thì ghi kết quả vào file result.txt, và xây dựng Embedding Columns
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
-    std::printf("computeSupport\n");
+	std::printf("computeSupport\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime()/1000);//Processing time: 15.730469 (s)
 	hTime=timer.getTime();
 	timer.reset();
 	
 	timer.start();
-	FUNCHECK(pms.initialize()); //Duyệt qua các cạnh thoả minsup để xây dựng DFSCODE, hEmbedding, hLevelPtrEmbedding, hLevelListVerRMP và hLevelRMP để chuẩn bị khai thác.
+	//Duyệt qua các cạnh thoả minsup để xây dựng:
+	//DFSCODE, hEmbedding, hLevelPtrEmbedding, hLevelListVerRMP và hLevelRMP để chuẩn bị khai thác.
+	//FUNCHECK(pms.initialize());
+	//Trích các mở rộng thoả minDFS_CODE ban đầu
+	FUNCHECK(pms.MiningDeeper(pms.hLevelEXT.at(0).vE.at(0), pms.hLevelUniEdgeSatisfyMinsup.at(0).vecUES.at(0)));
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
-    std::printf("Mining()\n");
+	std::printf("Mining()\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time:  (ms)
 	hTime=timer.getTime();
 	system("pause");

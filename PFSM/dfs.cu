@@ -13,6 +13,36 @@
 #include <iterator>
 #include <set>
 using namespace std;
+
+void DFSCode::add(int vi,int vj,int li,int lij,int lj)
+{
+	if (nodeCount()==0)
+	{
+		push(vi,vj,li,lij,lj); //Push 1st edge to empty DFS_CODE
+		minLabel = vi;
+		maxId = vj;
+		return;
+	}
+	if(vi<vj)
+	{
+		push(vi,vj,-1,lij,lj);//build DFS_CODE forward
+		maxId=vj;
+	}
+	else
+	{
+		push(vi,vj,-1,lij,-1);//xây dựng DFS_CODE backward
+	}
+}
+
+void DFSCode::remove(int vi,int vj)
+{
+	pop();
+	if (vi<vj)
+	{
+		--maxId;
+	}
+}
+
 void DFSCode::fromGraph(Graph& g){
 	clear();
 	EdgeList edges;

@@ -326,6 +326,9 @@ C:\Program Files\Microsoft Visual Studio 11.0\VC\include\vector
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\set
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\algorithm
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\fstream
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\list
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\stack
+C:\Program Files\Microsoft Visual Studio 11.0\VC\include\deque
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\helper_timer.h
 d:\binhluanvan\pmsv2\lv\pfsm\pfsm\exception.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\sstream
@@ -642,7 +645,6 @@ d:\binhluanvan\pmsv2\lv\pfsm\include\device\../util/static.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\functional
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\xfunctional
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\tuple
-C:\Program Files\Microsoft Visual Studio 11.0\VC\include\list
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\cassert
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\assert.h
 C:\Program Files\Microsoft Visual Studio 11.0\VC\include\crtdefs.h

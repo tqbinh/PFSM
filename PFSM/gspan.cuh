@@ -102,8 +102,15 @@ typedef std::vector<int> RMPath; //định nghĩa một kiểu vector<int> có t
 //cấu trúc của DFS code
 struct DFSCode:public std::vector<DFS>{ //kế thừa từ vector<DFS>
 public:
+	int minLabel;
+	int maxId;
+	int noElemOnRMP;
+	int *hRMP;
+	int *dRMP;
 	RMPath rmpath;  //right most path là một vector đã định nghĩa ở trên
 public:
+	void add(int,int,int,int,int);
+	void remove(int,int);
 	const RMPath& buildRMPath(); //xây dựng right most path tức là tìm nhánh phải nhất của DFSCode
 	
 	bool toGraph(Graph&); //*0* không biết để làm gì; có thể là để biết GID của graph
