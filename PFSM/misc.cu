@@ -22,7 +22,6 @@ const RMPath& DFSCode::buildRMPath() //buildRMPath là một phương thức c�
 			old_from = (*this)[i].from;
 		}
 	}
-	
 	return rmpath;
 }
 

@@ -114,13 +114,17 @@ public:
 	{
 		std::printf("\n(%d,%d,%d,%d,%d)",vi,vj,li,lij,lj);
 	}
+	//Tính toán và trả về support
+	int calcSupport();
 };
 
 struct arrUniEdge
 {
 	int noElem;
+	UniEdge *hUniEdge; //array unique edge
+	int* hSupport;//array contains support of unique edge.
 	UniEdge *dUniEdge;
-	arrUniEdge():noElem(0),dUniEdge(nullptr){};
+	arrUniEdge():noElem(0),hSupport(nullptr),dUniEdge(nullptr){};
 
 	void show()
 	{
@@ -133,6 +137,25 @@ struct arrUniEdge
 		}
 		free(hUniEdge);
 	}
+	void showSupport()
+	{
+		cout<<"\nSupport:\n";
+		for (int i = 0; i < noElem; i++)
+		{
+			std::printf("S[%d]:%d ",i,hSupport[i]);
+		}
+	}
+	void copyDTH();
+	void ReleaseMemory()
+	{
+		if (noElem>0)
+		{
+			if(dUniEdge!=nullptr) CUCHECK(cudaFree(dUniEdge));
+			if(hUniEdge!=nullptr) free(hUniEdge);
+			if(hSupport!=nullptr) free(hSupport);
+		}
+	}
+
 };
 
 struct UniEdgek
@@ -263,7 +286,7 @@ struct EmCol
 	int noElem; //Số lượng embeddings của embedding column.
 	int prevCol; //prevCol, dùng để xây dựng RMPath
 	Embedding *dArrEmbedding;
-	EmCol():noElem(0),prevCol(0),dArrEmbedding(0){};
+	EmCol():noElem(0),prevCol(0),dArrEmbedding(nullptr){};
 
 public:
 	void ReleaseMemory()
@@ -280,7 +303,6 @@ public:
 			CUCHECK(cudaFree(dArrEmbedding));
 		}
 	}
-
 	int show()
 	{
 		int status = 0;
@@ -350,6 +372,58 @@ extern cudaError_t getSizeBaseOnScanResult(int *dV,int *dVScanResult,int noElem,
 extern cudaError_t  myScanV(int *dArrInput,int noElem,int *&dResult);
 extern __global__ void kernelExtractValidExtensionTodExt(EXT *dArrExtension,int *dArrValid,int *dArrValidScanResult,int noElem_dArrV,EXT *dExt,int noElem_dExt);
 extern int displayDeviceArr(int*,int);
+
+struct UniEdgeStatisfyMinSup
+{
+	//Số lượng phần tử của mảng dArrUniEdge
+	int noElem;
+	//Chứa các mở rộng duy nhất thoả mãn minsup
+	UniEdge *dArrUniEdge;
+	UniEdge *hArrUniEdge;
+	//Chứa độ hỗ trợ tương ứng với mở rộng duy nhất ở dArrUniEdge
+	int *hArrSupport;
+
+	UniEdgeStatisfyMinSup():noElem(0),dArrUniEdge(nullptr),hArrSupport(nullptr){};
+public:
+	int ReleaseMemory()
+	{
+		int status = 0;
+		cudaError_t cudaStatus;
+		if (noElem > 0)
+		{
+			free(hArrUniEdge);
+			free(hArrSupport);
+			CHECK(cudaStatus = cudaFree(dArrUniEdge));
+			if(cudaStatus != cudaSuccess)
+			{
+				status = -1;
+				goto Error;
+			}
+		}
+		Error:
+		return status;
+	}
+	void show()
+	{
+		if(noElem<0)
+		{
+			std::printf("\n Empty UniEdge Satisfy minsup");
+			return;
+		}
+		UniEdge* temp = nullptr;
+		temp = (UniEdge*)malloc(sizeof(UniEdge)*noElem);
+		if(temp==nullptr) {FCHECK(-1);}
+		CUCHECK(cudaMemcpy(temp,dArrUniEdge,sizeof(UniEdge)*noElem,cudaMemcpyDeviceToHost));
+		std::printf("\nUnique Edges Statisfy minsup\n");
+		for (int i = 0; i < noElem; i++)
+		{
+			temp[i].print();
+		}
+		free(temp);
+	}
+};
+
+
 //Lưu trữ các mở rộng hợp lệ trên device.
 struct EXTk
 {
@@ -359,6 +433,8 @@ struct EXTk
 	EXT *dArrExt;
 	arrUniEdge uniFE; //uniForward Extension
 	arrUniEdge uniBE; //uniBackard Extension
+	UniEdgeStatisfyMinSup uniFES; //unique forward edge statisfy minsup
+	UniEdgeStatisfyMinSup uniBES; //unique backward edge statisfy minsup
 	EXTk():noElem(0),dArrExt(nullptr){};
 public:
 	int mark_edge(int vi,int vj,int li,int lij,int lj,int *&dValid);
@@ -408,79 +484,51 @@ Error:
 		return status;
 	}
 	void extractUniForwardExtension(unsigned int&,unsigned int&);
-	void extractUniBackwardExtension();
+	void extractUniBackwardExtension(unsigned int&,unsigned int&,int&);
+	void findSupport(unsigned int&);
+	void findBoundary(unsigned int&, int*&);
+	void findSupportFW(int*& dArrBoundaryScanResult,UniEdge*& dArrUniEdge,int& idxUniEdge, int*& dF,int& noElemdF,int& support);
+	void extractStatisfyMinsup(unsigned int& minsup,arrUniEdge& uniEdge,UniEdgeStatisfyMinSup& uniES);
 };
 
 struct structValid
 {
 	int noElem;
 	int *dArrValid;
-	int *dArrBackward;
+	//int *dArrBackward;
 	EXT *dArrEXT;
-	structValid():noElem(0),dArrValid(0),dArrBackward(0),dArrEXT(0){};
+	structValid():noElem(0),dArrValid(0),dArrEXT(0){};
 
 	void show()
 	{
 		size_t noBytes = sizeof(int)*noElem;
 		int* hArrValid = (int*)malloc(noBytes);
-		int* hArrBackward = (int*)malloc(noBytes);
 		EXT* hArrEXT = (EXT*)malloc(sizeof(EXT)*noElem);
 
 		if(hArrValid == nullptr) {FCHECK(-1);}
-		if(hArrBackward == nullptr) {FCHECK(-1);}
 		if(hArrEXT == nullptr) {FCHECK(-1);}
 		CUCHECK(cudaMemcpy(hArrValid,dArrValid,noBytes,cudaMemcpyDeviceToHost));
-		CUCHECK(cudaMemcpy(hArrBackward,dArrBackward,noBytes,cudaMemcpyDeviceToHost));
 		CUCHECK(cudaMemcpy(hArrEXT, dArrEXT,sizeof(EXT)*noElem,cudaMemcpyDeviceToHost));
 
 		cout<<endl;
 		for (int i = 0; i < noElem; i++)
 		{
-			std::printf("%d ==> V:%d B:%d E:(%d,%d,%d,%d,%d,%d,%d,%d)\n",i,hArrValid[i],hArrBackward[i], \
-				hArrEXT[i].vi,hArrEXT[i].vj,hArrEXT[i].li,hArrEXT[i].lij,hArrEXT[i].lj,hArrEXT[i].vgi,hArrEXT[i].vgj,hArrEXT[i].posRow);
+			std::printf("%d ==> V:%d E:(%d,%d,%d,%d,%d,%d,%d,%d)\n",i,hArrValid[i], \
+				hArrEXT[i].vi, hArrEXT[i].vj, \
+				hArrEXT[i].li,hArrEXT[i].lij,hArrEXT[i].lj, \
+				hArrEXT[i].vgi,hArrEXT[i].vgj, \
+				hArrEXT[i].posRow);
 		}
 		free(hArrValid);
-		free(hArrBackward);
 		free(hArrEXT);
 	}
 
 	void extractValid(EXTk &outputEXT);
-	//{
-	//	//doing somethings here
-	//	//1. Scan on dArrValid to get index
-	//	int *dArrValidScanResult=nullptr;
-	//	CUCHECK(cudaMalloc((void**)&dArrValidScanResult,sizeof(int)*noElem));
-	//	CUCHECK(cudaMemset(dArrValidScanResult,0,sizeof(int)*noElem));
-
-	//	CUCHECK(myScanV(dArrValid,noElem,dArrValidScanResult));
-	//	displayDeviceArr(dArrValid,noElem);
-	//	displayDeviceArr(dArrValidScanResult,noElem);
-	//	int noElem_dExt=0;
-	//	getSizeBaseOnScanResultv2(dArrValid,dArrValidScanResult,noElem,noElem_dExt);
-	//	if (noElem_dExt == 0) 
-	//	{
-	//		CUCHECK(cudaFree(dArrValidScanResult));
-	//		return;
-	//	}
-	//	std::printf("\n noElem_dExt:%d",noElem_dExt);
-
-	//	outputEXT.noElem = noElem_dExt;
-	//	
-	//	CUCHECK(cudaMalloc((void**)&outputEXT.dArrExt,sizeof(EXT)*outputEXT.noElem));
-	//	dim3 block(blocksize);
-	//	dim3 grid((noElem+block.x -1)/block.x);
-	//	kernelExtractValidExtensionTodExt<<<grid,block>>>(dArrEXT,dArrValid,dArrValidScanResult,noElem,outputEXT.dArrExt,noElem_dExt);
-
-
-	//	CUCHECK(cudaFree(dArrValidScanResult));
-	//}
-
 	void ReleaseMemory()
 	{
 		if(noElem>0)
 		{
 			CUCHECK(cudaFree(dArrValid));
-			CUCHECK(cudaFree(dArrBackward));
 			CUCHECK(cudaFree(dArrEXT));
 		}
 	}
@@ -512,37 +560,6 @@ public:
 	}
 };
 
-struct UniEdgeStatisfyMinSup
-{
-	//Số lượng phần tử của mảng dArrUniEdge
-	int noElem;
-	//Chứa các mở rộng duy nhất thoả mãn minsup
-	UniEdge *dArrUniEdge;
-	UniEdge *hArrUniEdge;
-	//Chứa độ hỗ trợ tương ứng với mở rộng duy nhất ở dArrUniEdge
-	int *hArrSupport;
-
-	UniEdgeStatisfyMinSup():noElem(0),dArrUniEdge(0),hArrSupport(0){};
-public:
-	int ReleaseMemory()
-	{
-		int status = 0;
-		cudaError_t cudaStatus;
-		if (noElem > 0)
-		{
-			free(hArrUniEdge);
-			free(hArrSupport);
-			CHECK(cudaStatus = cudaFree(dArrUniEdge));
-			if(cudaStatus != cudaSuccess)
-			{
-				status = -1;
-				goto Error;
-			}
-		}
-		Error:
-		return status;
-	}
-};
 
 struct vecArrUniEdgeStatisfyMinSup
 {
@@ -727,9 +744,12 @@ public:
 	int getGraphIdContainEmbedding_pure(UniEdge edge,int *&hArrGraphId,int &noElemhArrGraphId);
 
 	void buildEmbedding(UniEdge&,EXTk&,int*&,int*&);
+
+	void buildNewEmbeddingCol(UniEdge&,EXTk&,int*&,int*&);
+	int buildFirstEmbedding(UniEdge&,EXTk&,int*&,int*&);
+
 	void removeEmbedding();
 	void removeFirstEmbedding();
-	int buildFirstEmbedding(UniEdge&,EXTk&,int*&,int*&);
 	int buildEmbedding_pure(UniEdge&);
 
 	int buildRMP();
@@ -830,7 +850,7 @@ extern __global__ void kernelCopyDeviceEXT(EXT* dPointerArr,EXT* dArr,int at);
 
 extern __global__ void kernelFindValidExtension(Embedding **dPointerdArrEmbedding,int* dArrRMP, int noElemRMP,int noElemEmbedding, \
 										 int *dO,int *dLO,int *dN,int *dLN, float *dArrDegreeOfVid, \
-										 int maxDegreeOfVer,int** dPointerArrValid,int** dPointerArrBackward, \
+										 int maxDegreeOfVer,int** dPointerArrValid, \
 										 EXT** dPointerTempArrEXT, int minLabel,int maxId, int* dArrCurrentBackward);
 
 extern __global__ void kernelFindValidFBExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp,int *dArrVj,int noElemdArrVj);
