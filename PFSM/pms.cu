@@ -4189,7 +4189,11 @@ int PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 				{
 					vecValidEXTk.at(lastIdxEXTk).show();
 					//Trích các unique edge backward.
-					vecValidEXTk.at(lastIdxEXTk).extractUniBackwardExtension(Lv,Le,DFS_CODE.noElemOnRMP);
+					int* dRMP = nullptr;
+					int* dRMPLabel = nullptr;
+					int noElemMappingVj = 0;
+					buildRMPLabel(dRMP,dRMPLabel,noElemMappingVj);
+					vecValidEXTk.at(lastIdxEXTk).extractUniBackwardExtension(Lv,Le,DFS_CODE.noElemOnRMP,dRMP,dRMPLabel,noElemMappingVj);
 				}
 			}
 			//Compute support
@@ -4245,6 +4249,7 @@ int PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 		}
 		//Khi khai thác xong thì gỡ bỏ cạnh vừa thêm ra khỏi DFS_CODE
 		DFS_CODE.remove(UES.hArrUniEdge[idx_ues].vi,UES.hArrUniEdge[idx_ues].vj);
+		if(DFS_CODE.dRMP!=nullptr) CUCHECK(cudaFree(DFS_CODE.dRMP));
 	}
 	FCHECK(ext.ReleaseMemory());
 	FCHECK(UES.ReleaseMemory());
@@ -6310,7 +6315,8 @@ void PMS::buildNewEmbeddingCol(UniEdge &ue,EXTk &ext,int*&dValid,int*&dIdx)
 	CUCHECK(cudaGetLastError());
 
 	//Gán giá trị prevCol cho các embedding columns. 
-	hEm.at(lastIdx).prevCol=ue.vi;
+	//hEm.at(lastIdx).prevCol=ue.vi;
+	hEm.at(lastIdx).prevCol =hEm.size() - 2;
 
 	//show embedding column
 	//hEm.at(lastIdx).show();
@@ -7962,7 +7968,10 @@ void PMS::findValidExtension(vector<EXTk> &vecValidEXTk)
 			//Mỗi phần tử của mảng dArrPointerEmbedding chứa địa chỉ của dArrEmbedding
 			kernelGetPointerdArrEmbedding<<<1,1>>>(hEm.at(rmpCol).dArrEmbedding, dPointerdArrEmbedding, rmpCol);
 		}
+		CUCHECK(cudaDeviceSynchronize());
+		CUCHECK(cudaGetLastError());
 		//Tạo device RMP từ lstRMP
+		DFS_CODE.dRMP = nullptr;
 		int *dArrRMP = nullptr;
 		int *hArrRMP = nullptr;
 		hArrRMP = (int*)malloc(sizeof(int)*noElemRMP);
@@ -7973,11 +7982,12 @@ void PMS::findValidExtension(vector<EXTk> &vecValidEXTk)
 			lstRMP.pop_front();
 		}
 
+		CUCHECK(cudaMalloc((void**)&DFS_CODE.dRMP,sizeof(int)*noElemRMP));
 		CUCHECK(cudaMalloc((void**)&dArrRMP,sizeof(int)*noElemRMP));
 		CUCHECK(cudaMemcpy(dArrRMP,hArrRMP,sizeof(int)*noElemRMP,cudaMemcpyHostToDevice));
-
-		CUCHECK(cudaDeviceSynchronize());
-		CUCHECK(cudaGetLastError());
+		CUCHECK(cudaMemcpy(DFS_CODE.dRMP,hArrRMP,sizeof(int)*noElemRMP,cudaMemcpyHostToDevice));
+		
+		//displayDeviceArr(DFS_CODE.dRMP,DFS_CODE.noElemOnRMP);
 		// Tìm bậc đỉnh cao nhất ==> Chuẩn bị được bộ nhớ lưu trữ các mở rộng có thể có
 		int noElemEmbedding = 0;
 		int noElemCurrentBackward =0;
@@ -8005,6 +8015,7 @@ void PMS::findValidExtension(vector<EXTk> &vecValidEXTk)
 				hArrCurrentBackward[idxBackward]=DFS_CODE.at(idxLastDFSCODE).to;
 			}
 			CUCHECK(cudaMemcpy(dArrCurrentBackward,hArrCurrentBackward,sizeof(int)*noElemCurrentBackward,cudaMemcpyHostToDevice));
+			free(hArrCurrentBackward);
 		}
 		//Tìm bậc của các đỉnh vid của các embeding thuộc RMP
 		int noElemVid = noElemRMP*noElemEmbedding;
@@ -10297,6 +10308,33 @@ __global__ void kernelGet_vivjlj(EXT* dArrExt,int* dvi,int* dvj,int* dli)
 	*dvj = dArrExt[0].vj;
 	*dli = dArrExt[0].li;
 }
+
+__global__ void kernelMarkUniBE(int* dMappingVj,int* dAllExtension,int Lv,int noElem,EXT* dArrEXT)
+{
+	int i = blockDim.x*blockIdx.x + threadIdx.x;
+	if(i<noElem)
+	{
+		int vj = dArrEXT[i].vj;
+		int lij = dArrEXT[i].lij;
+
+		int idxVj = dMappingVj[vj];
+
+		int idxAllExtension = lij*Lv + idxVj;
+		dAllExtension[idxAllExtension] = 1;
+	}
+}
+
+//inuse
+__global__ void kernelFilldMappingVj(int noElemBW,int* dMappingVj,int* dRMP)
+{
+	int i = blockDim.x*blockIdx.x +threadIdx.x;
+	if(i<noElemBW)
+	{
+		int vj = dRMP[i];
+		dMappingVj[vj] = i;
+	}
+}
+//inuse
 //Kernel fill unique forward extension
 __global__ void kernelFillUniFE( int *dArrAllPossibleExtension, \
 								int *dArrAllPossibleExtensionScanResult, \
@@ -14421,21 +14459,50 @@ void EXTk::extractUniForwardExtension(unsigned int& Lv,unsigned int& Le)
 	return;
 }
 //inuse
-void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& noElemRMP)
+void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& noElemRMP, \
+									   int*& dRMP,int*& dRMPLabel, int& noElemMappingVj)
 {
+	int noElemdAllExtension = Le * (noElemRMP-2);
 	//Tính số lượng tất cả các cạnh có thể có dựa vào nhãn của chúng
-	int noElem_dallPossibleExtension=Le*(noElemRMP-2);
+	int noElemBW = noElemRMP -2;
+	displayDeviceArr(dRMP,noElemBW);
+	displayDeviceArr(dRMPLabel,noElemBW);
+	//Chứa kết quả đánh dấu các mở rộng backward có thể có.
+	int *dAllExtension=nullptr;
+	int *dAllExtensionIdx=nullptr;
+	int *dMappingVj = nullptr;
 
-	int *d_allPossibleExtension=nullptr;
-	int *d_allPossibleExtensionScanResult=nullptr;
+	CUCHECK(cudaMalloc((void**)&dAllExtension,noElemdAllExtension*sizeof(int)));
+	CUCHECK(cudaMemset(dAllExtension,0,noElemdAllExtension*sizeof(int)));
 
-	CUCHECK(cudaMalloc((void**)&d_allPossibleExtension,noElem_dallPossibleExtension*sizeof(int)));
-	CUCHECK(cudaMemset(d_allPossibleExtension,0,noElem_dallPossibleExtension*sizeof(int)));
-	CUCHECK(cudaMalloc((void**)&d_allPossibleExtensionScanResult,noElem_dallPossibleExtension*sizeof(int)));
+	CUCHECK(cudaMalloc((void**)&dAllExtensionIdx,noElemdAllExtension*sizeof(int)));
+	CUCHECK(cudaMalloc((void**)&dMappingVj, noElemMappingVj * sizeof(int)));
+	CUCHECK(cudaMemset(dMappingVj,-1, noElemMappingVj * sizeof(int)));
+	//Xây dựng dMappingVj để ánh xạ vj trong EXT sang idxVj
+	dim3 block(blocksize);
+	dim3 grid((noElemBW + block.x - 1)/block.x);
+	//Mỗi thread sẽ đọc 1 phần tử (lij,vj) từ EXT
+	//Đọc mảng dRMP[vj]
+	kernelFilldMappingVj<<<grid,block>>>(noElemBW,dMappingVj,dRMP);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
+	cout<<endl<<"dMappingVj:"<<endl;
+	displayDeviceArr(dMappingVj,noElemMappingVj);
+	//Bật 1 cho các unique backward extension trong dAllExtension
+	dim3 block1(blocksize);
+	dim3 grid1((noElem + block.x - 1)/block.x);
 
+	kernelMarkUniBE<<<grid1,block1>>>(dMappingVj,dAllExtension,Lv,noElem,dArrExt);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
 
-	if (d_allPossibleExtension != nullptr) CUCHECK(cudaFree(d_allPossibleExtension));
-	if (d_allPossibleExtensionScanResult != nullptr) CUCHECK(cudaFree(d_allPossibleExtensionScanResult));
+	cout<<endl<<"dAllExtension:"<<endl;
+	displayDeviceArr(dAllExtension,noElemdAllExtension);
+
+	//Ánh xạ ngược từ dAllExtension sang UniEdge Backward
+
+	if (dAllExtension != nullptr) CUCHECK(cudaFree(dAllExtension));
+	if (dAllExtensionIdx != nullptr) CUCHECK(cudaFree(dAllExtensionIdx));
 	return;
 }
 
@@ -14601,6 +14668,7 @@ void EXTk::extractStatisfyMinsup(unsigned int& minsup,arrUniEdge& uniEdge,UniEdg
 			CUCHECK(cudaFree(dResultSup));
 			CUCHECK(cudaFree(dV));
 			CUCHECK(cudaFree(dVScanResult));
+			return;
 		}
 
 		uniES.noElem = noElemUniEdgeSatisfyMinSup;
@@ -14641,4 +14709,62 @@ void EXTk::extractStatisfyMinsup(unsigned int& minsup,arrUniEdge& uniEdge,UniEdg
 	{
 		FCHECK(-1);
 	}
+}
+
+void PMS::buildRMPLabel(int*& dRMP, int*& dRMPLabel,int& noElemMappingVj)
+{
+	vector<int> RMP;
+	vector<int> vertexLabel;
+	int vi,vj;
+	int preVj;
+	vi = DFS_CODE.back().from;
+	vj = DFS_CODE.back().to;
+	preVj = vi;
+	RMP.push_back(vj);
+	vertexLabel.push_back(DFS_CODE.back().tolabel);
+	for(int i = DFS_CODE.size() - 2; i>=0;i--)
+	{
+		vi = DFS_CODE.at(i).from;
+		vj = DFS_CODE.at(i).to;
+		if(vi<vj && preVj==vj)
+		{
+			RMP.push_back(vj);
+			vertexLabel.push_back(DFS_CODE.at(i).tolabel);
+			preVj = vi;
+			RMP.push_back(preVj);
+			vertexLabel.push_back(DFS_CODE.at(i).fromlabel);
+		}
+	}
+	std::reverse(RMP.begin(),RMP.end());
+	std::reverse(vertexLabel.begin(),vertexLabel.end());
+
+	DFS_CODE.noElemOnRMP = RMP.size();
+	int *hRMPLabel = nullptr;
+	int *hRMP = nullptr;
+
+	hRMP = (int*)malloc(sizeof(int)*DFS_CODE.noElemOnRMP);
+	if(hRMP == nullptr) {FCHECK(-1);}
+	hRMPLabel = (int*)malloc(sizeof(int)*DFS_CODE.noElemOnRMP);
+	if(hRMPLabel == nullptr) {FCHECK(-1);}
+
+	dRMPLabel = nullptr;
+	dRMP = nullptr;
+	CUCHECK(cudaMalloc((void**)&dRMPLabel,sizeof(int)*DFS_CODE.noElemOnRMP));
+	CUCHECK(cudaMalloc((void**)&dRMP,sizeof(int)*DFS_CODE.noElemOnRMP));
+
+	for (int i = 0; i < RMP.size()-2; i++)
+	{
+		std::printf("V[%d] Li[%d]; ",RMP[i],vertexLabel[i]);
+		hRMP[i] = RMP[i];
+		hRMPLabel[i] = vertexLabel[i];
+	}
+	
+	CUCHECK(cudaMemcpy(dRMP,hRMP,DFS_CODE.noElemOnRMP*sizeof(int),cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(dRMPLabel,hRMPLabel,DFS_CODE.noElemOnRMP*sizeof(int),cudaMemcpyHostToDevice));
+	noElemMappingVj = hRMPLabel[RMP.size()-3] + 1;
+
+	free(hRMP);
+	free(hRMPLabel);
+	RMP.clear();
+	vertexLabel.clear();
 }

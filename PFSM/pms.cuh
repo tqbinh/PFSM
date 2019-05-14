@@ -484,7 +484,7 @@ Error:
 		return status;
 	}
 	void extractUniForwardExtension(unsigned int&,unsigned int&);
-	void extractUniBackwardExtension(unsigned int&,unsigned int&,int&);
+	void extractUniBackwardExtension(unsigned int&,unsigned int&,int& noElemRMP,int*& dRMP,int*& dRMPLabel, int& noElemMappingVj);
 	void findSupport(unsigned int&);
 	void findBoundary(unsigned int&, int*&);
 	void findSupportFW(int*& dArrBoundaryScanResult,UniEdge*& dArrUniEdge,int& idxUniEdge, int*& dF,int& noElemdF,int& support);
@@ -838,6 +838,7 @@ public:
 
 	int displayBWEmbeddingCol(Embedding*,int);
 	int getVjFromDFSCODE(int*&,int);
+	void buildRMPLabel(int*& dRMP, int*& dRMPLabel,int& noElemMappingVj);
 };
 
 
@@ -868,6 +869,8 @@ extern __global__ void	kernelExtractUniEdgeSatifyMinsupV3(UniEdge *dUniEdge,int 
 extern __global__ void kernelFilldArrUniEdgev2(int *dArrAllPossibleExtension,int *dArrAllPossibleExtensionScanResult,int noElem_dArrAllPossibleExtension,UniEdge *dArrUniEdge,int Lv,int *dFromLi,int *dFromVi,int maxId);
 
 extern __global__ void kernelGet_vivjlj(EXT* dArrExt,int* dvi,int* dvj,int* dli);
+extern __global__ void kernelMarkUniBE(int* dMappingVj,int* dAllExtension,int Lv,int noElem,EXT* dArrEXT);
+extern __global__ void kernelFilldMappingVj(int noElemBW,int* dMappingVj,int* dRMP);
 extern __global__ void kernelFillUniFE( int *dArrAllPossibleExtension, \
 								int *dArrAllPossibleExtensionScanResult, \
 								int noElem_dArrAllPossibleExtension, \
