@@ -4193,7 +4193,7 @@ int PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 					int* dRMPLabel = nullptr;
 					int noElemMappingVj = 0;
 					buildRMPLabel(dRMP,dRMPLabel,noElemMappingVj);
-					vecValidEXTk.at(lastIdxEXTk).extractUniBackwardExtension(Lv,Le,DFS_CODE.noElemOnRMP,dRMP,dRMPLabel,noElemMappingVj);
+					vecValidEXTk.at(lastIdxEXTk).extractUniBackwardExtension(Lv,Le,DFS_CODE.noElemOnRMP,dRMP,dRMPLabel,noElemMappingVj,DFS_CODE.back().to,DFS_CODE.back().tolabel);
 				}
 			}
 			//Compute support
@@ -4208,8 +4208,8 @@ int PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 					vecValidEXTk.at(idxvecValidEXTk).extractStatisfyMinsup(minsup, \
 						vecValidEXTk.at(idxvecValidEXTk).uniFE,vecValidEXTk.at(idxvecValidEXTk).uniFES);
 					//Trích các mở rộng backward thoả minsup
-					//vecValidEXTk.at(idxvecValidEXTk).extractStatisfyMinsup(minsup, \
-					//	vecValidEXTk.at(idxvecValidEXTk).uniBE,vecValidEXTk.at(idxvecValidEXTk).uniBES);
+					vecValidEXTk.at(idxvecValidEXTk).extractStatisfyMinsup(minsup, \
+						vecValidEXTk.at(idxvecValidEXTk).uniBE,vecValidEXTk.at(idxvecValidEXTk).uniBES);
 				}
 			}
 
@@ -4219,10 +4219,10 @@ int PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 				if (vecValidEXTk.at(idxvecValidEXTk).noElem>0)
 				{
 					//MiningDeeper cho backward truoc cho forward sau
-					//if(vecValidEXTk.at(idxvecValidEXTk).uniBES.noElem>0)
-					//{
-					//	MiningDeeper(vecValidEXTk.at(idxvecValidEXTk),vecValidEXTk.at(idxvecValidEXTk).uniBES);
-					//}
+					if(vecValidEXTk.at(idxvecValidEXTk).uniBES.noElem>0)
+					{
+						MiningDeeper(vecValidEXTk.at(idxvecValidEXTk),vecValidEXTk.at(idxvecValidEXTk).uniBES);
+					}
 					if(vecValidEXTk.at(idxvecValidEXTk).uniFES.noElem>0)
 					{
 						MiningDeeper(vecValidEXTk.at(idxvecValidEXTk),vecValidEXTk.at(idxvecValidEXTk).uniFES);
@@ -10308,7 +10308,28 @@ __global__ void kernelGet_vivjlj(EXT* dArrExt,int* dvi,int* dvj,int* dli)
 	*dvj = dArrExt[0].vj;
 	*dli = dArrExt[0].li;
 }
-
+__global__ void kernelExtractUniBE(int* dAllExtension,int noElemdAllExtension, \
+									int* dRMP,int* dRMPLabel,int Lv,UniEdge* dUniEdge, \
+									int* dAllExtensionIdx,int vi,int li)
+{
+	int i = blockDim.x*blockIdx.x + threadIdx.x;
+	if(i<noElemdAllExtension)
+	{
+		if(dAllExtension[i] == 1)
+		{
+			int lij = i / Lv;
+			int idxVj = i % Lv;
+			int vj = dRMP[idxVj];
+			int idxUniEdge = dAllExtensionIdx[i];
+			dUniEdge[idxUniEdge].lij = lij;
+			dUniEdge[idxUniEdge].vj = vj;
+			dUniEdge[idxUniEdge].lj = dRMPLabel[idxVj];
+			dUniEdge[idxUniEdge].vi = vi;
+			dUniEdge[idxUniEdge].li = li;
+		}
+	}
+}
+//inuse
 __global__ void kernelMarkUniBE(int* dMappingVj,int* dAllExtension,int Lv,int noElem,EXT* dArrEXT)
 {
 	int i = blockDim.x*blockIdx.x + threadIdx.x;
@@ -14460,7 +14481,7 @@ void EXTk::extractUniForwardExtension(unsigned int& Lv,unsigned int& Le)
 }
 //inuse
 void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& noElemRMP, \
-									   int*& dRMP,int*& dRMPLabel, int& noElemMappingVj)
+									   int*& dRMP,int*& dRMPLabel, int& noElemMappingVj,int& vi,int& li)
 {
 	int noElemdAllExtension = Le * (noElemRMP-2);
 	//Tính số lượng tất cả các cạnh có thể có dựa vào nhãn của chúng
@@ -14499,10 +14520,26 @@ void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& no
 	cout<<endl<<"dAllExtension:"<<endl;
 	displayDeviceArr(dAllExtension,noElemdAllExtension);
 
+	//Scan on dAllExtension to get index, noElem and cudamalloc
+	get_idx(dAllExtension,noElemdAllExtension,dAllExtensionIdx);
+	get_noElem_valid(dAllExtension,dAllExtensionIdx,noElemdAllExtension,uniBE.noElem);
+	CUCHECK(cudaMalloc((void**)&uniBE.dUniEdge,sizeof(UniEdge)*uniBE.noElem));
+
 	//Ánh xạ ngược từ dAllExtension sang UniEdge Backward
+	dim3 block2(blocksize);
+	dim3 grid2((noElemdAllExtension + block2.x -1)/block2.x);
+	kernelExtractUniBE<<<grid2,block2>>>(dAllExtension,noElemdAllExtension,dRMP,dRMPLabel,Lv,uniBE.dUniEdge,dAllExtensionIdx,vi,li);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
+
+	uniBE.show();
+
 
 	if (dAllExtension != nullptr) CUCHECK(cudaFree(dAllExtension));
 	if (dAllExtensionIdx != nullptr) CUCHECK(cudaFree(dAllExtensionIdx));
+	if (dMappingVj != nullptr) CUCHECK(cudaFree(dMappingVj));
+	if (dRMPLabel != nullptr) CUCHECK(cudaFree(dRMPLabel));
+	if (dRMP != nullptr) CUCHECK(cudaFree(dRMP));
 	return;
 }
 
@@ -14570,11 +14607,17 @@ void EXTk::findSupport(unsigned int& maxOfVer)
 		if(uniBE.noElem>0)
 		{
 			uniBE.copyDTH();
-
+			uniBE.hSupport = nullptr;
+			uniBE.hSupport = (int*)malloc(sizeof(int)*uniBE.noElem);
+			if(uniBE.hSupport==nullptr) FCHECK(-1);
+			memset(uniBE.hSupport,0,sizeof(int)*uniBE.noElem);
 			for (int i = 0; i < uniBE.noElem; i++)
 			{
-				//doing somethings
+				findSupportFW(dArrBoundaryIndex,uniBE.dUniEdge,i,dF,noElemdF,uniBE.hSupport[i]);
+				//Mỗi lần lặp thì reset lại zerocho dF 
+				CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF));
 			}
+			uniBE.showSupport();
 		}
 
 		//Tính Support cho các mở rộng forward
