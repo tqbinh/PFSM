@@ -423,6 +423,13 @@ public:
 	}
 };
 
+struct existBackwardInfo
+{
+	//Có số lượng phần tử bằng noElemRMP
+	int* dValidBackward;
+	int* dVj;
+	existBackwardInfo():dValidBackward(nullptr),dVj(nullptr){};
+};
 
 //Lưu trữ các mở rộng hợp lệ trên device.
 struct EXTk
@@ -483,7 +490,7 @@ Error:
 	Error:
 		return status;
 	}
-	void extractUniForwardExtension(unsigned int&,unsigned int&);
+	void extractUniForwardExtension(unsigned int&,unsigned int&,int&);
 	void extractUniBackwardExtension(unsigned int&,unsigned int&,int& noElemRMP,int*& dRMP,int*& dRMPLabel, int& noElemMappingVj,int& vi,int& li);
 	void findSupport(unsigned int&);
 	void findBoundary(unsigned int&, int*&);
@@ -744,7 +751,7 @@ public:
 	int getGraphIdContainEmbedding_pure(UniEdge edge,int *&hArrGraphId,int &noElemhArrGraphId);
 
 	void buildEmbedding(UniEdge&,EXTk&,int*&,int*&);
-
+	void buildBackwardEmbedding(UniEdge& ue,EXTk& ext,int*& dValid,int*& dIdx);
 	void buildNewEmbeddingCol(UniEdge&,EXTk&,int*&,int*&);
 	int buildFirstEmbedding(UniEdge&,EXTk&,int*&,int*&);
 
@@ -839,6 +846,7 @@ public:
 	int displayBWEmbeddingCol(Embedding*,int);
 	int getVjFromDFSCODE(int*&,int);
 	void buildRMPLabel(int*& dRMP, int*& dRMPLabel,int& noElemMappingVj);
+	void buildExistBackwardInfo(existBackwardInfo& dExistBackwardInfo);
 };
 
 
@@ -848,11 +856,12 @@ public:
 extern __global__ void kernelCopyDeviceArray(int *dArrInput,int *dResult,int noElem);
 extern __global__ void kernelCopyDevice(int* dPointerArr,int* dArr,int at);
 extern __global__ void kernelCopyDeviceEXT(EXT* dPointerArr,EXT* dArr,int at);
+extern __global__ void kernelFillValidBackward(int* dValidBackward,int* dVj,int noElem, int* dLookupArrVj,int noElemLookup);
 
 extern __global__ void kernelFindValidExtension(Embedding **dPointerdArrEmbedding,int* dArrRMP, int noElemRMP,int noElemEmbedding, \
 										 int *dO,int *dLO,int *dN,int *dLN, float *dArrDegreeOfVid, \
 										 int maxDegreeOfVer,int** dPointerArrValid, \
-										 EXT** dPointerTempArrEXT, int minLabel,int maxId, int* dArrCurrentBackward);
+										 EXT** dPointerTempArrEXT, int minLabel,int maxId, int* dValidBackward,int* dVj);
 
 extern __global__ void kernelFindValidFBExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp,int *dArrVj,int noElemdArrVj);
 extern __global__ void kernelFindValidForwardExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp);
@@ -868,7 +877,7 @@ extern __global__ void kernelGetGraphIdContainEmbeddingBW(int vj,EXT *d_ValidExt
 extern __global__ void	kernelExtractUniEdgeSatifyMinsupV3(UniEdge *dUniEdge,int *dV,int *dVScanResult,int noElemUniEdge,UniEdge *dUniEdgeSatisfyMinsup,int *dSup,int *dResultSup);
 extern __global__ void kernelFilldArrUniEdgev2(int *dArrAllPossibleExtension,int *dArrAllPossibleExtensionScanResult,int noElem_dArrAllPossibleExtension,UniEdge *dArrUniEdge,int Lv,int *dFromLi,int *dFromVi,int maxId);
 
-extern __global__ void kernelGet_vivjlj(EXT* dArrExt,int* dvi,int* dvj,int* dli);
+extern __global__ void kernelGet_vivjlj(EXT* dArrExt,int* dvi,int* dvj,int* dli,int maxId);
 extern __global__ void kernelExtractUniBE(int* dAllExtension,int noElemdAllExtension, \
 									int* dRMP,int* dRMPLabel,int Lv,UniEdge* dUniEdge, \
 									int* dAllExtensionIdx,int vi,int li);
