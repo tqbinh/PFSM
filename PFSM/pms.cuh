@@ -289,6 +289,7 @@ struct EmCol
 	EmCol():noElem(0),prevCol(0),dArrEmbedding(nullptr){};
 
 public:
+	//không nên dùng hàm ReleaseMemory vì nó không chủ động release vector
 	void ReleaseMemory()
 	{
 		if(hBackwardEmbedding.size()>0)
@@ -431,6 +432,7 @@ struct existBackwardInfo
 	existBackwardInfo():dValidBackward(nullptr),dVj(nullptr){};
 };
 
+
 //Lưu trữ các mở rộng hợp lệ trên device.
 struct EXTk
 {
@@ -447,19 +449,10 @@ public:
 	int mark_edge(int vi,int vj,int li,int lij,int lj,int *&dValid);
 	int ReleaseMemory()
 	{
-		int status =0;
-		cudaError_t cudaStatus;
 		if (noElem>0)
 		{
-			CHECK(cudaStatus = cudaFree(dArrExt));
-			if(cudaStatus != cudaSuccess)
-			{
-				status = -1;
-				goto Error;
-			}
+			CUCHECK(cudaFree(dArrExt));
 		}
-Error:
-		return status;
 	}
 	int show()
 	{
@@ -678,6 +671,12 @@ public:
 	//vector Embedding column ban đầu. Mỗi phần tử là một embedding column.
 	vector<EmbeddingColumn> hEmbedding; //Mỗi phần tử của vector là một Embedding column
 	vector<EmCol> hEm;
+	void getEmCol(Embedding** &dEmCol,int &noElemdEmCol);
+	void getEmColRMP(Embedding** &dEmCol,const int &noElemRMP);
+	void getnoElemEmbedding(int &noElemEmbedding);
+	void createMarkEmColRMP(int* &dRMP,int &noElemdRMP,int* &dEmColRMP);
+	void createRMP(int* &dRMP,int &noElem);
+
 	//Embedding **dArrPointerEmbedding;
 	//Lưu trữ embedding ở từng level.
 	vector<ptrArrEmbedding> hLevelPtrEmbedding;
@@ -724,7 +723,7 @@ public:
 	void displayArray(int*, const unsigned int);
 	void displayHostArray(int*&,const unsigned int);
 	int displayDeviceArr(int*,int);
-	int displayDeviceArr(float*,int);
+	int displayDeviceArr(float* &dArr,int &noElem);
 	//void displayEmbeddingColumn(EmbeddingColumn);
 	int displayArrExtension(Extension*, int);
 	int displaydArrEXT(EXT*,int);
@@ -767,6 +766,9 @@ public:
 
 	int forwardExtension(int,int*,int,int);
 	int findMaxDegreeOfVer(int*&,int&,float*&,int&);
+	void findMaxDegreeVid(Embedding** &dEmCol,int* &dEmRMP,int &noElemdEmCol, int &noElemVid, \
+			int &noElemRMP, int &noElemEmbedding, \
+			float* &dArrDegreeOfVid,int &maxDegreeOfVer);
 	int findMaxDegreeOfVerEmbeddingColumn(int&,int&,float*&);
 	int findDegreeOfVer(int*&,float*&,int&);
 	int findDegreeOfVerEmbeddingColumn(int&,float*&,int&);
@@ -845,8 +847,11 @@ public:
 
 	int displayBWEmbeddingCol(Embedding*,int);
 	int getVjFromDFSCODE(int*&,int);
-	void buildRMPLabel(int*& dRMP, int*& dRMPLabel,int& noElemMappingVj);
-	void buildExistBackwardInfo(existBackwardInfo& dExistBackwardInfo);
+	void buildRMPLabel(int*& dRMP, int*& dRMPLabel,int& noElemMappingVj,int& vi,int& li);
+	void buildExistBackwardInfo(int* &dRMP,int &noElemOnRMP, \
+								 int* &dValidBackward);
+	void getVjBackwardDFSCODE(int* &dRMP,int &noElemOnRMP, \
+								int* &dVj,int &noElemdVj);
 };
 
 
@@ -857,11 +862,16 @@ extern __global__ void kernelCopyDeviceArray(int *dArrInput,int *dResult,int noE
 extern __global__ void kernelCopyDevice(int* dPointerArr,int* dArr,int at);
 extern __global__ void kernelCopyDeviceEXT(EXT* dPointerArr,EXT* dArr,int at);
 extern __global__ void kernelFillValidBackward(int* dValidBackward,int* dVj,int noElem, int* dLookupArrVj,int noElemLookup);
-
+extern __global__ void kernelFindValidExtension1(Embedding **dEmCol,int* dEmRMP,int noElemdEmCol,int* dArrRMP, int noElemRMP, \
+										  int noElemEmbedding, \
+										 int *dO,int *dLO,int *dN,int *dLN, float *dArrDegreeOfVid, \
+										 int maxDegreeOfVer,int** dPointerArrValid, \
+										 EXT** dPointerArrEXT, int minLabel,int maxId, int* dValidBackward,int* dVj);
 extern __global__ void kernelFindValidExtension(Embedding **dPointerdArrEmbedding,int* dArrRMP, int noElemRMP,int noElemEmbedding, \
 										 int *dO,int *dLO,int *dN,int *dLN, float *dArrDegreeOfVid, \
 										 int maxDegreeOfVer,int** dPointerArrValid, \
-										 EXT** dPointerTempArrEXT, int minLabel,int maxId, int* dValidBackward,int* dVj);
+										 EXT** dPointerTempArrEXT, int minLabel,int maxId, int* dValidBackward,int* dVj, \
+										 Embedding** dEmCol,int* dEmRMP,int noElemdEmCol);
 
 extern __global__ void kernelFindValidFBExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp,int *dArrVj,int noElemdArrVj);
 extern __global__ void kernelFindValidForwardExtensionv3(Embedding **dArrPointerEmbedding,int noElem_dArrPointerEmbedding,int noElem_Embedding,int *d_O,int *d_LO,int *d_N,int *d_LN,float *dArrDegreeOfVid,int maxDegreeOfVer,int *dArrV_valid,int *dArrV_backward,EXT *dArrExtension,int *listOfVer,int minLabel,int maxId,int fromRMP, int *dArrVidOnRMP,int segdArrVidOnRMP,int *rmp);
@@ -912,6 +922,9 @@ extern __global__ void kernelFindValidFBExtensionv2(Embedding **dArrPointerEmbed
 extern __global__ void	kernelExtractFromListVer(int *listVer,int from,int noElemEmbedding,int *temp);
 extern __global__ void kernelFindListVer(Embedding **dArrPointerEmbedding,int noElemEmbedding,int *rmp,int noElemVerOnRMP,int *listVer);
 extern __global__ void kernelPrintdArrPointerEmbedding(Embedding **dArrPointerEmbedding,int noElem,int sizeArr);
+
+extern __global__ void kernelCreatedEmRMP(int* dArrRMP,int* dEmRMP,int noElemRMP);
+
 extern __global__ void	kernelGetPointerdArrEmbedding(Embedding *dArrEmbedding,Embedding **dArrPointerEmbedding,int idx);
 extern __global__ void kernelPrintdArr(int *deviceArray,unsigned int noElem);
 extern __global__ void kernelPrintdArr(int *dArr,int noElem);
@@ -940,7 +953,7 @@ extern __global__ void kernelSetValueForFirstTwoEmbeddingColumn(const EXT *d_Val
 extern __global__ void	kernelPrintEmbedding(Embedding *dArrEmbedding,int noElem);
 extern __global__ void kernelCalDegreeOfVid(int *listOfVer,int *d_O, int numberOfElementd_O,int noElem_Embedding,int numberOfElementd_N,unsigned int maxOfVer,float *dArrDegreeOfVid);
 extern __global__ void kernelCalDegreeOfVidOnEmbeddingColumn(Embedding *dArrEmbedding,int *d_O, int numberOfElementd_O,int noElem_Embedding,int numberOfElementd_N,unsigned int maxOfVer,float *dArrDegreeOfVid);
-extern __global__ void kernelCalDegreeOfVidOnEmbeddingColumnv2(Embedding** dPointerEmbedding, \
+extern __global__ void kernelCalDegreeOfVidOnEmbeddingColumnv2(Embedding** dPointerEmbedding,int* dEmRMP,int noElemdEmCol, \
 									 int *d_O, int numberOfElementd_O,int noElemVid, int noElemEmbedding, \
 									 int numberOfElementd_N,unsigned int maxOfVer,float *dArrDegreeOfVid);
 extern __global__ void find_maximum_kernel(float *array, float *max, int *mutex, unsigned int n);
