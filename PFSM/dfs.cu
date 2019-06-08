@@ -33,7 +33,7 @@ void DFSCode::add(int vi,int vj,int li,int lij,int lj)
 		push(vi,vj,-1,lij,-1);//xây dựng DFS_CODE backward
 	}
 }
-
+//use
 void DFSCode::remove(int vi,int vj)
 {
 	pop();

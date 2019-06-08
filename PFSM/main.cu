@@ -77,12 +77,7 @@ int main(int argc, char** argv){
 	timer.start();
 	PMS pms; //Tạo đối tượng PMS.
 	pms.os=&fout;
-	FUNCHECK(status=pms.prepareDataBase()); //chuẩn bị dữ liệu
-	if(status!=0){
-		cout<<endl<<"prepareDataBase function failed"<<endl;
-		exit(1);
-	}
-
+	pms.prepareDataBase(); //chuẩn bị dữ liệu
 	timer.stop();
 	//pms.printdb(); //hiển thị dữ liệu
 	
@@ -94,10 +89,11 @@ int main(int argc, char** argv){
 
 #pragma endregion "end load database"
 
-	FUNCHECK(pms.extractAllEdgeInDB()); //Từ CSDL đã nạp vào device, trích tất cả các cạnh trong CSDL song song
-	//pms.displayArrExtension(pms.hExtension.at(0).dExtension,pms.hExtension.at(0).noElem); //Những cạnh này được xem như là một mở rộng của pattern P. Bước này chỉ đơn thuần là xây dựng DFS Code cho các cạnh trong đồ thị.
+	pms.extractAllEdgeInDB(); //Từ CSDL đã nạp vào device, trích tất cả các cạnh trong CSDL song song
 	timer.start();
-	FUNCHECK(pms.getValidExtension_pure()); //Trích các mở rộng hợp lệ (li<lj: chỉ xét cho đơn đồ thị vô hướng) ==> Notes: Cần phải xét cho trường hợp đa đồ thị vô hướng và có hướng
+	//Trích các mở rộng hợp lệ (li<lj: chỉ xét cho đơn đồ thị vô hướng) \
+	//==> Notes: Cần phải xét cho trường hợp đa đồ thị vô hướng và có hướng
+	pms.getValidExtension_pure(); 
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
 	std::printf("getValidExtension_pure\n");
@@ -105,7 +101,7 @@ int main(int argc, char** argv){
 	hTime=timer.getTime();
 	timer.reset();
 	timer.start();
-	FUNCHECK(pms.extractUniEdge());
+	pms.extractUniEdge();
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
 	std::printf("extractUniEdge\n");
@@ -113,7 +109,7 @@ int main(int argc, char** argv){
 	hTime=timer.getTime();
 	timer.reset();
 	timer.start();
-	FUNCHECK(pms.computeSupport()); //Tính độ hộ trợ của cả cạnh trong UniEdge và loại bỏ những mở rộng không thoả minsup
+	pms.computeSupport(); //Tính độ hộ trợ của cả cạnh trong UniEdge và loại bỏ những mở rộng không thoả minsup
 	//Đến đây, chúng ta đã thu thập được các mở rộng một cạnh thoả minsup (hUniEdgeSatisfyMinSup)
 	//
 	//FUNCHECK(pms.Mining()); //kiểm tra DFS_CODE có phải là min hay không, nếu là min thì ghi kết quả vào file result.txt, và xây dựng Embedding Columns
@@ -129,10 +125,10 @@ int main(int argc, char** argv){
 	//DFSCODE, hEmbedding, hLevelPtrEmbedding, hLevelListVerRMP và hLevelRMP để chuẩn bị khai thác.
 	//FUNCHECK(pms.initialize());
 	//Trích các mở rộng thoả minDFS_CODE ban đầu
-	FUNCHECK(pms.MiningDeeper(pms.hLevelEXT.at(0).vE.at(0), pms.hLevelUniEdgeSatisfyMinsup.at(0).vecUES.at(0)));
+	pms.MiningDeeper(pms.hLevelEXT.at(0).vE.at(0), pms.hLevelUniEdgeSatisfyMinsup.at(0).vecUES.at(0));
 	timer.stop();
 	std::printf("\n\n**===-------------------------------------------------===**\n");
-	std::printf("Mining()\n");
+	std::printf("MiningDeeper()\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time:  (ms)
 	hTime=timer.getTime();
 	system("pause");

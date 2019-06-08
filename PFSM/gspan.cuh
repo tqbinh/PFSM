@@ -110,6 +110,7 @@ public:
 	RMPath rmpath;  //right most path là một vector đã định nghĩa ở trên
 public:
 	void add(int,int,int,int,int);
+	//use
 	void remove(int,int);
 	const RMPath& buildRMPath(); //xây dựng right most path tức là tìm nhánh phải nhất của DFSCode
 	
