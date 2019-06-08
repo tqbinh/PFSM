@@ -126,8 +126,8 @@ int PMS::prepareDataBase()
 {
 	int status =0;
 	cudaError_t cudaStatus;
-	//unsigned int minsup = 10;
-	unsigned int minsup = 2;
+	unsigned int minsup = 16;
+	//unsigned int minsup = 2;
 	unsigned int maxpat = 2;
 	//unsigned int maxpat = 0x00000000;
 	unsigned int minnodes = 0;
@@ -141,8 +141,8 @@ int PMS::prepareDataBase()
 	//fname = "Klessorigin";
 	//fname = "KlessoriginCust1";
 	//fname= "G0G1G2_custom"; //Kết quả giống với gSpan
-	fname= "G0G1G2_custom1"; //Kết quả giống với gSpan
-	//fname="Chemical_340Origin";
+	//fname= "G0G1G2_custom1"; //Kết quả giống với gSpan
+	fname="Chemical_340Origin";
 
 	////PMS pms;	
 	ofstream fout("result.txt");
@@ -10701,7 +10701,7 @@ __global__ void kernelExtractUniBE(int* dAllExtension,int noElemdAllExtension, \
 	}
 }
 //inuse
-__global__ void kernelMarkUniBE(int* dMappingVj,int* dAllExtension,int Lv,int noElem,EXT* dArrEXT)
+__global__ void kernelMarkUniBE(int* dMappingVj,int* dAllExtension, int Lv,int noElem,EXT* dArrEXT)
 {
 	int i = blockDim.x*blockIdx.x + threadIdx.x;
 	if(i<noElem)
@@ -10716,6 +10716,8 @@ __global__ void kernelMarkUniBE(int* dMappingVj,int* dAllExtension,int Lv,int no
 
 			int idxAllExtension = lij*Lv + idxVj;
 			dAllExtension[idxAllExtension] = 1;
+			PMS_PRINT("\n Thread: %d, vi:%d vj:%d, lij:%d lv:%d  idxVj:%d idxAllExtension:%d)", \
+				i,vi,vj,lij,Lv,idxVj,idxAllExtension);
 		}
 	}
 }
@@ -14925,9 +14927,12 @@ void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& no
 	try
 	{
 		int noElemdAllExtension = Le * (noElemRMP-2);
+		int tempLv = noElemRMP-2;
 		//Tính số lượng tất cả các cạnh có thể có dựa vào nhãn của chúng
 		int noElemBW = noElemRMP -2;
+		cout<<endl<<"dRMP: "<<noElemBW<<endl;
 		displayDeviceArr(dRMP,noElemBW);
+		cout<<endl<<"dRMPLabel: "<<noElemBW<<endl;
 		displayDeviceArr(dRMPLabel,noElemBW);
 		//Chứa kết quả đánh dấu các mở rộng backward có thể có.
 		int *dAllExtension=nullptr;
@@ -14954,7 +14959,8 @@ void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& no
 		dim3 block1(blocksize);
 		dim3 grid1((noElem + block.x - 1)/block.x);
 
-		kernelMarkUniBE<<<grid1,block1>>>(dMappingVj,dAllExtension,Lv,noElem,dArrExt);
+		//kernelMarkUniBE<<<grid1,block1>>>(dMappingVj,dAllExtension,Lv,noElem,dArrExt);
+		kernelMarkUniBE<<<grid1,block1>>>(dMappingVj,dAllExtension,tempLv,noElem,dArrExt);
 		CUCHECK(cudaDeviceSynchronize());
 		CUCHECK(cudaGetLastError());
 
@@ -14965,12 +14971,12 @@ void EXTk::extractUniBackwardExtension(unsigned int& Lv,unsigned int& Le,int& no
 		get_idx(dAllExtension,noElemdAllExtension,dAllExtensionIdx);
 		get_noElem_valid(dAllExtension,dAllExtensionIdx,noElemdAllExtension,uniBE.noElem);
 		CUCHECK(cudaMalloc((void**)&uniBE.dUniEdge,sizeof(UniEdge)*uniBE.noElem));
-
+		//Check again
 		//Ánh xạ ngược từ dAllExtension sang UniEdge Backward
 		dim3 block2(blocksize);
 		dim3 grid2((noElemdAllExtension + block2.x -1)/block2.x);
 		kernelExtractUniBE<<<grid2,block2>>>(dAllExtension,noElemdAllExtension, \
-			dRMP,dRMPLabel,Lv,uniBE.dUniEdge,dAllExtensionIdx,vi,li);
+			dRMP,dRMPLabel,tempLv,uniBE.dUniEdge,dAllExtensionIdx,vi,li);
 		CUCHECK(cudaDeviceSynchronize());
 		CUCHECK(cudaGetLastError());
 
@@ -15256,17 +15262,19 @@ void PMS::buildRMPLabel(int* &dRMP, int* &dRMPLabel,int &noElemMappingVj,int &_v
 		dRMP = nullptr;
 		CUCHECK(cudaMalloc((void**)&dRMPLabel,sizeof(int)*(DFS_CODE.noElemOnRMP-2)));
 		CUCHECK(cudaMalloc((void**)&dRMP,sizeof(int)*(DFS_CODE.noElemOnRMP-2)));
-
-		for (int i = 0; i < RMP.size()-2; i++)
+		int idx;
+		for (idx = 0; idx < RMP.size()-2; ++idx)
 		{
-			std::printf("V[%d] Li[%d]; ",RMP[i],vertexLabel[i]);
-			hRMP[i] = RMP[i];
-			hRMPLabel[i] = vertexLabel[i];
+			std::printf("V[%d] Li[%d]; ",RMP[idx],vertexLabel[idx]);
+			hRMP[idx] = RMP[idx];
+			hRMPLabel[idx] = vertexLabel[idx];
 		}
 
 		CUCHECK(cudaMemcpy(dRMP,hRMP,(DFS_CODE.noElemOnRMP-2)*sizeof(int),cudaMemcpyHostToDevice));
 		CUCHECK(cudaMemcpy(dRMPLabel,hRMPLabel,(DFS_CODE.noElemOnRMP-2)*sizeof(int),cudaMemcpyHostToDevice));
-		noElemMappingVj = hRMPLabel[RMP.size()-3] + 1;
+		//noElemMappingVj = hRMPLabel[RMP.size()-3] + 1; //<-- sai chỗ này
+		int lastIdx = idx - 1;
+		noElemMappingVj = hRMP[lastIdx] + 1;
 
 		free(hRMP);
 		free(hRMPLabel);
