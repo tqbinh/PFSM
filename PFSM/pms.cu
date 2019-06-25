@@ -37,6 +37,32 @@ void write_minDFS_CODE(DFSCode dfscode)
 	}
 }
 
+int nthNotMinDFSCODE =0;
+//Ghi DFS_CODE xuống file
+void write_notMinDFS_CODE(DFSCode dfscode)
+{
+	//Mở file minDFSCODE.txt để ghi thêm vào
+	char* dfsfile = "notMinDFSCODE.txt";
+	fstream of;
+	of.open(dfsfile,ios::out|ios::app);
+	if(!of.is_open()){
+		cout<<"Open file notMinDFSCODE.txt fail"<<endl;
+		return;
+	}
+
+	//Kiểm tra số cạnh của dfscode
+	int no_edges_in_dfscode = dfscode.size();
+	//cout<<"so canh cua mindfscode: "<<no_edges_in_dfscode<<endl;
+
+	nthNotMinDFSCODE=nthDFSCODE+1;
+	of<<"d "<<nthNotMinDFSCODE<<" "<<dfscode.size()<<endl;
+	++nthNotMinDFSCODE;
+	for(int i=0;i<dfscode.size();++i){
+		of<<dfscode.at(i).from<<" "<<dfscode.at(i).to<<" "<<dfscode.at(i).fromlabel<<" "<<dfscode.at(i).elabel<<" "<<dfscode.at(i).tolabel<<endl;
+	}
+}
+
+
 //use
 void write_array(int *a, int n,char *filename="temp.csv"){
 	//Mở file minDFSCODE.txt để ghi thêm vào
@@ -123,7 +149,7 @@ bool fexists(const char *filename)
 void PMS::prepareDataBase()
 {
 	//unsigned int minsup = 5000;
-	unsigned int minsup = 14;
+	unsigned int minsup = 30;
 	unsigned int maxpat = 2;
 	//unsigned int maxpat = 0x00000000;
 	unsigned int minnodes = 0;
@@ -144,10 +170,16 @@ void PMS::prepareDataBase()
 
 	ofstream fout("result.txt");
 	char* minDFSCODE = "minDFSCODE.txt";
+	char* notMinDFSCODE= "notMinDFSCODE.txt";
 	if(fexists(minDFSCODE)==true)
 	{
 		remove(minDFSCODE);
 		cout<<"Xoa file minDFSCODE dang ton tai"<<endl;
+	}
+	if(fexists(notMinDFSCODE)==true)
+	{
+		remove(notMinDFSCODE);
+		cout<<"Xoa file notMinDFSCODE dang ton tai"<<endl;
 	}
 	//Chuyển dữ liệu từ fname sang TRANS
 	run(fname,fout,minsup,maxpat,minnodes,enc,where,directed);
@@ -283,69 +315,6 @@ void PMS::displayHostArray(int *&p, const unsigned int pSize=0)
 	PMS_PRINT("\n");
 	return;
 }
-
-//__global__ void kernelPrintdArr(int *dArr,unsigned int noElem){
-//	int i = blockDim.x*blockIdx.x + threadIdx.x;
-//	if(i<noElem){
-//		PMS_PRINT("A[%d]:%d ",i,dArr[i]);
-//	}
-//}
-
-
-//void PMS::printdb(){
-//	PMS_PRINT("\n *********** Lv, Le **********\n");
-//	PMS_PRINT("\n Lv:%d",Lv);
-//	PMS_PRINT("\n Le:%d",Le);
-//	for (int i = 0; i < hdb.size(); i++)
-//	{
-//		unsigned int noElem =  hdb.at(i).noElemdO;	
-//
-//
-//		dim3 block(blocksize);
-//		dim3 grid((noElem + block.x -1)/block.x);
-//		PMS_PRINT("\n ********* dO *********\n");
-//		kernelPrintdArr<<<grid,block>>>(hdb.at(i).dO,noElem);
-//		cudaDeviceSynchronize();
-//		PMS_PRINT("\n");
-//
-//		PMS_PRINT("\n ********* dLO *********\n");
-//		kernelPrintdArr<<<grid,block>>>(hdb.at(i).dLO,noElem);
-//		cudaDeviceSynchronize();
-//		PMS_PRINT("\n");
-//
-//		unsigned int noElemdN = hdb.at(i).noElemdN;
-//		dim3 blocka(blocksize);
-//		dim3 grida((noElemdN + blocka.x -1)/blocka.x);
-//
-//		PMS_PRINT("\n ********* dN *********\n");
-//		kernelPrintdArr<<<grida,blocka>>>(hdb.at(i).dN,noElemdN);
-//		cudaDeviceSynchronize();
-//		PMS_PRINT("\n");
-//
-//		PMS_PRINT("\n ********* dLN *********\n");
-//		kernelPrintdArr<<<grida,blocka>>>(hdb.at(i).dLN,noElemdN);
-//		cudaDeviceSynchronize();
-//		PMS_PRINT("\n");
-//	}
-//}
-
-
-//__global__ void kernelMyScanV(int *dArrInput,int noElem,int *dResult){
-//	int i = blockDim.x * blockIdx.x + threadIdx.x;
-//	if(i<noElem){
-//		if(i==0){
-//			dResult[i]=0;
-//		}else
-//		{
-//			int temp=0;
-//			for (int j = 0; j <= (i-1); j++)
-//			{
-//				temp=temp + dArrInput[j];
-//			}
-//			dResult[i]=temp;
-//		}
-//	}
-//}
 
 //use
 __global__ void kernelCopyDeviceArray(int *dArrInput,int *dResult,int noElem)
@@ -486,40 +455,38 @@ void  PMS::countNumberOfDifferentValue(int* d_LO,unsigned int sizeOfArrayLO, uns
 
 //use
 __global__ void kernelGetAndStoreExtension(int *d_O,int *d_LO,unsigned int numberOfElementd_O, \
-										   int *d_N,int *d_LN,unsigned int numberOfElementd_N,Extension *d_Extension)
+										   int *d_N,int *d_LN,unsigned int numberOfElementd_N, \
+										   Extension *d_Extension)
 {
 	//Kernel trích tất cả các mở rộng hợp lệ ban đầu vào mảng d_Extension
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i<numberOfElementd_O){
-		if (d_O[i]!=-1){
+	if (i<numberOfElementd_O)
+	{
+		if (d_O[i]!=-1)
+		{
 			int j;
 			int ek;
-			//PMS_PRINT("\nThread:%d",i);	
-			for(j=i+1;j<numberOfElementd_O;++j){	
-				if(d_O[j]!=-1) {break;}	
+			for(j=i+1;j<numberOfElementd_O;++j)
+			{
+				if(d_O[j]!=-1) {break;}
 			}
-
-			if (j==numberOfElementd_O) {
+			if (j==numberOfElementd_O)
+			{
 				ek=numberOfElementd_N;
 			}
 			else
 			{
 				ek=d_O[j];
 			}
-			//PMS_PRINT("\n[%d]:%d",i,ek);
 			for(int k=d_O[i];k<ek;k++){
-				//do something
 				int index= k;
-				d_Extension[index].vi=0; //không cần gán nữa vì đã khởi tạo trong định nghĩa cấu trúc Extension
+				d_Extension[index].vi=0;
 				d_Extension[index].vj=1;
 				d_Extension[index].li=d_LO[i];
 				d_Extension[index].lij=d_LN[k];
 				d_Extension[index].lj=d_LO[d_N[k]];
 				d_Extension[index].vgi=i;
 				d_Extension[index].vgj=d_N[k];
-				//PMS_PRINT("\n[%d]:%d",i,index);
-				/*PMS_PRINT("\n[%d]: DFS code:(%d,%d,%d,%d,%d)  (vgi,vgj):(%d,%d)\n",k,d_Extension[i].vi,d_Extension[i].vj,d_Extension[i].li,
-				d_Extension[i].lij,d_Extension[i].lj,d_Extension[i].vgi,d_Extension[i].vgj);*/
 			}
 		}
 	}
@@ -532,7 +499,11 @@ void PMS::getAndStoreExtension(Extension *&d_Extension)
 	unsigned int numberOfElementd_O = hdb.at(0).noElemdO;
 	dim3 grid((numberOfElementd_O+block.x-1)/block.x);
 
-	kernelGetAndStoreExtension<<<grid,block>>>(hdb.at(0).dO,hdb.at(0).dLO,numberOfElementd_O,hdb.at(0).dN,hdb.at(0).dLN,hdb.at(0).noElemdN,d_Extension);
+	kernelGetAndStoreExtension<<<grid,block>>>( \
+		hdb.at(0).dO,hdb.at(0).dLO, \
+		numberOfElementd_O, \
+		hdb.at(0).dN,hdb.at(0).dLN,hdb.at(0).noElemdN, \
+		d_Extension);
 	CUCHECK(cudaDeviceSynchronize());
 	CUCHECK(cudaGetLastError());
 	return;
@@ -568,7 +539,7 @@ __global__ void	kernelValidEdge(Extension *d_Extension,int *dV,unsigned int numb
 void validEdge(Extension *d_Extension,int *&dV,unsigned int numberElementd_Extension)
 {
 	dim3 block(blocksize);
-	dim3 grid(numberElementd_Extension+block.x-1/block.x);
+	dim3 grid((numberElementd_Extension+block.x-1)/block.x);
 	std::printf("\n gird:%d block:%d");
 	kernelValidEdge<<<grid,block>>>(d_Extension,dV,numberElementd_Extension);
 	CUCHECK(cudaDeviceSynchronize());
@@ -692,23 +663,6 @@ void allocate_gpu_memory(EXT* &d_array,int noElem)
 	return;
 }
 
-//__global__ void kernelExtractValidExtension(Extension *d_Extension,int *dV,int *dVScanResult,int numberElementd_Extension,Extension *d_ValidExtension){
-//	int i = blockIdx.x*blockDim.x + threadIdx.x;
-//	if(i<numberElementd_Extension){
-//		if(dV[i]==1){
-//			int index = dVScanResult[i];
-//			//PMS_PRINT("\nV[%d]:%d, index[%d]:%d,d_Extension[%d], d_Extension[%d]:%d\n",i,V[i],i,index[i],i,i,d_Extension[i].vgi);
-//			d_ValidExtension[index].li=d_Extension[i].li;
-//			d_ValidExtension[index].lj=d_Extension[i].lj;
-//			d_ValidExtension[index].lij=d_Extension[i].lij;
-//			d_ValidExtension[index].vgi=d_Extension[i].vgi;
-//			d_ValidExtension[index].vgj=d_Extension[i].vgj;
-//			d_ValidExtension[index].vi=d_Extension[i].vi;
-//			d_ValidExtension[index].vj=d_Extension[i].vj;
-//		}
-//	}
-//}
-
 
 //use
 __global__ void kernelExtractValidExtension_pure(Extension *d_Extension,int *dV,int *dVScanResult, \
@@ -731,27 +685,6 @@ __global__ void kernelExtractValidExtension_pure(Extension *d_Extension,int *dV,
 		}
 	}
 }
-
-//cudaError_t extractValidExtension(Extension *d_Extension,int *dV,int *dVScanResult, int numberElementd_Extension,Extension *&d_ValidExtension){
-//	cudaError_t cudaStatus;
-//
-//	//printfExtension(d_Extension,numberElementd_Extension);
-//
-//	dim3 block(blocksize);
-//	dim3 grid((numberElementd_Extension+block.x)/block.x);
-//
-//	kernelExtractValidExtension<<<grid,block>>>(d_Extension,dV,dVScanResult,numberElementd_Extension,d_ValidExtension);
-//
-//	cudaDeviceSynchronize();
-//	cudaStatus=cudaGetLastError();
-//	if (cudaStatus != cudaSuccess){
-//		fprintf(stderr,"\nkernelGetValidExtension failed");
-//		goto Error;
-//	}
-//
-//Error:
-//	return cudaStatus;
-//}
 
 //use
 void extractValidExtension_pure(Extension *d_Extension,int *dV,int *dVScanResult, int numberElementd_Extension,EXT *&d_ValidExtension)
@@ -795,11 +728,15 @@ void PMS::getValidExtension_pure()
 }
 
 //use
-__global__ void kernelMarkLabelEdge_pure(EXT *d_ValidExtension,unsigned int noElem_d_ValidExtension,unsigned int Lv,unsigned int Le,int *d_allPossibleExtension)
+__global__ void kernelMarkLabelEdge_pure(EXT *d_ValidExtension, \
+										 unsigned int noElem_d_ValidExtension, \
+										 unsigned int Lv,unsigned int Le, \
+										 int *d_allPossibleExtension)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if(i<noElem_d_ValidExtension){
-		int index=	d_ValidExtension[i].li*Lv*Le + d_ValidExtension[i].lij*Lv + d_ValidExtension[i].lj;
+	if(i<noElem_d_ValidExtension)
+	{
+		int index = d_ValidExtension[i].li*Lv*Le + d_ValidExtension[i].lij*Lv + d_ValidExtension[i].lj;
 		d_allPossibleExtension[index]=1;
 	}
 }
@@ -1327,6 +1264,11 @@ void PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 			DFS_CODE.add(UES.hArrUniEdge[idx_ues].vi,UES.hArrUniEdge[idx_ues].vj, \
 				UES.hArrUniEdge[idx_ues].li,UES.hArrUniEdge[idx_ues].lij,UES.hArrUniEdge[idx_ues].lj);
 			//Check minDFSCode
+			/*if(!is_min())
+			{
+				is_min();
+				write_notMinDFS_CODE(DFS_CODE);
+			}*/
 			if(is_min())
 			{
 				write_minDFS_CODE(DFS_CODE);

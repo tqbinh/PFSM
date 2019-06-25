@@ -77,7 +77,7 @@ public:
 	
 	Graph():edge_size_(0),directed(false){}; //khởi tạo đồ thị với cạnh và mặc định là vô hướng
 };
-
+//use
 class DFS{	//Lớp DFS, biểu diễn DFS code của một cạnh. Gồm các cả overloading operator dùng để so sánh DFS code của 2 cạnh.
 public:
 	int from; //từ đỉnh nào
@@ -96,11 +96,11 @@ public:
 	//Khởi tạo DFS code
 	DFS():from(0),to(0),fromlabel(0),elabel(0),tolabel(0){};
 };
-
+//use
 typedef std::vector<int> RMPath; //định nghĩa một kiểu vector<int> có tên là RMPath dùng để chứa Right Most Path
 
 //cấu trúc của DFS code
-struct DFSCode:public std::vector<DFS>{ //kế thừa từ vector<DFS>
+struct DFSCode:public std::vector<DFS>{ //kế thừa từ vector<DFS> //use
 public:
 	int minLabel;
 	int maxId;
@@ -159,7 +159,7 @@ public:
 	void push(int id,Edge* edge,PDFS* prev){ //phương thức push dùng để thêm một phần tử vào trong Projected, tức là vector<PDFS>, vì Projected kế thừa từ Vector<PDFS>, mỗi phần tử của vector là một PDFS, tức là một danh sách tự trỏ hay còn gọi là danh sách liên kết.
 		resize(size()+1); //Mở rộng 1 phần tử cho vector<PDFS>
 		PDFS& d = (*this)[size()-1]; //d là một alias của phần tử  trong vector<PDFS> vừa mới mở rộng.
-		d.id = id; //từ d ta truy xuất và gán giá trị cho nó. Gồm graph_id, edge, và liên kết thông tin của phần tử trước đó là gì
+		d.id = id; //từ d ta truy xuất và gán giá trị cho nó. Gồm id của cạnh, edge, và liên kết thông tin của phần tử trước đó là gì
 		d.edge = edge;
 		d.prev = prev;
 	}

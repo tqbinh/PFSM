@@ -10,7 +10,7 @@
 #include "gspan.cuh"
 
 using namespace std;
-const RMPath& DFSCode::buildRMPath() //buildRMPath là một phương thức của DFSCODE
+const RMPath& DFSCode::buildRMPath() //buildRMPath là một phương thức của DFSCODE //use
 {
 	rmpath.clear();
 	int old_from = -1;
@@ -24,7 +24,7 @@ const RMPath& DFSCode::buildRMPath() //buildRMPath là một phương thức c�
 	}
 	return rmpath;
 }
-
+//use
 void History::build(Graph& g,PDFS* e)
 {
 	clear(); //cái này là đối tượng history kế thừa từ vector<Edge*>, nên lệnh clear này là dọn dẹp vector<Edge*> của history.
@@ -36,7 +36,7 @@ void History::build(Graph& g,PDFS* e)
 	if(e){ //e ở đây chính là tham số thứ 2 A_1, e là một con trỏ lưu trử địa chỉ của A_1
 		push_back(e->edge);		//Đưa embedding đang xét vào vector<Edge*> của g
 		edge[e->edge->id] = vertex[e->edge->from] = vertex[e->edge->to] = 1; //đồng thời đánh dấu các cạnh và đỉnh của g liên quan đến Embedding đó
-		
+		//Duyệt qua các cạnh của embedding để đánh dấu chúng đã thuộc embedding.
 		for(PDFS* p = e->prev; p; p=p->prev){
 			push_back(p->edge);
 			edge[p->edge->id] = vertex[p->edge->from] = vertex[p->edge->to] = 1; //đánh dấu các cạnh trước đó đã kết nối với embedding đang xét.
@@ -74,7 +74,7 @@ bool get_forward_pure (Graph &graph, Edge *e, int minlabel, History& history, Ed
 	for (Vertex::edge_iterator it = graph[e->to].edge.begin() ; //bắt đầu mở rộng cạnh từ đỉnh to, lưu ý đỉnh này phải thuộc right most path
 		 it != graph[e->to].edge.end() ; ++it) //ở đây là duyệt qua tất cả các cạnh kề với đỉnh to trên right most path
 	{
-		if (minlabel > graph[it->to].label || history.hasVertex (it->to)) //Nếu đỉnh của cạnh muốn thêm đã thuộc DFS_CODE hoặc nhãn đỉnh mới < minlabel của DFS_CODE thì bỏ qua cạnh đó
+		if (minlabel > graph[it->to].label || history.hasVertex (it->to)) //Nếu đỉnh của cạnh muốn thêm đã thuộc DFS_CODE hoặc nhãn đỉnh mới < minlabel của DFS_CODE thì bỏ qua cạnh đó.
 			continue; //bỏ qua cạnh đó.
 		
 		result.push_back (&(*it));
@@ -82,7 +82,7 @@ bool get_forward_pure (Graph &graph, Edge *e, int minlabel, History& history, Ed
 	
 	return (! result.empty());
 }
-
+//use
 bool get_forward_root (Graph &g, Vertex &v, EdgeList &result)
 {
 	result.clear (); //xóa tất cả các phần tử trong result, tức là làm rỗng result.

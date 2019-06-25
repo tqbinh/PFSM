@@ -1,6 +1,6 @@
 #pragma once
-
-#include "moderngpu.cuh"		// Include all MGPU kernels.
+// Include all MGPU kernels.
+#include "moderngpu.cuh"
 #include <typeinfo>
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
@@ -12,55 +12,43 @@
 #include "conio.h"
 #include <fstream>
 #include "pms.cuh"
-//#include "kernelPrintf.h"
-//#include "kernelCountLabelInGraphDB.h"
-//#include "kernelMarkInvalidVertex.h"
-//#include "markInvalidVertex.h"
-//#include "checkArray.h"
-//#include "displayArray.h"
-//#include "checkDataBetweenHostAndGPU.h"
-//#include "access_d_LO_from_idx_of_d_O.h"
-//#include "countNumberOfLabelVetex.h"
-//#include "countNumberOfEdgeLabel.h"
-//#include "extractUniqueEdge.h"
-//#include "ExtensionStructure.h"
-//#include "getAndStoreExtension.h"
-//#include "validEdge.h"
-//#include "scanV.h"
-//#include "getLastElement.h"
-//#include "getValidExtension.h"
-//#include "getUniqueExtension.h"
-//#include "calcLabelAndStoreUniqueExtension.h"
-//#include "calcBoundary.h"
-//#include "calcSupport.h"
-//#include "getSatisfyEdge.h"
-//#include "header.h"
-//
-//
-//#include "helper_timer.h"
+
 using namespace std;
 using namespace mgpu;
 
-//
-//#define CHECK(call) \
-//{ \
-//const cudaError_t error = call; \
-//if (error != cudaSuccess) \
-//{ \
-//printf("Error: %s:%d, ", __FILE__, __LINE__); \
-//printf("code:%d, reason: %s\n", error, cudaGetErrorString(error)); \
-//exit(1); \
-//} \
-//}
-
-
 ContextPtr ctx;
 
-
-
-
+void device_info()
+{
+	int devCount = 0;
+	cudaGetDeviceCount(&devCount);
+	cout<<endl<<"So luong device:"<<devCount<<endl;
+	cudaDeviceProp devProp;
+	for (int i = 0; i < devCount; i++)
+	{
+		cudaGetDeviceProperties(&devProp,0);
+		cout<<endl<<"name: "<<devProp.name<<endl;
+		cout<<endl<<"major: "<<devProp.major<<endl;
+		cout<<endl<<"minor: "<<devProp.minor<<endl;
+		cout<<endl<<"totalGlobalMem: "<<devProp.totalGlobalMem<<endl;
+		cout<<endl<<"totalConstMem: "<<devProp.totalConstMem<<endl;
+		cout<<endl<<"maxGridSize x,y,z,all: "<<devProp.maxGridSize[0]<<","<< \
+			devProp.maxGridSize[1]<<","<<devProp.maxGridSize[2]<<","<<devProp.maxGridSize[3]<<endl;
+		cout<<endl<<"maxThreadsDim x,y,z,all: "<<devProp.maxThreadsDim[0]<<","<< \
+			devProp.maxThreadsDim[1]<<","<<devProp.maxThreadsDim[2]<<","<<devProp.maxThreadsDim[3]<<endl;
+		cout<<endl<<"maxThreadsPerBlock(so luong tieu trinh toi da 1 block): "<<devProp.maxThreadsPerBlock<<endl;
+		cout<<endl<<"devProp.maxThreadsPerMultiProcessor(so luong tieu trinh toi da 1 SM):"<<devProp.maxThreadsPerMultiProcessor<<endl;
+		cout<<endl<<"sharedMemPerBlock (Dung luong shareMem cua 1 Block) (KB): "<<devProp.sharedMemPerBlock<<endl;
+		cout<<endl<<"multiProcessorCount(so luong SM): "<<devProp.multiProcessorCount<<endl;
+		cout<<endl<<"regsPerBlock: "<<devProp.regsPerBlock<<endl;
+		cout<<endl<<"warpSize: "<<devProp.warpSize<<endl;
+		cout<<endl<<"concurrentKernels: "<<devProp.concurrentKernels<<endl;
+	}
+	system("pause");
+	exit(0);
+}
 int main(int argc, char** argv){
-	int status=0;
+	//int status=0;
 	cudaDeviceReset();
 	ctx = CreateCudaDevice(argc, argv, true);
 	cout << typeid(ctx).name() << endl;
@@ -131,52 +119,7 @@ int main(int argc, char** argv){
 	std::printf("MiningDeeper()\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time:  (ms)
 	hTime=timer.getTime();
-	system("pause");
+	//system("pause");
 
 	return 0;
 }
-
-
-
-
-//int main(int argc, char** argv) 
-//{
-//    ContextPtr context = CreateCudaDevice(argc, argv, true);
-//
-//   int noElem = 5;
-//   int* ptr = (int*)malloc(sizeof(int)*noElem);
-//   for (int i = 0; i < noElem; i++)
-//   {
-//	   ptr[i]=i;
-//	   cout<<ptr[i]<<" ";
-//   }
-//   cout<<endl;
-//   int *p=nullptr;
-//   cudaMalloc((void**)&p,sizeof(int)*noElem);
-//   cudaMemcpy(p,ptr,noElem*sizeof(int),cudaMemcpyHostToDevice);
-//   cout<<"Input data"<<endl;
-//   kernelPrintdArr<<<1,100>>>(p,noElem);
-//   cudaDeviceSynchronize();
-//   cout<<endl;
-//  //// int result = Reduce(p, noElem, *context);
-//  //// printf("Reduction total: %d\n\n", result);
-//   int result=0;
-//   //ScanExc(p, noElem, &result, *context);
-//   ScanExc(p, noElem, *context);
-////   PrintArray(*data, "%4d", 10);
-//    kernelPrintdArr<<<1,100>>>(p,noElem);
-//    cudaDeviceSynchronize();
-//    //printf("Exclusive scan:\n");
-//    //printf("Scan total: %d\n", result);
-//
-//	cudaFree(p);
-//
-//    //// Run an exclusive scan.
-//    //ScanExc(data->get(), N, &total, context);
-//    //printf("Exclusive scan:\n");
-//    //PrintArray(*data, "%4d", 10);
-//    //printf("Scan total: %d\n", total);
-//
-//	_getch();
-//    return 0;
-//}
