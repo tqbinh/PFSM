@@ -439,6 +439,8 @@ struct EXTk
 	UniEdgeStatisfyMinSup uniBES; //unique backward edge statisfy minsup
 	EXTk():noElem(0),dArrExt(nullptr){};
 public:
+	//use
+	void createMapping(int* &dMapping); //Tạo mapping cho EXTk tương ứng với index trong dUniEdge.
 	void mark_edge(int vi,int vj,int li,int lij,int lj,int *&dValid);
 	//use
 	void ReleaseMemory()
@@ -480,6 +482,9 @@ public:
 	void extractUniBackwardExtension(unsigned int&,unsigned int&,int& noElemRMP,int*& dRMP,int*& dRMPLabel, int& noElemMappingVj,int& vi,int& li);
 	//use
 	void findSupport(unsigned int&);
+	//use
+	void findSupportBySegment(unsigned int&);
+
 	//use
 	void findBoundary(unsigned int&, int*&);
 	//use
@@ -740,6 +745,10 @@ public:
 };
 
 
+//use
+extern void DemoSegReduceCsr(int* &dSegmentStarts,int &NumSegments, \
+					  int* &dValues,int &noElem_dValues, \
+					  int* &dResults,int &noElem_dResults,CudaContext& context);
 
 //use
 extern __global__ void kernelCopyDeviceEXT(EXT** dPointerArr,EXT* dArr,int at);

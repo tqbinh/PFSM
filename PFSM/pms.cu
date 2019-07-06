@@ -149,7 +149,7 @@ bool fexists(const char *filename)
 void PMS::prepareDataBase()
 {
 	//unsigned int minsup = 5000;
-	unsigned int minsup = 30;
+	unsigned int minsup = 13;
 	unsigned int maxpat = 2;
 	//unsigned int maxpat = 0x00000000;
 	unsigned int minnodes = 0;
@@ -392,9 +392,18 @@ void  myReduction(int *dArrInput,int noElem,int &hResult){
 	int total = Reduce(dArrInput, noElem, cdactx);
 	//PMS_PRINT("Reduction total: %d\n\n", total);
 	hResult = total;
-
 	return;
 }
+
+//use
+void DemoSegReduceCsr(int* &dSegmentStarts,int &NumSegments, \
+					  int* &dValues,int &noElem_dValues, \
+					  int* &dResults,int &noElem_dResults,CudaContext& context)
+{
+	SegReduceCsr(dValues, dSegmentStarts, noElem_dValues, NumSegments,
+		false, dResults, (int)0, mgpu::plus<int>(), context);
+}
+
 
 
 //use
@@ -2771,7 +2780,74 @@ void EXTk::findSupport(unsigned int& maxOfVer)
 		FCHECK(-1);
 	}
 }
+//use
+void EXTk::findSupportBySegment(unsigned int& maxOfVer)
+{
+	try
+	{
+		//Tìm boundary của EXTk
+		int* dArrBoundaryIndex = nullptr;
+		findBoundary(maxOfVer,dArrBoundaryIndex);
+		//Xác định số lượng phần tử của dF
+		int *dF=nullptr;
+		int noElemdF = 0;
+		CUCHECK(cudaMemcpy(&noElemdF,&dArrBoundaryIndex[noElem-1],sizeof(int),cudaMemcpyDeviceToHost));
+		++noElemdF;
+		
+		//Tính Support cho các mở rộng backward
+		if(uniBE.noElem>0)
+		{
+			//Cấp phát bộ nhớ device cho dF theo số lượng phần tử duy nhất trong UniEdge
+			CUCHECK(cudaMalloc((void**)&dF,sizeof(int)*noElemdF*uniBE.noElem));
+			CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF*uniBE.noElem));
 
+			uniBE.copyDTH(); //copy unique edge từ device sang host
+			uniBE.hSupport = nullptr; //cấp phát bộ nhớ ở host để lưu trữ support
+			uniBE.hSupport = (int*)malloc(sizeof(int)*uniBE.noElem);
+			if(uniBE.hSupport==nullptr) FCHECK(-1);
+			memset(uniBE.hSupport,0,sizeof(int)*uniBE.noElem);
+			//Duyệt qua từng unique edge để tính độ hỗ trợ.
+			for (int i = 0; i < uniBE.noElem; i++)
+			{
+				findSupportFW(dArrBoundaryIndex,uniBE.dUniEdge,i,dF,noElemdF,uniBE.hSupport[i]);
+				//Mỗi lần lặp thì reset lại zerocho dF 
+				CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF));
+			}
+			//uniBE.showSupport();
+		}
+
+		//Tính Support cho các mở rộng forward
+		if(uniFE.noElem>0)
+		{
+			uniFE.copyDTH();
+			uniFE.hSupport = nullptr;
+			uniFE.hSupport = (int*)malloc(sizeof(int)*uniFE.noElem);
+			if(uniFE.hSupport==nullptr) FCHECK(-1);
+			memset(uniFE.hSupport,0,sizeof(int)*uniFE.noElem);
+			//Duyệt qua các phần tử duy nhất, tính support của chúng và lưu lại trong hSupport tại index tương ứng.
+			for (int i = 0; i < uniFE.noElem; i++)
+			{
+				findSupportFW(dArrBoundaryIndex,uniFE.dUniEdge,i,dF,noElemdF,uniFE.hSupport[i]);
+				//Mỗi lần lặp thì reset lại zerocho dF 
+				CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF));
+			}
+			//uniFE.showSupport();
+		}
+
+		CUCHECK(cudaFree(dArrBoundaryIndex));
+		CUCHECK(cudaFree(dF));
+	}
+	catch(...)
+	{
+		FCHECK(-1);
+	}
+}
+
+//use
+void createMapping(int* &dMapping)
+{
+	return;
+}
 //use
 void EXTk::findSupportFW(int*& dArrBoundaryIndex,UniEdge*& dArrUniEdge,int& idxUniEdge, int*& dF,int& noElemdF,int& support)
 {
