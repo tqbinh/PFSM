@@ -1,148 +1,47 @@
-﻿Build started 7/7/2019 12:45:40 AM.
+﻿Build started 7/7/2019 9:14:18 PM.
      1>Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu 
        AddCudaCompileDeps:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\graph.cu 
-       AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\gspan.cu 
-       AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\ismin.cu 
-       AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\main.cu 
-       AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\misc.cu 
-       AddCudaCompileDeps:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu 
        CudaBuild:
          Compiling CUDA source file dfs.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmpcfcff68baf934276a381f7e53772394c.cmd"
+         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp432e1b7b83aa4008aeeab218ddf067b3.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\dfs.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu"
          
          D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\dfs.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu" 
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(108): warning : missing return statement at end of non-void function "DFSCode::is_min"
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(108): warning : missing return statement at end of non-void function "DFSCode::is_min"
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(224): warning : missing return statement at end of non-void function "DFSCode::check_min"
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(224): warning : missing return statement at end of non-void function "DFSCode::check_min"
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\dfs.cu(108): warning C4715: 'DFSCode::is_min' : not all control paths return a value
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(152): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(554): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(575): warning C4018: '<' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(108): warning C4018: '>=' : signed/unsigned mismatch
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(166): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\dfs.cu(224): warning C4715: 'DFSCode::check_min' : not all control paths return a value
        CudaBuild:
          Compiling CUDA source file graph.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmpf894fd2b3c974e10a1d8a8c2a5aae0be.cmd"
+         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp6712c59c5e50460d8c5af842a95b8115.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\graph.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\graph.cu"
          
          D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\graph.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\graph.cu" 
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/graph.cu(79): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'unsigned int', possible loss of data
-       CudaBuild:
-         Compiling CUDA source file gspan.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp2d5ff3d0a1f34ba0874f2d490024ec37.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\gspan.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\gspan.cu"
-         
-         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\gspan.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\gspan.cu" 
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/gspan.cu(379): warning : variable "oid" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/gspan.cu(379): warning : variable "oid" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/gspan.cu(280): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/gspan.cu(281): warning C4018: '>' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/gspan.cu(289): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/gspan.cu(334): warning C4018: '>=' : signed/unsigned mismatch
-       CudaBuild:
-         Compiling CUDA source file ismin.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp6ee9cd0b866f43698f70c0b83f92665c.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\ismin.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\ismin.cu"
-         
-         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\ismin.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\ismin.cu" 
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-       CudaBuild:
-         Compiling CUDA source file main.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp882abc6b897f480e841b2e447f11645a.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\main.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\main.cu"
-         
-         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\main.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\main.cu" 
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/main.cu(36): warning : subscript out of range
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/main.cu(38): warning : subscript out of range
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/main.cu(36): warning : subscript out of range
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/main.cu(38): warning : subscript out of range
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(554): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(575): warning C4018: '<' : signed/unsigned mismatch
-       CudaBuild:
-         Compiling CUDA source file misc.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp6b8ad6b8e6344c7698e86f975247e4da.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\misc.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\misc.cu"
-         
-         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\misc.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\misc.cu" 
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-       CudaBuild:
-         Compiling CUDA source file pms.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmpf9adedb5ab594dafb7e2567494856970.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu"
-         
-         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\pms.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu" 
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(937): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1145): warning : variable "NumSegments" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1765): warning : variable "noPossibleExt" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1987): warning : variable "b" was set but never used
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1957): warning : variable "idxLastCol" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2453): warning : specifiers after comma between declarations are nonstandard
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2446): warning : variable "idxLastCol" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(937): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1145): warning : variable "NumSegments" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1765): warning : variable "noPossibleExt" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1987): warning : variable "b" was set but never used
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1957): warning : variable "idxLastCol" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2453): warning : specifiers after comma between declarations are nonstandard
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(2446): warning : variable "idxLastCol" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(150): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(554): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(575): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(35): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(60): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(105): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(115): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(123): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(145): warning C4800: 'void *' : forcing value to bool 'true' or 'false' (performance warning)
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(312): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(424): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1333): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(1824): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3011): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3066): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/pms.cu(3139): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(152): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/graph.cu(78): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'unsigned int', possible loss of data
        Link:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.pdb" /SUBSYSTEM:CONSOLE /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.lib" /MACHINE:X86 Debug\mgpucontext.cu.obj
          Debug\dfs.cu.obj
@@ -169,4 +68,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:02:58.95
+Time Elapsed 00:00:26.29

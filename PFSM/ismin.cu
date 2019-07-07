@@ -10,10 +10,12 @@
 
 #include "gspan.cuh"
 using namespace std;
-bool gSpan::is_min ()
+bool gSpan::is_min()
 {
 	if (DFS_CODE.size() == 1) //nếu như trong vector<DFS> chỉ có duy nhất 1 DFS thì nó là nhỏ nhất.
 		return (true);
+	if (DFS_CODE.size() == 6)
+		DFS_CODE.check_min();
 	
 	DFS_CODE.toGraph (GRAPH_IS_MIN);  //xây dựng đồ thị cho DFS_CODE và gán đồ thị đó cho GRAPH_IS_MIN
 	DFS_CODE_IS_MIN.clear ();

@@ -6,7 +6,7 @@
  *  Copyright 2009 KyungHee. All rights reserved.
  *
  */
-
+#pragma once
 #include<iostream>
 #include<map>
 #include<vector>
@@ -116,7 +116,8 @@ public:
 	
 	bool toGraph(Graph&); //*0* không biết để làm gì; có thể là để biết GID của graph
 	void fromGraph(Graph& g); //*0* không biết để làm gì
-	bool is_min();
+	bool check_min();
+	void buildDBOnDevice();
 	unsigned int nodeCount(void); //đếm số node của DFSCode
 	void push(int from,int to,int fromlabel,int elabel,int tolabel){ //thêm DFS vào DFSCode
 		resize(size()+1); //vì DFSCode kế thừa từ vector<DFS> nên DFSCode có thể dùng phương thức size() của vector<DFS>

@@ -6,14 +6,26 @@
  *  Copyright 2009 KyungHee. All rights reserved.
  *
  */
-
+#pragma once
 #include "gspan.cuh"
+#include "pms.cuh"
 #include <cstring>
 #include <string>
 #include <iterator>
 #include <set>
 using namespace std;
 
+#define CUCHECK(call) \
+{ \
+const cudaError_t error = call; \
+if (error != cudaSuccess) \
+{ \
+std::printf("Error: %s:%d, ", __FILE__, __LINE__); \
+std::printf("code:%d, reason: %s\n", error, cudaGetErrorString(error)); \
+system("pause"); \
+exit(0); \
+} \
+}
 void DFSCode::add(int vi,int vj,int li,int lij,int lj)
 {
 	if (nodeCount()==0)
@@ -75,64 +87,54 @@ bool DFSCode::toGraph(Graph& g) //Convert DFSCode sang đồ thị.
 	
 	return (true);
 }
-void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& _arrayLN,const unsigned int _sizeOfarrayO,const unsigned int _noDeg,Graph& g) //return -1 if error
+
+void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& _arrayLN, \
+					   const unsigned int _sizeOfarrayO,const unsigned int _noDeg,Graph& g) //return -1 if error
 {
 	int i=0;
 	int numberOfEdges=0;
 	int j=0;
 	_arrayO[i]=0;
 	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
-	{		
-		for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)//Duyệt qua các cạnh của đỉnh
-		{
-			_arrayLO[i]=g[it->from].label; //gán nhãn cho đỉnh From trong mảng LO, bị gán nhiều lần trong mỗi lần lặp cạnh không tốt
-			_arrayN[j]=it->to+id*_maxOfVer; //gán id cho đỉnh to trong mảng N
+	{	//Duyệt qua các cạnh của đỉnh
+		for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)
+		{	//Gán nhãn cho đỉnh From trong mảng LO, bị gán nhiều lần trong mỗi lần lặp cạnh không tốt
+			_arrayLO[i]=g[it->from].label; 
+			_arrayN[j]=it->to; //gán id cho đỉnh to trong mảng N
 			_arrayLN[j]=it->elabel; //gán nhãn cho cạnh
-			j=j+1;				//tăng chỉ số trong mảng N và mảng LN
+			j=j+1;	//tăng chỉ số trong mảng N và mảng LN
 			++numberOfEdges; //số cạnh đã duyệt
 		}
+		if (i>=(_sizeOfarrayO-1)) return;
+		_arrayO[i+1]=numberOfEdges;
+		++i;
 	}
 }
 
-bool DFSCode::is_min()
+
+//use
+//Build DFS_Code on Device for checking minDFSCODE
+//This action convert DFS_CODE to graph and store graph db on device.
+void DFSCode::buildDBOnDevice()
 {
-	if (size() == 1) //nếu như trong vector<DFS> chỉ có duy nhất 1 DFS thì nó là nhỏ nhất.
-		return (true);
-	//1. Xây dựng database của đồ thị trên GPU: dfscode_LO, dfscode_O, dfscode_N, dfscode_LN
-	//Convert DFS_CODE sang Graph
 	Graph	tempGraph;
 	toGraph(tempGraph);
 	//Get total of vertex in graph
 	int noOfVer = tempGraph.vertex_size();
 	int* hArrO = new int[noOfVer];
-	if (hArrO==NULL)
-	{
-		exit(-1);
-	}
-	else
-	{
-		memset(hArrO, -1, noOfVer*sizeof(int));
-	}
+	if (hArrO==NULL){exit(-1);}
+	else {memset(hArrO, -1, noOfVer*sizeof(int));}
 	//Get total of degree of all vertex in graph.
 	unsigned int noDeg =0;
 	Graph& g = tempGraph; 
 	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
-	{		
-		for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)
-		{
-			noDeg++;
-		}
-	}
+	{	noDeg +=v->edge.size();}
 	unsigned int sizeOfArrayN=noDeg;
 	//Mảng arrayN lưu trữ id của các đỉnh kề với đỉnh tương ứng trong mảng arrayO.
 	int* hArrN = new int[sizeOfArrayN];
-	if(hArrN==NULL)
-	{
-		exit(-1);
-	}else
-	{
-		memset(hArrN, -1, noDeg*sizeof(int));
-	}
+
+	if(hArrN==NULL){exit(-1);}
+	else {memset(hArrN, -1, noDeg*sizeof(int));}
 
 	//Prepare dataset on host
 	//Mảng arrayLO lưu trữ label cho tất cả các đỉnh trong TRANS.
@@ -156,8 +158,47 @@ bool DFSCode::is_min()
 	}
 
 	importDataToArray(hArrO,arrayLO,hArrN,arrayLN,noOfVer,noDeg,g);
+	for(int i = 0; i<noOfVer;i++)
+	{
+		cout<<hArrO[i]<<":"<<arrayLO[i]<<" ";
+	}
+	cout<<endl;
+	for(int i = 0; i<noDeg;i++)
+	{
+		cout<<hArrN[i]<<":"<<arrayLN[i]<<" ";
+	}
+	cout<<endl;
 
+	//Copy data from host to device
+	DB graphdfscode;
+	graphdfscode.noElemdO = noOfVer;
+	graphdfscode.noElemdN = noDeg;
+	size_t  nBytesO = noOfVer * sizeof(int);
+	size_t nBytesN = noDeg * sizeof(int);
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dO,nBytesO));
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dLO,nBytesO));
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dN,nBytesN));
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dLN,nBytesN));
 
+	//Chép dữ liệu từ mảng arrayO trên CPU sang GPU được quản lý bởi pointer dO
+	CUCHECK(cudaMemcpy(graphdfscode.dO,hArrO,nBytesO,cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(graphdfscode.dLO,arrayLO,nBytesO,cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(graphdfscode.dN,hArrN,nBytesN,cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(graphdfscode.dLN,arrayLN,nBytesN,cudaMemcpyHostToDevice));
+
+	//Release host memory
+	delete[] hArrN;
+	delete[] hArrO;
+	delete[] arrayLO;
+	delete[] arrayLN;
+	return;
+}
+bool DFSCode::check_min()
+{
+	if (this->size() == 1) return true;
+	//1. Xây dựng database của đồ thị trên GPU: dfscode_LO, dfscode_O, dfscode_N, dfscode_LN
+	//Convert DFS_CODE sang Graph
+	this->buildDBOnDevice();
 	//Tìm số lượng đỉnh (dfscode_dO,dfscode_dLO) và tổng bậc của các đỉnh (dsfcode_dN, dfscode_dLN).
 	//2. Tìm tất cả mở rộng 1 cạnh ban đầu hợp lệ (GPU step)
 	//3. So sánh chúng với cạnh đầu tiên của DFS_CODE (GPU step)

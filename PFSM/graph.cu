@@ -45,7 +45,6 @@ void Graph::buildEdge() //Hàm này vừa xây dựng ánh xạ tmp<string,int> 
 			
 		}
 	}
-	
 	edge_size_=id; //Số lượng cạnh của đồ thị
 }
 

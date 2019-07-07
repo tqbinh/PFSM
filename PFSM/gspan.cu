@@ -299,11 +299,8 @@ unsigned int gSpan::sumOfDeg()
 	{
 		Graph& g = TRANS[id]; //khai báo g làm một alias của TRANS[id], tức g là một đồ thị đang được xem xét. Mỗi vòng lặp thì g tương ứng với một đồ thị khác nhau trong cơ sở dữ liệu đồ thị TRANS.
 		for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v) //g.size() là số đỉnh trong đồ thị, ở đây có nghĩa là vòng lặp để duyệt qua tất cả các đỉnh trong đồ thị.
-		{		
-			for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)
-			{
-				resultTotalDeg++;
-			}
+		{
+			resultTotalDeg+=v->edge.size();
 		}
 	}
 	return resultTotalDeg;
