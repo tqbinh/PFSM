@@ -119,7 +119,7 @@ int main(int argc, char** argv){
 	std::printf("MiningDeeper()\n");
 	std::printf("Processing time: %f (ms)\n", timer.getTime());//Processing time:  (ms)
 	hTime=timer.getTime();
-	//system("pause");
+	system("pause");
 
 	return 0;
 }

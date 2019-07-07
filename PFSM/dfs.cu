@@ -75,7 +75,112 @@ bool DFSCode::toGraph(Graph& g) //Convert DFSCode sang đồ thị.
 	
 	return (true);
 }
+void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& _arrayLN,const unsigned int _sizeOfarrayO,const unsigned int _noDeg,Graph& g) //return -1 if error
+{
+	int i=0;
+	int numberOfEdges=0;
+	int j=0;
+	_arrayO[i]=0;
+	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
+	{		
+		for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)//Duyệt qua các cạnh của đỉnh
+		{
+			_arrayLO[i]=g[it->from].label; //gán nhãn cho đỉnh From trong mảng LO, bị gán nhiều lần trong mỗi lần lặp cạnh không tốt
+			_arrayN[j]=it->to+id*_maxOfVer; //gán id cho đỉnh to trong mảng N
+			_arrayLN[j]=it->elabel; //gán nhãn cho cạnh
+			j=j+1;				//tăng chỉ số trong mảng N và mảng LN
+			++numberOfEdges; //số cạnh đã duyệt
+		}
+	}
+}
 
+bool DFSCode::is_min()
+{
+	if (size() == 1) //nếu như trong vector<DFS> chỉ có duy nhất 1 DFS thì nó là nhỏ nhất.
+		return (true);
+	//1. Xây dựng database của đồ thị trên GPU: dfscode_LO, dfscode_O, dfscode_N, dfscode_LN
+	//Convert DFS_CODE sang Graph
+	Graph	tempGraph;
+	toGraph(tempGraph);
+	//Get total of vertex in graph
+	int noOfVer = tempGraph.vertex_size();
+	int* hArrO = new int[noOfVer];
+	if (hArrO==NULL)
+	{
+		exit(-1);
+	}
+	else
+	{
+		memset(hArrO, -1, noOfVer*sizeof(int));
+	}
+	//Get total of degree of all vertex in graph.
+	unsigned int noDeg =0;
+	Graph& g = tempGraph; 
+	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
+	{		
+		for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)
+		{
+			noDeg++;
+		}
+	}
+	unsigned int sizeOfArrayN=noDeg;
+	//Mảng arrayN lưu trữ id của các đỉnh kề với đỉnh tương ứng trong mảng arrayO.
+	int* hArrN = new int[sizeOfArrayN];
+	if(hArrN==NULL)
+	{
+		exit(-1);
+	}else
+	{
+		memset(hArrN, -1, noDeg*sizeof(int));
+	}
+
+	//Prepare dataset on host
+	//Mảng arrayLO lưu trữ label cho tất cả các đỉnh trong TRANS.
+	int* arrayLO = new int[noOfVer];
+	if(arrayLO==NULL)
+	{
+		exit(-1);
+	}else
+	{
+		memset(arrayLO, -1, noOfVer*sizeof(int));
+	}
+
+
+	//Mảng arrayLN lưu trữ label của tất cả các cạnh trong TRANS
+	int* arrayLN = new int[noDeg];
+	if(arrayLN==NULL){
+		exit(0);
+	}else
+	{
+		memset(arrayLN, -1, noDeg*sizeof(int));
+	}
+
+	importDataToArray(hArrO,arrayLO,hArrN,arrayLN,noOfVer,noDeg,g);
+
+
+	//Tìm số lượng đỉnh (dfscode_dO,dfscode_dLO) và tổng bậc của các đỉnh (dsfcode_dN, dfscode_dLN).
+	//2. Tìm tất cả mở rộng 1 cạnh ban đầu hợp lệ (GPU step)
+	//3. So sánh chúng với cạnh đầu tiên của DFS_CODE (GPU step)
+		//Nếu có cạnh nhỏ hơn DFS_CODE thì return False
+		//Xây dựng embeddings Colum cho cạnh bằng với cạnh đầu tiên của DFS_CODE
+	//4. Duyệt qua các cạnh còn lại của DFS_CODE theo thứ tự (tạm gọi là cạnh i). Từ cạnh i ta biết được mở rộng tiếp theo
+			//là từ đỉnh nào của RMP.
+				//Nếu cạnh i là cho biết mở rộng backward từ đỉnh cuối của RMP. Thì phải tìm đúng mở rộng backward)
+				//Nếu cạnh i là mở rộng forward từ đỉnh cuối của RMP thì phải xét cả backward và forward
+				//Nếu cạnh i không là mở rộng từ đỉnh không thuộc đỉnh cuối của RMP thì phải xét backward, forward của đỉnh cuối
+					//và xét các forward của các đỉnh kế cuối đến i. 
+	//5. Tìm RMP của DFS_CODE hiện tại
+	//6. Duyệt qua RMP từ đỉnh phải cùng.
+		//6.1 Nếu cạnh i là backward và Nếu là các đỉnh phải cùng của RMP thì tìm các mở rộng backward trước.
+				//6.1.1 Nếu có mở rộng nào nhỏ hơn cạnh i thì return false.
+				//6.1.2 Ngược lại, xây dựng embeddings columns cho các mở rộng bằng với cạnh i,
+						//rồi quay lên bước 6. (Nếu không có cạnh nào bằng với cạnh i thì sao?
+												//Điều này có thể xảy ra hay không?)
+		//6.2 Tìm các mở rộng forward
+			//6.2.1 Nếu có mở rộng nào nhỏ hơn cạnh i thì return false (làm sao dọn dẹp bộ nhớ trên device trước khi return false)?
+			//6.2.2 Ngược lại, xây dựng embedding columns cho các mở rộng bằng với cạnh i, rồi quay lên bước 6.
+	//7. return true (thoả min)
+}
 
 unsigned int DFSCode::nodeCount(void) //giải thuật đếm node trên cây
 {

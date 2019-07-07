@@ -149,7 +149,7 @@ bool fexists(const char *filename)
 void PMS::prepareDataBase()
 {
 	//unsigned int minsup = 5000;
-	unsigned int minsup = 13;
+	unsigned int minsup = 2;
 	unsigned int maxpat = 2;
 	//unsigned int maxpat = 0x00000000;
 	unsigned int minnodes = 0;
@@ -163,8 +163,8 @@ void PMS::prepareDataBase()
 	//fname = "Klessorigin";
 	//fname = "KlessoriginCust1";
 	//fname= "G0G1G2_custom"; //Kết quả giống với gSpan
-	//fname= "G0G1G2_custom1"; //Kết quả giống với gSpan
-	fname="Chemical_340Origin";
+	fname= "G0G1G2_custom1"; //Kết quả giống với gSpan
+	//fname="Chemical_340Origin";
 	//fname="dbgraph";
 
 
@@ -183,7 +183,7 @@ void PMS::prepareDataBase()
 	}
 	//Chuyển dữ liệu từ fname sang TRANS
 	run(fname,fout,minsup,maxpat,minnodes,enc,where,directed);
-	maxOfVer=findMaxVertices();
+	maxOfVer=findMaxVertices(); //Đồ thị có số lượng đỉnh nhiều nhất.
 	numberOfGraph=noGraphs();
 	int sizeOfarrayO=maxOfVer*numberOfGraph;
 	//Tạo mảng arrayO có kích thước D*m
