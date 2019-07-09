@@ -1,15 +1,26 @@
-﻿Build started 7/7/2019 9:14:18 PM.
+﻿Build started 7/9/2019 7:16:01 AM.
      1>Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu 
        AddCudaCompileDeps:
          C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\graph.cu 
+       AddCudaCompileDeps:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\gspan.cu 
+       AddCudaCompileDeps:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\ismin.cu 
+       AddCudaCompileDeps:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\main.cu 
+       AddCudaCompileDeps:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\misc.cu 
+       AddCudaCompileDeps:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\pms.cu 
        CudaBuild:
          Compiling CUDA source file dfs.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp432e1b7b83aa4008aeeab218ddf067b3.cmd"
+         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp42eb51b3bfdb4c259efaf7ba00180de1.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\dfs.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu"
          
          D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\dfs.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu" 
+     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(111): error : identifier "DB" is undefined
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
@@ -17,55 +28,11 @@
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
      1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(224): warning : missing return statement at end of non-void function "DFSCode::check_min"
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(8): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(9): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(10): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\castingIntToFloat.h(11): warning : inline qualifier ignored for "__global__" function
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(456): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(553): warning : variable "status" was declared but never referenced
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(574): warning : variable "status" was declared but never referenced
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(224): warning : missing return statement at end of non-void function "DFSCode::check_min"
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(152): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(554): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\pms.cuh(575): warning C4018: '<' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(108): warning C4018: '>=' : signed/unsigned mismatch
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(166): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\dfs.cu(224): warning C4715: 'DFSCode::check_min' : not all control paths return a value
-       CudaBuild:
-         Compiling CUDA source file graph.cu...
-         cmd.exe /C "C:\Users\BenCat\AppData\Local\Temp\tmp6712c59c5e50460d8c5af842a95b8115.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\graph.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\graph.cu"
-         
-         D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\graph.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\graph.cu" 
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(151): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>d:\binhluanvan\pmsv2\lv\pfsm\pfsm\gspan.cuh(152): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/graph.cu(78): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'unsigned int', possible loss of data
-       Link:
-         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.pdb" /SUBSYSTEM:CONSOLE /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.lib" /MACHINE:X86 Debug\mgpucontext.cu.obj
-         Debug\dfs.cu.obj
-         Debug\graph.cu.obj
-         Debug\gspan.cu.obj
-         Debug\ismin.cu.obj
-         Debug\kernelCastingInt2Float.cu.obj
-         Debug\main.cu.obj
-         Debug\misc.cu.obj
-         Debug\pms.cu.obj
-         Debug\reduction.cu.obj
-         Debug\scanV.cu.obj
-         Debug\scan_largearray_kernel.cu.obj
-         Debug\mgpuutil.obj
-         PFSM.vcxproj -> D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\PFSM.exe
-       PostBuildEvent:
-         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\"
-         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\"
-         :VCEnd
-         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart*.dll" "D:\BinhLuanVan\PMSv2\LV\PFSM\Debug\"
-         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\cudart32_55.dll
-                 1 file(s) copied.
-     1>Done Building Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" (Build target(s)).
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(230): error : too many arguments in function call
+     1>D:/BinhLuanVan/PMSv2/LV/PFSM/PFSM/dfs.cu(253): warning : missing return statement at end of non-void function "DFSCode::check_min"
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V110\BuildCustomizations\CUDA 5.5.targets(592,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\dfs.cu.obj "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\dfs.cu"" exited with code 2.
+     1>Done Building Project "D:\BinhLuanVan\PMSv2\LV\PFSM\PFSM\PFSM.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:26.29
+Time Elapsed 00:00:14.36

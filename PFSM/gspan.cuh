@@ -108,6 +108,7 @@ public:
 	int *hRMP;
 	int *dRMP;
 	RMPath rmpath;  //right most path là một vector đã định nghĩa ở trên
+	DB graphdfscode;
 public:
 	void add(int,int,int,int,int);
 	//use
@@ -117,7 +118,7 @@ public:
 	bool toGraph(Graph&); //*0* không biết để làm gì; có thể là để biết GID của graph
 	void fromGraph(Graph& g); //*0* không biết để làm gì
 	bool check_min();
-	void buildDBOnDevice();
+	void buildDFSCodeOnDevice();
 	unsigned int nodeCount(void); //đếm số node của DFSCode
 	void push(int from,int to,int fromlabel,int elabel,int tolabel){ //thêm DFS vào DFSCode
 		resize(size()+1); //vì DFSCode kế thừa từ vector<DFS> nên DFSCode có thể dùng phương thức size() của vector<DFS>

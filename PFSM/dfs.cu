@@ -115,20 +115,21 @@ void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& _arrayLN
 //use
 //Build DFS_Code on Device for checking minDFSCODE
 //This action convert DFS_CODE to graph and store graph db on device.
-void DFSCode::buildDBOnDevice()
+void DFSCode::buildDFSCodeOnDevice()
 {
-	Graph	tempGraph;
+	Graph tempGraph;
+	int noOfVer=0;
+	int noDeg=0;
 	toGraph(tempGraph);
 	//Get total of vertex in graph
-	int noOfVer = tempGraph.vertex_size();
+	noOfVer = tempGraph.vertex_size();
 	int* hArrO = new int[noOfVer];
 	if (hArrO==NULL){exit(-1);}
 	else {memset(hArrO, -1, noOfVer*sizeof(int));}
 	//Get total of degree of all vertex in graph.
-	unsigned int noDeg =0;
 	Graph& g = tempGraph; 
 	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
-	{	noDeg +=v->edge.size();}
+	{noDeg +=v->edge.size();}
 	unsigned int sizeOfArrayN=noDeg;
 	//Mảng arrayN lưu trữ id của các đỉnh kề với đỉnh tương ứng trong mảng arrayO.
 	int* hArrN = new int[sizeOfArrayN];
@@ -170,7 +171,6 @@ void DFSCode::buildDBOnDevice()
 	cout<<endl;
 
 	//Copy data from host to device
-	DB graphdfscode;
 	graphdfscode.noElemdO = noOfVer;
 	graphdfscode.noElemdN = noDeg;
 	size_t  nBytesO = noOfVer * sizeof(int);
@@ -193,14 +193,43 @@ void DFSCode::buildDBOnDevice()
 	delete[] arrayLN;
 	return;
 }
+
+void extractAllEdgeInDB(DB &graphdfscode,arrExtension &arrE)
+{
+	
+	//cấp phát bộ nhớ cho d_Extension
+	//Lấy số lượng cạnh của tất cả các đồ thị
+	arrE.noElem =graphdfscode.noElemdN;
+	//Cấp phát bộ nhớ để lưu trữ tất cả các mở rộng ban đầu tương ứng với số lượng cạnh thu được;
+	size_t nBytesOfArrayExtension = arrE.noElem*sizeof(Extension); 
+
+	CUCHECK(cudaMalloc((Extension**)&arrE.dExtension,nBytesOfArrayExtension));
+
+	//Trích tất cả các cạnh từ database rồi lưu vào d_Extension
+	
+	dim3 block(blocksize);
+	unsigned int numberOfElementd_O = graphdfscode.noElemdO;
+	dim3 grid((numberOfElementd_O+block.x-1)/block.x);
+	
+	
+	kernelGetAndStoreExtension<<<grid,block>>>( \
+		graphdfscode.dO,graphdfscode.dLO, \
+		graphdfscode.noElemdO, \
+		graphdfscode.dN,graphdfscode.dLN,graphdfscode.noElemdN, \
+		arrE.dExtension);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
+	return;
+}
 bool DFSCode::check_min()
 {
 	if (this->size() == 1) return true;
 	//1. Xây dựng database của đồ thị trên GPU: dfscode_LO, dfscode_O, dfscode_N, dfscode_LN
 	//Convert DFS_CODE sang Graph
-	this->buildDBOnDevice();
-	//Tìm số lượng đỉnh (dfscode_dO,dfscode_dLO) và tổng bậc của các đỉnh (dsfcode_dN, dfscode_dLN).
+	arrExtension pureExtension;
+	this->buildDFSCodeOnDevice();
 	//2. Tìm tất cả mở rộng 1 cạnh ban đầu hợp lệ (GPU step)
+	extractAllEdgeInDB(this->graphdfscode,pureExtension);
 	//3. So sánh chúng với cạnh đầu tiên của DFS_CODE (GPU step)
 		//Nếu có cạnh nhỏ hơn DFS_CODE thì return False
 		//Xây dựng embeddings Colum cho cạnh bằng với cạnh đầu tiên của DFS_CODE
