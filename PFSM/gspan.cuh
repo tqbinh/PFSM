@@ -7,13 +7,13 @@
  *
  */
 #pragma once
+
 #include<iostream>
 #include<map>
 #include<vector>
 #include<set>
 #include<algorithm>
 #include<fstream>
-
 
 
 template <typename T> inline void _swap(T &x,T &y){T z=x;x=y;y=z;} //Template để swap 2 phần tử có cùng kiểu dữ liệu T bất kỳ
@@ -77,6 +77,21 @@ public:
 	
 	Graph():edge_size_(0),directed(false){}; //khởi tạo đồ thị với cạnh và mặc định là vô hướng
 };
+
+struct FiveTuble
+{
+	int vi;
+	int vj;
+	int li;
+	int lij;
+	int lj;
+	FiveTuble():vi(-1),vj(-1),li(0),lij(0),lj(0){};
+	void show()
+	{
+		std::printf("\n(vi,vj,li,lij,lj): (%d,%d,%d,%d,%d)",vi,vj,li,lij,lj);
+	}
+};
+
 //use
 class DFS{	//Lớp DFS, biểu diễn DFS code của một cạnh. Gồm các cả overloading operator dùng để so sánh DFS code của 2 cạnh.
 public:
@@ -93,6 +108,10 @@ public:
 	friend bool operator != (const DFS& d1,const DFS& d2){
 		return (!(d1==d2));
 	}
+	void show()
+	{
+		std::printf("\n(vi,vj,li,lij,lj%d",from,to,fromlabel,elabel,tolabel);
+	}
 	//Khởi tạo DFS code
 	DFS():from(0),to(0),fromlabel(0),elabel(0),tolabel(0){};
 };
@@ -108,7 +127,6 @@ public:
 	int *hRMP;
 	int *dRMP;
 	RMPath rmpath;  //right most path là một vector đã định nghĩa ở trên
-	DB graphdfscode;
 public:
 	void add(int,int,int,int,int);
 	//use
@@ -117,8 +135,7 @@ public:
 	
 	bool toGraph(Graph&); //*0* không biết để làm gì; có thể là để biết GID của graph
 	void fromGraph(Graph& g); //*0* không biết để làm gì
-	bool check_min();
-	void buildDFSCodeOnDevice();
+	
 	unsigned int nodeCount(void); //đếm số node của DFSCode
 	void push(int from,int to,int fromlabel,int elabel,int tolabel){ //thêm DFS vào DFSCode
 		resize(size()+1); //vì DFSCode kế thừa từ vector<DFS> nên DFSCode có thể dùng phương thức size() của vector<DFS>
@@ -225,5 +242,4 @@ public:
 	void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& arrayLN,const unsigned int _sizeOfarrayO,const unsigned int _noDeg,const unsigned int _maxOfVer);
 	void graphMining(int* &O,int* &LO,int* &N,int* &LN,unsigned int minsup);
 };
-
 

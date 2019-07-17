@@ -363,6 +363,12 @@ struct EXT
 	//Hai thông tin bên dưới cho biết cạnh mở rộng từ embedding nào. Chúng ta cần phải biết thông tin này để 
 	int posRow; //vị trí của embedding trong cột Q
 	EXT():vi(0),vj(1),li(0),lij(0),lj(0),vgi(0),vgj(0),posRow(-1){};
+	
+	//operations
+	void show()
+	{
+		std::printf("(vi,vj,li,lij,lj,vgi,vgj):(%d,%d,%d,%d,%d) \n",vi,vj,li,lij,lj,vgi,vgj);
+	}
 };
 //use
 extern void getSizeBaseOnScanResult(int *dV,int *dVScanResult,int noElem,int &output);
@@ -370,7 +376,7 @@ extern void getSizeBaseOnScanResult(int *dV,int *dVScanResult,int noElem,int &ou
 extern void myScanV(int *dArrInput,int noElem,int *&dResult);
 //use
 extern __global__ void kernelExtractValidExtensionTodExt(EXT *dArrExtension,int *dArrValid,int *dArrValidScanResult,int noElem_dArrV,EXT *dExt,int noElem_dExt);
-extern int displayDeviceArr(int*,int);
+extern void displayDeviceArrV1(int*,int);
 //use
 struct UniEdgeStatisfyMinSup
 {
@@ -439,8 +445,6 @@ struct EXTk
 	UniEdgeStatisfyMinSup uniBES; //unique backward edge statisfy minsup
 	EXTk():noElem(0),dArrExt(nullptr){};
 public:
-	//use
-	void createMapping(int* &dMapping); //Tạo mapping cho EXTk tương ứng với index trong dUniEdge.
 	void mark_edge(int vi,int vj,int li,int lij,int lj,int *&dValid);
 	//use
 	void ReleaseMemory()
@@ -482,9 +486,6 @@ public:
 	void extractUniBackwardExtension(unsigned int&,unsigned int&,int& noElemRMP,int*& dRMP,int*& dRMPLabel, int& noElemMappingVj,int& vi,int& li);
 	//use
 	void findSupport(unsigned int&);
-	//use
-	void findSupportBySegment(unsigned int&);
-
 	//use
 	void findBoundary(unsigned int&, int*&);
 	//use
@@ -641,6 +642,7 @@ public:
 
 extern ContextPtr ctx;
 
+
 class PMS:public gSpan
 {
 public:	
@@ -744,11 +746,7 @@ public:
 								int* &dVj,int &noElemdVj);
 };
 
-
-//use
-extern void DemoSegReduceCsr(int* &dSegmentStarts,int &NumSegments, \
-					  int* &dValues,int &noElem_dValues, \
-					  int* &dResults,int &noElem_dResults,CudaContext& context);
+extern void  myReduction(int *dArrInput,int noElem,int &hResult);
 
 //use
 extern __global__ void kernelCopyDeviceEXT(EXT** dPointerArr,EXT* dArr,int at);
@@ -757,12 +755,19 @@ extern void write_minDFS_CODE(DFSCode dfscode);
 //use
 extern void write_notMinDFS_CODE(DFSCode dfscode);
 //use
+extern void buildDFSCodeOnDevice(DFSCode &dfscode,DB &graphdfscode);
+extern void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& _arrayLN, \
+					   const unsigned int _sizeOfarrayO,const unsigned int _noDeg,Graph& g);
+extern void buildDFSCodeOnDevice(DFSCode &dfscode,DB &graphdfscode);
+extern void extractAllEdgeInDB(DB &graphdfscode,arrExtension &arrE);
+extern bool check_min(DFSCode &dfscode);
+//use
 extern __global__ void kernelCopyDevice(int** dPointerArr,int* dArr,int at);
 //use
 extern void markLabelEdge_pure(EXT *&d_ValidExtension,unsigned int noElem_d_ValidExtension,unsigned int Lv,unsigned int Le,int *&d_allPossibleExtension);
 //use
 extern __global__ void kernelCopyDeviceArray(int *dArrInput,int *dResult,int noElem);
-
+extern bool check_min(DFSCode &dfscode);
 //use
 extern __global__ void kernelFillValidBackward(int* dValidBackward,int* dVj,int noElem, int* dLookupArrVj,int noElemLookup);
 //use

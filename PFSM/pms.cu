@@ -62,6 +62,426 @@ void write_notMinDFS_CODE(DFSCode dfscode)
 	}
 }
 
+void importDataToArray(int*& _arrayO,int*& _arrayLO,int*& _arrayN,int*& _arrayLN, \
+					   const unsigned int _sizeOfarrayO,const unsigned int _noDeg,Graph& g) //return -1 if error
+{
+	int i=0;
+	int numberOfEdges=0;
+	int j=0;
+	_arrayO[i]=0;
+	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
+	{	//Duyệt qua các cạnh của đỉnh
+		for(Vertex::edge_iterator it = v->edge.begin();it!=v->edge.end();++it)
+		{	//Gán nhãn cho đỉnh From trong mảng LO, bị gán nhiều lần trong mỗi lần lặp cạnh không tốt
+			_arrayLO[i]=g[it->from].label; 
+			_arrayN[j]=it->to; //gán id cho đỉnh to trong mảng N
+			_arrayLN[j]=it->elabel; //gán nhãn cho cạnh
+			j=j+1;	//tăng chỉ số trong mảng N và mảng LN
+			++numberOfEdges; //số cạnh đã duyệt
+		}
+		if (i>=(_sizeOfarrayO-1)) return;
+		_arrayO[i+1]=numberOfEdges;
+		++i;
+	}
+}
+void ShowEXT(EXT* &ext, int &noElemInExt)
+	{
+		//Allocate host memory for EXT
+		EXT *hArrExt = (EXT*)malloc(sizeof(EXT)*noElemInExt);
+		if (hArrExt==NULL){FCHECK(-1)}
+		CUCHECK(cudaMemcpy(hArrExt,ext,sizeof(EXT)*noElemInExt,cudaMemcpyDeviceToHost));
+		//Print element in hArrExt
+		std::printf("\n");
+		for(int i=0;i<noElemInExt;++i)
+		{
+			std::printf("\n Ext[%d]:(vi,vj,li,lij,lj,vgi,vgj,posRow) (%d,%d,%d,%d,%d,%d,%d,%d)",i, \
+				hArrExt[i].vi, \
+				hArrExt[i].vj, \
+				hArrExt[i].li, \
+				hArrExt[i].lij, \
+				hArrExt[i].lj, \
+				hArrExt[i].vgi, \
+				hArrExt[i].vgj, \
+				hArrExt[i].posRow);
+		}
+		std::printf("\n");
+		//Free memory
+		free(hArrExt);
+		return;
+	}
+//use
+//Build DFS_Code on Device for checking minDFSCODE
+//This action convert DFS_CODE to graph and store graph db on device.
+void buildDFSCodeOnDevice(DFSCode &dfscode,DB &graphdfscode)
+{
+	Graph tempGraph;
+	int noOfVer=0;
+	int noDeg=0;
+	dfscode.toGraph(tempGraph);
+	//Get total of vertex in graph
+	noOfVer = tempGraph.vertex_size();
+	int* hArrO = new int[noOfVer];
+	if (hArrO==NULL){exit(-1);}
+	else {memset(hArrO, -1, noOfVer*sizeof(int));}
+	//Get total of degree of all vertex in graph.
+	Graph& g = tempGraph; 
+	for(Graph::vertex_iterator v = g.begin(); v !=g.end(); ++v)
+	{noDeg +=v->edge.size();}
+	unsigned int sizeOfArrayN=noDeg;
+	//Mảng arrayN lưu trữ id của các đỉnh kề với đỉnh tương ứng trong mảng arrayO.
+	int* hArrN = new int[sizeOfArrayN];
+
+	if(hArrN==NULL){exit(-1);}
+	else {memset(hArrN, -1, noDeg*sizeof(int));}
+
+	//Prepare dataset on host
+	//Mảng arrayLO lưu trữ label cho tất cả các đỉnh trong TRANS.
+	int* arrayLO = new int[noOfVer];
+	if(arrayLO==NULL)
+	{
+		exit(-1);
+	}else
+	{
+		memset(arrayLO, -1, noOfVer*sizeof(int));
+	}
+
+
+	//Mảng arrayLN lưu trữ label của tất cả các cạnh trong TRANS
+	int* arrayLN = new int[noDeg];
+	if(arrayLN==NULL){
+		exit(0);
+	}else
+	{
+		memset(arrayLN, -1, noDeg*sizeof(int));
+	}
+
+	importDataToArray(hArrO,arrayLO,hArrN,arrayLN,noOfVer,noDeg,g);
+	for(int i = 0; i<noOfVer;i++)
+	{
+		cout<<hArrO[i]<<":"<<arrayLO[i]<<" ";
+	}
+	cout<<endl;
+	for(int i = 0; i<noDeg;i++)
+	{
+		cout<<hArrN[i]<<":"<<arrayLN[i]<<" ";
+	}
+	cout<<endl;
+
+	//Copy data from host to device
+	graphdfscode.noElemdO = noOfVer;
+	graphdfscode.noElemdN = noDeg;
+	size_t  nBytesO = noOfVer * sizeof(int);
+	size_t nBytesN = noDeg * sizeof(int);
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dO,nBytesO));
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dLO,nBytesO));
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dN,nBytesN));
+	CUCHECK(cudaMalloc((void**)&graphdfscode.dLN,nBytesN));
+
+	//Chép dữ liệu từ mảng arrayO trên CPU sang GPU được quản lý bởi pointer dO
+	CUCHECK(cudaMemcpy(graphdfscode.dO,hArrO,nBytesO,cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(graphdfscode.dLO,arrayLO,nBytesO,cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(graphdfscode.dN,hArrN,nBytesN,cudaMemcpyHostToDevice));
+	CUCHECK(cudaMemcpy(graphdfscode.dLN,arrayLN,nBytesN,cudaMemcpyHostToDevice));
+
+	//Release host memory
+	delete[] hArrN;
+	delete[] hArrO;
+	delete[] arrayLO;
+	delete[] arrayLN;
+	return;
+}
+
+void extractAllEdgeInDB(DB &graphdfscode,arrExtension &arrE)
+{
+	
+	//cấp phát bộ nhớ cho d_Extension
+	//Lấy số lượng cạnh của tất cả các đồ thị
+	arrE.noElem =graphdfscode.noElemdN;
+	//Cấp phát bộ nhớ để lưu trữ tất cả các mở rộng ban đầu tương ứng với số lượng cạnh thu được;
+	size_t nBytesOfArrayExtension = arrE.noElem*sizeof(Extension); 
+
+	CUCHECK(cudaMalloc((Extension**)&arrE.dExtension,nBytesOfArrayExtension));
+
+	//Trích tất cả các cạnh từ database rồi lưu vào d_Extension
+	
+	dim3 block(blocksize);
+	unsigned int numberOfElementd_O = graphdfscode.noElemdO;
+	dim3 grid((numberOfElementd_O+block.x-1)/block.x);
+	
+	
+	kernelGetAndStoreExtension<<<grid,block>>>( \
+		graphdfscode.dO,graphdfscode.dLO, \
+		graphdfscode.noElemdO, \
+		graphdfscode.dN,graphdfscode.dLN,graphdfscode.noElemdN, \
+		arrE.dExtension);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
+	return;
+}
+	
+void getValidExtension_pure(EXT* &dArrExt,int &noElemInExt, arrExtension &arrE)
+{
+	//Phase 1: đánh dấu vị trí những cạnh hợp lệ (li<=lj)
+	int *dV;
+	size_t nBytesdV= arrE.noElem *sizeof(int);
+	CUCHECK(cudaMalloc((void**)&dV,nBytesdV));
+	CUCHECK(cudaMemset(dV,0,nBytesdV));
+
+	//Đánh dấu các mở rộng hợp lệ trong hExtension.at(0).dExtension
+	validEdge(arrE.dExtension,dV,arrE.noElem);
+
+	int* dVScanResult;
+	CUCHECK(cudaMalloc((void**)&dVScanResult,arrE.noElem*sizeof(int)));
+	CUCHECK(cudaMemset(dVScanResult,0,arrE.noElem*sizeof(int)));
+	myScanV(dV,arrE.noElem,dVScanResult);
+
+	
+
+	myReduction(dV,arrE.noElem,noElemInExt);
+	allocate_gpu_memory(dArrExt,noElemInExt);
+	extractValidExtension_pure(arrE.dExtension,dV,dVScanResult,arrE.noElem,dArrExt);
+	//free memory
+	CUCHECK(cudaFree(dV));
+	CUCHECK(cudaFree(dVScanResult));
+	return;
+}
+//input:
+//DFSCode: phải convert (vi,vj,li,lij,lj) có dạng giống với trong Extension. (vì trong DFSCOde thấy có giá trị -1).
+//Extention: chứa các bộ (vi,vj,li,lij,lj)
+//noElemInExtension: số lượng phần tử trong Extension.
+//Có thể truyền tham chiếu vào parameter của device
+//Cần kiểm tra GPU Memory khi truyền tham trị xem đây có phải
+//	là nguyên nhân dẫn đến tràn bộ nhớ trên device hay không
+// Nếu truyền theo tham trị thì hệ thống có tự giải phóng bộ nhớ khi thực
+//	thi xong device kernel hay không?
+__device__ bool KernelIsLessThan(FiveTuble* &dEdgeDFSCode,EXT* &dExt,int i)
+{
+	//PMS_PRINT("\n Address of dEdgeDFSCode: %d",&dEdgeDFSCode);
+	if (dExt[i].vi < dEdgeDFSCode->vi && \
+			dExt[i].vj < dEdgeDFSCode->vj && \
+			dExt[i].li < dEdgeDFSCode->li && \
+			dExt[i].lij < dEdgeDFSCode->lij && \
+			dExt[i].lj < dEdgeDFSCode->lj)
+			return true;
+	return false;
+}
+
+__device__ bool KernelIsEqualTo(FiveTuble* &dEdgeDFSCode,EXT* &dExt,int i)
+{
+	//PMS_PRINT("\n Address of dEdgeDFSCode: %d",&dEdgeDFSCode);
+	if (dExt[i].vi == dEdgeDFSCode->vi && \
+			dExt[i].vj == dEdgeDFSCode->vj && \
+			dExt[i].li == dEdgeDFSCode->li && \
+			dExt[i].lij == dEdgeDFSCode->lij && \
+			dExt[i].lj == dEdgeDFSCode->lj)
+			return true;
+	return false;
+}
+//Kiểm tra xem có embeddings nào nhỏ hơn cạnh của DFSCode hay không.
+//Nếu có thì gián giá trị existOne = 1
+__global__ void Kernel_AreThereAnyExtensionLessThanDFSCode(FiveTuble *dEdgeDFSCode,EXT* dExt,int noElemInExt,int *existOne)
+{
+	int i = blockIdx.x * blockDim.x + threadIdx.x;
+	if(i<noElemInExt)
+	{
+		//if (i==0) PMS_PRINT("\nof dEdgeDFSCode: %d",&dEdgeDFSCode);
+		if(KernelIsLessThan(dEdgeDFSCode,dExt,i) == true)
+		{
+			PMS_PRINT("\ndExt[%d]:(%d,%d,%d,%d,%d)",i,dExt[i].vi,dExt[i].vj,dExt[i].li,dExt[i].lij,dExt[i].lj);
+			*existOne = 1;
+			return;
+		}
+	}
+}
+void PrepareFiveTableOnDevice(FiveTuble* &hEdge,DFS &e)
+{
+	hEdge = (FiveTuble*)malloc(sizeof(FiveTuble));
+	if (hEdge == NULL)
+	{
+		std::printf("Malloc Fail");
+		exit(-1);
+	}
+	hEdge->vi = e.from;
+	hEdge->vj = e.to;
+	hEdge->li = e.fromlabel;
+	hEdge->lij = e.elabel;
+	hEdge->lj = e.tolabel;
+	//hEdge->show();
+	return;
+}
+void showdevice(FiveTuble* &dFT,int noElem)
+{
+	FiveTuble* hFT = NULL;
+	hFT = (FiveTuble*)malloc(noElem*sizeof(FiveTuble));
+	if(hFT==NULL) exit(-1);
+	CUCHECK(cudaMemcpy(hFT,dFT,sizeof(FiveTuble)*noElem,cudaMemcpyDeviceToHost));
+	for (int i = 0; i < noElem; i++)
+	{
+		hFT[i].show();
+	}
+	free(hFT);
+}
+//Nếu existOne == 1 ==> thì return về false.
+bool AreThereAnyExtensionLessThanDFSCode(DFS &e,EXT* &ext,int &noElemInExt, FiveTuble* &dEdgeDFSCode)
+{
+	//1. Cấp phát bộ nhớ và chép FiveTuble e sang device.
+	FiveTuble *hEdge = NULL;
+	PrepareFiveTableOnDevice(hEdge,e);
+
+	hEdge->show();
+
+	CUCHECK(cudaMalloc((void**)&dEdgeDFSCode,sizeof(FiveTuble)));
+	CUCHECK(cudaMemcpy(dEdgeDFSCode,hEdge,sizeof(FiveTuble),cudaMemcpyHostToDevice));
+	free(hEdge);
+	showdevice(dEdgeDFSCode,1);
+	ShowEXT(ext,noElemInExt);
+	//dExistOne là True nếu có 1 mở rộng nhỏ hơn cạnh DFSCode.
+	int* dExistOne = NULL;
+	CUCHECK(cudaMalloc((void**)&dExistOne, sizeof(int)));
+	CUCHECK(cudaMemset(dExistOne,0,sizeof(int)));
+	dim3 block(blocksize);
+	dim3 grid((noElemInExt + block.x -1)/block.x);
+	Kernel_AreThereAnyExtensionLessThanDFSCode<<<grid,block>>>(dEdgeDFSCode, ext, noElemInExt,dExistOne);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
+	//Chép kết quả dExistOne trên device về host
+	int hExistOne = 0;
+	CUCHECK(cudaMemcpy(&hExistOne,dExistOne,sizeof(int),cudaMemcpyDeviceToHost));
+	std::printf("\nhExistOne: %d",hExistOne);
+	if (hExistOne==1) 
+	{
+		CUCHECK(cudaFree(dExistOne));
+		return false;
+	}
+	return true;
+}
+//Đánh dấu các mở rộng trong embedding = với cạnh trong DFSCode là 1 ở phần tử dValid tương ứng.
+__global__ void KernelMarkEdge(FiveTuble* dEdgeDFSCode,EXT* ext,int noElemInExt,int* dValid)
+{
+	int i = blockIdx.x * blockDim.x + threadIdx.x;
+	
+	if(i<noElemInExt)
+	{
+		PMS_PRINT("\n dEdgeDFSCode:( %d, %d, %d, %d, %d)",dEdgeDFSCode->vi,dEdgeDFSCode->vj,dEdgeDFSCode->li,dEdgeDFSCode->lij,dEdgeDFSCode->lj);
+		if(KernelIsEqualTo(dEdgeDFSCode,ext,i) == true)
+		{
+			dValid[i] = 1;
+		}
+	}
+}
+//Đánh dấu các mở rộng trong embedding bằng với cạnh DSFCode truyền vào.
+void MarkEdge(FiveTuble* &dEdgeDFSCode,EXT* &ext,int &noElemInExt,int* &dValid)
+{
+	//1. Cấp phát bộ nhớ cho dValid
+	size_t noBytesdValid = noElemInExt*sizeof(int);
+	CUCHECK(cudaMalloc((void**)&dValid,noBytesdValid));
+	CUCHECK(cudaMemset(dValid,0,noBytesdValid));
+
+	ShowEXT(ext,noElemInExt);
+	showdevice(dEdgeDFSCode,1);
+	//2. Gọi kernel để đánh dấu các mở rộng trong embeddings bằng với DFSCode.
+	dim3 block(blocksize);
+	dim3 grid( (noElemInExt + block.x -1)/block.x );
+	KernelMarkEdge<<<grid,block>>>(dEdgeDFSCode,ext,noElemInExt,dValid);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());
+	return;
+}
+
+void ExtractEmbeddingEqualToDFSCode(FiveTuble* &dEdgeDFSCode,EXT* &ext,int noElemInExt)
+{
+	showdevice(dEdgeDFSCode,1);
+	ShowEXT(ext,noElemInExt);
+	//1. Bậc giá trị 1 cho các mở rộng nào của embedding = với DFSCode.
+	int* dValid = NULL;
+	MarkEdge(dEdgeDFSCode,ext,noElemInExt,dValid);
+
+	cout<<"\n dValid:\n";
+	displayDeviceArrV1(dValid,noElemInExt);
+
+	//2. Đếm dValid xem có bao nhiêu mở rộng bằng với DFSCode để chuẩn bị vùng nhớ cho việc trích xuất.
+	int *dIdx = nullptr;
+	get_idx(dValid,noElemInExt,dIdx);
+	
+	cout<<"\n dIdx:\n";
+	displayDeviceArrV1(dIdx,noElemInExt);
+
+	//Tìm số lượng phần tử hợp lệ.
+	//Lưu ý, tuỳ vào phần tử cuối của dValid có =1 hay không để tính noElem_valid cho đúng.
+	int noElem_valid = 0;
+	get_noElem_valid(dValid,dIdx,noElemInExt,noElem_valid);
+
+	/*dim3 block(blocksize);
+	dim3 grid((noElemInExt + block.x -1)/block.x);
+	KernelExtractEmbeddingEqualToDFSCode<<<grid,block>>>(dEdgeDFSCode,ext,noElemInExt);
+	CUCHECK(cudaDeviceSynchronize());
+	CUCHECK(cudaGetLastError());*/
+
+	return;
+}
+//return false: khi có mở rộng nhỏ hơn cạnh DFSCode.
+bool StartCompareDFSCodeExtension(DFSCode &dfscode, EXT* &ext,int &noElemInExt)
+{
+
+	//1. Đã tìm các mở rộng hợp lệ ban đầu (Các Li<=Lj) (Đó là mảng ext với số lượng phần tử là noElemInExt).
+	//2. Nếu có embeddings nào nhỏ hơn cạnh đầu tiên của DFSCode ==> False
+	FiveTuble *dEdgeDFSCode = NULL;
+	
+	if(AreThereAnyExtensionLessThanDFSCode(dfscode.at(0),ext,noElemInExt,dEdgeDFSCode)==false)
+	{
+		CUCHECK(cudaFree(dEdgeDFSCode));
+		//CUCHECK(cudaFree(ext) //Khi nào giải phóng ext?
+		return false;
+	}
+	
+	//3. Trích ra các embeddings bằng với cạnh của DFSCode
+	//input: dEdgeDFSCode, ext và noElemInExt
+	ExtractEmbeddingEqualToDFSCode(dEdgeDFSCode,ext,noElemInExt);
+	//Cần tránh việc cấp phát FiveTuble nhiều lần.
+	////1. Duyệt qua các cạnh của DFSCode
+	//
+	//for(int idxDFSCode = 0; idxDFSCode < dfscode.size(); ++idxDFSCode)
+	//{
+	//	dfscode.at(idxDFSCode).show();
+	//}
+	return true;
+}
+
+bool check_min(DFSCode &dfscode)
+{
+	if (dfscode.size() == 1) return true;
+	//1. Xây dựng database của đồ thị trên GPU: dfscode_LO, dfscode_O, dfscode_N, dfscode_LN
+	//Convert DFS_CODE sang Graph
+	arrExtension pureExtension;
+	DB graphdfscode;
+	buildDFSCodeOnDevice(dfscode,graphdfscode);
+	//2. Tìm tất cả mở rộng 1 cạnh ban đầu hợp lệ (GPU step)
+	extractAllEdgeInDB(graphdfscode,pureExtension); //Trích tất cả các cạnh trong dataset
+	EXT* dArrExt = NULL;
+	int noElemInExt = 0;
+	getValidExtension_pure(dArrExt,noElemInExt,pureExtension); //Lọc ra những cạnh thỏa điều kiện (Li <= Lj)
+	ShowEXT(dArrExt,noElemInExt);
+	/*EXT* hArrExt = (EXT*)malloc(sizeof(EXT)*noElemInExt);
+	if(hArrExt == NULL)
+	{
+		cout<<"Out Of Host Mem!!!";
+		exit(0);
+	}
+	CUCHECK(cudaMemcpy(hArrExt,dArrExt,sizeof(EXT)*noElemInExt,cudaMemcpyDeviceToHost));
+	std::printf("\n Number of valid extension: %d \n",noElemInExt);
+	for(int i = 0; i<noElemInExt;++i)
+	{
+		hArrExt[i].show();
+	}*/
+	//3. So sánh chúng với cạnh đầu tiên của DFS_CODE (GPU step)
+		//Nếu có cạnh nhỏ hơn DFS_CODE thì return False
+		//Xây dựng embeddings Colum cho cạnh bằng với cạnh đầu tiên của DFS_CODE
+
+	//Nếu có mở rộng nào nhỏ hơn DFSCode thì return false, ngược lại return true.
+	if(StartCompareDFSCodeExtension(dfscode,dArrExt,noElemInExt)==false) return false;
+	return true;
+}
+
 
 //use
 void write_array(int *a, int n,char *filename="temp.csv"){
@@ -183,7 +603,7 @@ void PMS::prepareDataBase()
 	}
 	//Chuyển dữ liệu từ fname sang TRANS
 	run(fname,fout,minsup,maxpat,minnodes,enc,where,directed);
-	maxOfVer=findMaxVertices(); //Đồ thị có số lượng đỉnh nhiều nhất.
+	maxOfVer=findMaxVertices();
 	numberOfGraph=noGraphs();
 	int sizeOfarrayO=maxOfVer*numberOfGraph;
 	//Tạo mảng arrayO có kích thước D*m
@@ -392,18 +812,9 @@ void  myReduction(int *dArrInput,int noElem,int &hResult){
 	int total = Reduce(dArrInput, noElem, cdactx);
 	//PMS_PRINT("Reduction total: %d\n\n", total);
 	hResult = total;
+
 	return;
 }
-
-//use
-void DemoSegReduceCsr(int* &dSegmentStarts,int &NumSegments, \
-					  int* &dValues,int &noElem_dValues, \
-					  int* &dResults,int &noElem_dResults,CudaContext& context)
-{
-	SegReduceCsr(dValues, dSegmentStarts, noElem_dValues, NumSegments,
-		false, dResults, (int)0, mgpu::plus<int>(), context);
-}
-
 
 
 //use
@@ -554,6 +965,21 @@ void validEdge(Extension *d_Extension,int *&dV,unsigned int numberElementd_Exten
 	CUCHECK(cudaDeviceSynchronize());
 	CUCHECK(cudaGetLastError());
 	return;
+}
+void displayDeviceArrV1(int *dArr,int noElem)
+{
+	int *temp = (int*)malloc(sizeof(int)*noElem);
+	if(temp==NULL)
+	{
+		PMS_PRINT("\n Malloc temp in displayDeviceArr() failed");
+		FCHECK(-1);
+	}
+	CUCHECK(cudaMemcpy(temp,dArr,noElem*sizeof(int),cudaMemcpyDeviceToHost));
+	for (int i = 0; i < noElem; i++)
+	{
+		PMS_PRINT(" A[%d]:%d  ",i,temp[i]);
+	}
+	free(temp);
 }
 
 //use
@@ -1152,6 +1578,20 @@ void SegReduce(int* dF,int number_unique_extension,int noElem_of_graph_per_uniqu
 }
 
 //use
+//Tamnt27 -->
+/*__global__ void kernelGetGraph(int *dV,int noElemdV,int *d_kq,int *dVScanResult)
+{
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	while(i<noElemdV)
+	{
+		if(dV[i]!=0){
+			d_kq[dVScanResult[i]]=i;
+		}
+		i += blockDim.x * gridDim.x;
+	}
+}*/
+//TamNT27 <--
+
 __global__ void kernelGetGraph(int *dV,int noElemdV,int *d_kq,int *dVScanResult)
 {
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
@@ -1162,6 +1602,7 @@ __global__ void kernelGetGraph(int *dV,int noElemdV,int *d_kq,int *dVScanResult)
 		}
 	}
 }
+
 
 
 //use
@@ -1241,9 +1682,14 @@ void PMS::get_graphid(UniEdge &edge,int *&hArrGraphId,int &noElemhArrGraphId,EXT
 
 	dim3 blocka(blocksize);
 	dim3 grida((noElem_d_graphid + blocka.x -1)/blocka.x);
+	//TamNT27 -->
+	//int real_grid  = (noElem_d_graphid + blocka.x -1)/blocka.x;
+	//real_grid = (real_grid < 128)? real_grid : 128;
+	//dim3 grida(real_grid);
+	//TamNT27 <--
 
 	kernelGetGraph<<<grida,blocka>>>(d_graphid,noElem_d_graphid,d_kq,dVScanResult);
-	CUCHECK(cudaDeviceSynchronize());
+ 	CUCHECK(cudaDeviceSynchronize());
 	CUCHECK(cudaGetLastError());
 
 	hArrGraphId=(int*)malloc(sizeof(int)*noElem_kq);
@@ -1273,11 +1719,11 @@ void PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 			DFS_CODE.add(UES.hArrUniEdge[idx_ues].vi,UES.hArrUniEdge[idx_ues].vj, \
 				UES.hArrUniEdge[idx_ues].li,UES.hArrUniEdge[idx_ues].lij,UES.hArrUniEdge[idx_ues].lj);
 			//Check minDFSCode
-			/*if(!is_min())
-			{
-				is_min();
-				write_notMinDFS_CODE(DFS_CODE);
-			}*/
+			//if(!is_min())
+			//{
+			//	//is_min();
+			//	write_notMinDFS_CODE(DFS_CODE);
+			//}
 			if(is_min())
 			{
 				write_minDFS_CODE(DFS_CODE);
@@ -1409,6 +1855,10 @@ void PMS::MiningDeeper(EXTk &ext,UniEdgeStatisfyMinSup &UES)
 				CUCHECK(cudaFree(dValid));
 				CUCHECK(cudaFree(dIdx));
 				removeEmbedding();
+			} 
+			else
+			{
+				write_notMinDFS_CODE(DFS_CODE);
 			}
 			//Khi khai thác xong thì gỡ bỏ cạnh vừa thêm ra khỏi DFS_CODE
 			DFS_CODE.remove(UES.hArrUniEdge[idx_ues].vi,UES.hArrUniEdge[idx_ues].vj);
@@ -2780,74 +3230,7 @@ void EXTk::findSupport(unsigned int& maxOfVer)
 		FCHECK(-1);
 	}
 }
-//use
-void EXTk::findSupportBySegment(unsigned int& maxOfVer)
-{
-	try
-	{
-		//Tìm boundary của EXTk
-		int* dArrBoundaryIndex = nullptr;
-		findBoundary(maxOfVer,dArrBoundaryIndex);
-		//Xác định số lượng phần tử của dF
-		int *dF=nullptr;
-		int noElemdF = 0;
-		CUCHECK(cudaMemcpy(&noElemdF,&dArrBoundaryIndex[noElem-1],sizeof(int),cudaMemcpyDeviceToHost));
-		++noElemdF;
-		
-		//Tính Support cho các mở rộng backward
-		if(uniBE.noElem>0)
-		{
-			//Cấp phát bộ nhớ device cho dF theo số lượng phần tử duy nhất trong UniEdge
-			CUCHECK(cudaMalloc((void**)&dF,sizeof(int)*noElemdF*uniBE.noElem));
-			CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF*uniBE.noElem));
 
-			uniBE.copyDTH(); //copy unique edge từ device sang host
-			uniBE.hSupport = nullptr; //cấp phát bộ nhớ ở host để lưu trữ support
-			uniBE.hSupport = (int*)malloc(sizeof(int)*uniBE.noElem);
-			if(uniBE.hSupport==nullptr) FCHECK(-1);
-			memset(uniBE.hSupport,0,sizeof(int)*uniBE.noElem);
-			//Duyệt qua từng unique edge để tính độ hỗ trợ.
-			for (int i = 0; i < uniBE.noElem; i++)
-			{
-				findSupportFW(dArrBoundaryIndex,uniBE.dUniEdge,i,dF,noElemdF,uniBE.hSupport[i]);
-				//Mỗi lần lặp thì reset lại zerocho dF 
-				CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF));
-			}
-			//uniBE.showSupport();
-		}
-
-		//Tính Support cho các mở rộng forward
-		if(uniFE.noElem>0)
-		{
-			uniFE.copyDTH();
-			uniFE.hSupport = nullptr;
-			uniFE.hSupport = (int*)malloc(sizeof(int)*uniFE.noElem);
-			if(uniFE.hSupport==nullptr) FCHECK(-1);
-			memset(uniFE.hSupport,0,sizeof(int)*uniFE.noElem);
-			//Duyệt qua các phần tử duy nhất, tính support của chúng và lưu lại trong hSupport tại index tương ứng.
-			for (int i = 0; i < uniFE.noElem; i++)
-			{
-				findSupportFW(dArrBoundaryIndex,uniFE.dUniEdge,i,dF,noElemdF,uniFE.hSupport[i]);
-				//Mỗi lần lặp thì reset lại zerocho dF 
-				CUCHECK(cudaMemset(dF,0,sizeof(int)*noElemdF));
-			}
-			//uniFE.showSupport();
-		}
-
-		CUCHECK(cudaFree(dArrBoundaryIndex));
-		CUCHECK(cudaFree(dF));
-	}
-	catch(...)
-	{
-		FCHECK(-1);
-	}
-}
-
-//use
-void createMapping(int* &dMapping)
-{
-	return;
-}
 //use
 void EXTk::findSupportFW(int*& dArrBoundaryIndex,UniEdge*& dArrUniEdge,int& idxUniEdge, int*& dF,int& noElemdF,int& support)
 {
